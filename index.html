@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>לפי הכריכה</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Amatic+SC:wght@700&family=Caveat:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #111111;
+      --cream: #FFFAF1;
+      --white: #FFFFFF;
+      --font: 'Heebo', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font);
+      background: var(--cream);
+      color: var(--black);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── Screens ─── */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 60px 40px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeUp .6s ease both;
+    }
+    .screen.active { display: flex; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Progress ─── */
+    #progress {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 7px;
+      z-index: 200;
+    }
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--black);
+      opacity: .18;
+      transition: opacity .3s;
+    }
+    .dot.on { opacity: 1; }
+    #screen-1 ~ #progress .dot,
+    #screen-9 .dot,
+    #screen-10 .dot { background: var(--cream); }
+
+    /* ─── Buttons ─── */
+    .btn {
+      background: var(--black);
+      color: var(--cream);
+      border: 1.5px solid var(--black);
+      padding: 13px 42px;
+      font-family: var(--font);
+      font-size: 13px;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: all .25s;
+    }
+    .btn:hover { background: transparent; color: var(--black); }
+    .btn.inv { background: var(--cream); color: var(--black); border-color: var(--cream); }
+    .btn.inv:hover { background: transparent; color: var(--cream); }
+    .btn:disabled { opacity: .28; pointer-events: none; }
+
+    /* ─── Screen 1: Opening ─── */
+    #s1 { background: var(--black); }
+    #s1 .sub {
+      color: var(--cream);
+      font-size: 11px;
+      letter-spacing: 5px;
+      opacity: .5;
+      margin-bottom: 56px;
+    }
+
+    /* ─── Logo SVG ─── */
+    #logo-svg {
+      width: 320px;
+      max-width: 80vw;
+      margin-bottom: 24px;
+    }
+
+    /* ─── Screen 2: Name ─── */
+    .q { font-size: 24px; font-weight: 300; letter-spacing: 4px; margin-bottom: 48px; text-align: center; }
+    #name-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--black);
+      font-family: var(--font);
+      font-size: 38px;
+      font-weight: 300;
+      color: var(--black);
+      width: 380px;
+      max-width: 80vw;
+      padding: 8px 4px;
+      text-align: center;
+      outline: none;
+      margin-bottom: 56px;
+      direction: rtl;
+    }
+    #name-input::placeholder { opacity: .25; }
+
+    /* ─── Screen 3: Sliders ─── */
+    #s3 .q { margin-bottom: 36px; }
+    .sliders-wrap { width: 580px; max-width: 90vw; margin-bottom: 44px; }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .sl-lbl {
+      font-size: 12px;
+      letter-spacing: 1px;
+      min-width: 72px;
+      text-align: center;
+      opacity: .7;
+    }
+    input[type=range] {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 1px;
+      background: var(--black);
+      outline: none;
+      direction: ltr;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      background: var(--black);
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.4); }
+
+    /* ─── Screen 4: Genre ─── */
+    .genre-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 560px;
+      margin-bottom: 48px;
+    }
+    .genre-card {
+      border: 1px solid rgba(17,17,17,.25);
+      padding: 28px 16px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      letter-spacing: 2px;
+      transition: all .25s;
+      background: transparent;
+      color: var(--black);
+    }
+    .genre-card:hover, .genre-card.sel { background: var(--black); color: var(--cream); border-color: var(--black); }
+    .genre-icon { font-size: 22px; display: block; margin-bottom: 10px; }
+
+    /* ─── Screens 5-8: Two-column with preview ─── */
+    .two-col {
+      flex-direction: row !important;
+      justify-content: center !important;
+      align-items: flex-start !important;
+      gap: 56px;
+      padding-top: 60px !important;
+    }
+    .col-main {
+      flex: 1;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .col-preview {
+      width: 160px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 60px;
+    }
+    .preview-lbl {
+      font-size: 9px;
+      letter-spacing: 4px;
+      opacity: .35;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    /* ─── Cover Preview ─── */
+    #cover-preview {
+      width: 160px;
+      height: 240px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 3px 3px 18px rgba(0,0,0,.22);
+      transition: box-shadow .4s;
+    }
+    #cover-preview:hover { box-shadow: 5px 5px 28px rgba(0,0,0,.3); }
+    #cp-bg {
+      position: absolute;
+      inset: 0;
+      background: #FFFAF1;
+      transition: background .5s;
+    }
+    #cp-accent {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .5s;
+    }
+    #cp-img {
+      position: absolute;
+      transition: all .5s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #cp-img svg { width: 100%; height: 100%; }
+    #cp-title {
+      position: absolute;
+      bottom: 18px;
+      right: 0; left: 0;
+      text-align: center;
+      padding: 0 10px;
+      font-size: 13px;
+      line-height: 1.3;
+      font-weight: 700;
+      transition: all .5s;
+      word-break: break-all;
+    }
+    #cp-subtitle {
+      position: absolute;
+      bottom: 8px;
+      right: 0; left: 0;
+      text-align: center;
+      font-size: 8px;
+      letter-spacing: 2px;
+      opacity: .6;
+      transition: all .5s;
+    }
+
+    /* ─── Screen 5: Color Palettes ─── */
+    .palettes-wrap { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 44px; }
+    .pal-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 12px 8px;
+      border: 1.5px solid transparent;
+      transition: all .25s;
+      width: 90px;
+    }
+    .pal-option:hover, .pal-option.sel { border-color: var(--black); }
+    .pal-swatches { display: flex; flex-direction: column; gap: 3px; width: 60px; }
+    .swatch { height: 18px; width: 100%; transition: transform .25s; }
+    .pal-option.sel .swatch { height: 22px; }
+    .pal-name { font-size: 10px; letter-spacing: 1px; opacity: .55; text-align: center; line-height: 1.3; }
+    .pal-option.sel .pal-name { opacity: 1; font-weight: 500; }
+
+    /* ─── Screen 6: Images ─── */
+    .cat-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(17,17,17,.2);
+      width: 100%;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .cat-tab {
+      padding: 8px 14px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+      opacity: .5;
+      transition: all .2s;
+    }
+    .cat-tab.on { border-bottom-color: var(--black); opacity: 1; font-weight: 500; }
+    .imgs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+    .img-card {
+      aspect-ratio: 1;
+      border: 1px solid rgba(17,17,17,.18);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 10px 10px 18px;
+      transition: all .25s;
+      position: relative;
+      gap: 4px;
+    }
+    .img-card:hover, .img-card.sel { background: var(--black); border-color: var(--black); }
+    .img-card svg { width: 56%; height: 56%; fill: var(--black); transition: fill .2s; flex-shrink: 0; }
+    .img-card:hover svg, .img-card.sel svg { fill: var(--cream); }
+    .img-lbl {
+      position: absolute;
+      bottom: 4px; left: 0; right: 0;
+      font-size: 9px;
+      text-align: center;
+      opacity: .45;
+      line-height: 1.2;
+    }
+    .img-card:hover .img-lbl, .img-card.sel .img-lbl { color: var(--cream); opacity: .65; }
+
+    /* ─── Screen 7: Composition ─── */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      max-width: 480px;
+      margin-bottom: 12px;
+    }
+    .comp-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .comp-card {
+      width: 80px;
+      height: 120px;
+      border: 1.5px solid rgba(17,17,17,.2);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      background: white;
+      transition: border-color .25s, box-shadow .25s;
+    }
+    .comp-card:hover, .comp-card.sel { border-color: var(--black); box-shadow: 0 0 0 1.5px var(--black); }
+    .comp-name { font-size: 9px; letter-spacing: .5px; text-align: center; opacity: .5; max-width: 80px; line-height: 1.3; }
+    .comp-card.sel + .comp-name { opacity: 1; font-weight: 500; }
+
+    /* ─── Screen 8: Typography ─── */
+    .font-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      max-width: 460px;
+      margin-bottom: 44px;
+    }
+    .font-card {
+      border: 1.5px solid rgba(17,17,17,.2);
+      padding: 20px 16px;
+      cursor: pointer;
+      text-align: center;
+      transition: all .25s;
+    }
+    .font-card:hover, .font-card.sel { background: var(--black); color: var(--cream); border-color: var(--black); }
+    .font-sample { font-size: 30px; margin-bottom: 8px; line-height: 1.2; }
+    .font-lbl { font-family: var(--font); font-size: 10px; letter-spacing: 2px; opacity: .5; }
+    .font-card:hover .font-lbl, .font-card.sel .font-lbl { color: var(--cream); opacity: .65; }
+
+    /* ─── Screen 9: Reveal ─── */
+    #s9 { background: var(--black); gap: 0; }
+    #s9 .q { color: var(--cream); margin-bottom: 50px; opacity: .5; font-size: 13px; }
+    #cover-big {
+      width: 220px;
+      height: 330px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+      opacity: 0;
+      transform: translateY(32px) scale(.96);
+      transition: all 1.1s cubic-bezier(.22,1,.36,1);
+      margin-bottom: 46px;
+    }
+    #cover-big.show { opacity: 1; transform: translateY(0) scale(1); }
+    #summary-text {
+      max-width: 480px;
+      text-align: center;
+      color: var(--cream);
+      font-size: 16px;
+      line-height: 2.1;
+      font-weight: 300;
+      opacity: 0;
+      transition: opacity 1.4s ease .9s;
+      padding: 0 20px;
+      margin-bottom: 50px;
+    }
+    #summary-text.show { opacity: 1; }
+    .loading-dots { color: var(--cream); opacity: .35; letter-spacing: 4px; font-size: 11px; }
+    #s9 .btn { margin-top: 0; }
+
+    /* ─── Screen 10: Postcard ─── */
+    #s10 { padding-top: 50px !important; }
+    #s10 .q { margin-bottom: 36px; font-size: 20px; }
+    .postcard-sides { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 40px; flex-wrap: wrap; justify-content: center; }
+    .pc-side { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .pc-lbl { font-size: 9px; letter-spacing: 4px; opacity: .35; }
+    .postcard {
+      width: 283px;
+      height: 425px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 2px 2px 14px rgba(0,0,0,.12);
+    }
+    #pc-back {
+      background: white;
+      border: 1px solid #e0ddd6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 28px;
+      text-align: center;
+      gap: 16px;
+    }
+    #pc-back-title { font-size: 11px; letter-spacing: 4px; opacity: .4; }
+    #pc-back-summary { font-size: 13px; line-height: 2; font-weight: 300; }
+    #pc-back-name { font-size: 10px; letter-spacing: 3px; opacity: .35; margin-top: 8px; }
+    #pc-back-divider { width: 30px; height: 1px; background: var(--black); opacity: .2; }
+    .print-area { display: none; }
+
+    /* ─── API key modal ─── */
+    #api-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(17,17,17,.85);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    #api-modal.show { display: flex; }
+    .modal-box {
+      background: var(--cream);
+      padding: 50px 44px;
+      max-width: 480px;
+      width: 90vw;
+      text-align: center;
+    }
+    .modal-box h3 { font-size: 18px; font-weight: 400; letter-spacing: 3px; margin-bottom: 16px; }
+    .modal-box p { font-size: 13px; opacity: .6; line-height: 1.8; margin-bottom: 28px; }
+    #api-key-inp {
+      background: white;
+      border: 1px solid rgba(17,17,17,.25);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      padding: 12px 14px;
+      width: 100%;
+      outline: none;
+      margin-bottom: 16px;
+      direction: ltr;
+      text-align: left;
+    }
+    .modal-row { display: flex; gap: 10px; justify-content: center; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 700px) {
+      .two-col { flex-direction: column !important; align-items: center !important; }
+      .col-preview { position: relative; top: 0; width: 120px; }
+      #cover-preview { width: 120px; height: 180px; }
+      .genre-grid { grid-template-columns: repeat(2, 1fr); }
+      .comp-grid { grid-template-columns: repeat(3, 1fr); }
+      .imgs-grid { grid-template-columns: repeat(3, 1fr); }
+      .postcard-sides { flex-direction: column; align-items: center; }
+    }
+
+    /* ─── Print ─── */
+    @media print {
+      body > *:not(.print-area) { display: none !important; }
+      .print-area { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Progress dots -->
+<div id="progress"></div>
+
+<!-- API Key Modal -->
+<div id="api-modal">
+  <div class="modal-box">
+    <h3>מפתח API</h3>
+    <p>כדי לייצר את התקציר האישי שלך, נדרש מפתח Anthropic API.<br>המפתח נשמר רק בדפדפן שלך ולא נשלח לשום מקום אחר.</p>
+    <input id="api-key-inp" type="password" placeholder="sk-ant-..." autocomplete="off">
+    <div class="modal-row">
+      <button class="btn" onclick="saveApiKey()">אישור</button>
+      <button class="btn" style="background:transparent;color:var(--black)" onclick="skipApi()">דלג (הדגמה)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 1 — Opening
+══════════════════════════════════════════════ -->
+<section class="screen active" id="s1">
+  <svg id="logo-svg" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Decorative scattered elements -->
+    <circle cx="18" cy="18" r="2" stroke="#FFFAF1" stroke-width="1.2"/>
+    <circle cx="300" cy="95" r="2.5" stroke="#FFFAF1" stroke-width="1.2"/>
+    <line x1="290" y1="20" x2="298" y2="28" stroke="#FFFAF1" stroke-width="1" opacity=".5"/>
+    <line x1="294" y1="20" x2="298" y2="24" stroke="#FFFAF1" stroke-width="1" opacity=".5"/>
+    <circle cx="30" cy="98" r="1.2" fill="#FFFAF1" opacity=".4"/>
+    <circle cx="285" cy="45" r="1.5" fill="#FFFAF1" opacity=".4"/>
+    <path d="M8 55 L14 49 L20 55" stroke="#FFFAF1" stroke-width="1" fill="none" opacity=".4"/>
+    <path d="M306 65 L312 59 L318 65" stroke="#FFFAF1" stroke-width="1" fill="none" opacity=".4"/>
+    <!-- Main text outline -->
+    <text x="160" y="72" text-anchor="middle"
+          font-family="'Frank Ruhl Libre', serif"
+          font-size="52" font-weight="400"
+          fill="none" stroke="#FFFAF1" stroke-width="1.2"
+          letter-spacing="6">לפי הכריכה</text>
+    <!-- Small decorative dots on letters -->
+    <circle cx="75" cy="40" r="1.8" fill="#FFFAF1" opacity=".6"/>
+    <circle cx="245" cy="42" r="1.8" fill="#FFFAF1" opacity=".6"/>
+  </svg>
+  <p class="sub">ממשק עיצוב אינטראקטיבי</p>
+  <button class="btn inv" onclick="go(2)">ליצור את הסיפור שלי</button>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 2 — Name
+══════════════════════════════════════════════ -->
+<section class="screen" id="s2">
+  <p class="q">מה שמך?</p>
+  <input id="name-input" type="text" placeholder="שם" autocomplete="off"
+    oninput="state.name=this.value; updatePreview()"
+    onkeydown="if(event.key==='Enter'&&state.name.trim())go(3)">
+  <button class="btn" id="name-btn" onclick="go(3)" disabled>המשך</button>
+  <script>
+    document.getElementById('name-input').addEventListener('input', function() {
+      document.getElementById('name-btn').disabled = !this.value.trim();
+    });
+  </script>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 3 — Sliders
+══════════════════════════════════════════════ -->
+<section class="screen" id="s3">
+  <p class="q">איך היית מתאר/ת את עצמך?</p>
+  <div class="sliders-wrap" id="sliders-wrap"></div>
+  <button class="btn" onclick="go(4)">המשך</button>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 4 — Genre
+══════════════════════════════════════════════ -->
+<section class="screen" id="s4">
+  <p class="q">איזה ז'אנר מדבר אליך?</p>
+  <div class="genre-grid">
+    <div class="genre-card" onclick="selectGenre(this,'רומנטיקה')"><span class="genre-icon">♡</span>רומנטיקה</div>
+    <div class="genre-card" onclick="selectGenre(this,'מתח ואימה')"><span class="genre-icon">☽</span>מתח ואימה</div>
+    <div class="genre-card" onclick="selectGenre(this,'פנטזיה')"><span class="genre-icon">✦</span>פנטזיה</div>
+    <div class="genre-card" onclick="selectGenre(this,'מדע בדיוני')"><span class="genre-icon">◎</span>מדע בדיוני</div>
+    <div class="genre-card" onclick="selectGenre(this,'ספרות יפה')"><span class="genre-icon">◇</span>ספרות יפה</div>
+    <div class="genre-card" onclick="selectGenre(this,'ספרי עיון')"><span class="genre-icon">▣</span>ספרי עיון</div>
+  </div>
+  <button class="btn" id="genre-btn" onclick="go(5)" disabled>המשך</button>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 5 — Color
+══════════════════════════════════════════════ -->
+<section class="screen two-col" id="s5">
+  <div class="col-main">
+    <p class="q" style="align-self:flex-start;margin-bottom:28px">בחרי פלטת צבעים לכריכה</p>
+    <div class="palettes-wrap" id="palettes-wrap"></div>
+    <button class="btn" id="color-btn" onclick="go(6)" disabled>המשך</button>
+  </div>
+  <div class="col-preview">
+    <p class="preview-lbl">הכריכה שלי</p>
+    <div id="cover-preview">
+      <div id="cp-bg"></div>
+      <div id="cp-accent"></div>
+      <div id="cp-img"></div>
+      <div id="cp-title"></div>
+      <div id="cp-subtitle">לפי הכריכה</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 6 — Image
+══════════════════════════════════════════════ -->
+<section class="screen two-col" id="s6">
+  <div class="col-main">
+    <p class="q" style="align-self:flex-start;margin-bottom:16px">בחרי דימוי לכריכה</p>
+    <div class="cat-tabs" id="cat-tabs"></div>
+    <div class="imgs-grid" id="imgs-grid"></div>
+    <button class="btn" id="img-btn" onclick="go(7)" disabled>המשך</button>
+  </div>
+  <div class="col-preview">
+    <p class="preview-lbl">הכריכה שלי</p>
+    <div id="cover-preview-2"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 7 — Composition
+══════════════════════════════════════════════ -->
+<section class="screen two-col" id="s7">
+  <div class="col-main">
+    <p class="q" style="align-self:flex-start;margin-bottom:28px">בחרי פריסה לכריכה</p>
+    <div class="comp-grid" id="comp-grid"></div>
+    <button class="btn" id="comp-btn" onclick="go(8)" disabled style="margin-top:16px">המשך</button>
+  </div>
+  <div class="col-preview">
+    <p class="preview-lbl">הכריכה שלי</p>
+    <div id="cover-preview-3"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 8 — Typography
+══════════════════════════════════════════════ -->
+<section class="screen two-col" id="s8">
+  <div class="col-main">
+    <p class="q" style="align-self:flex-start;margin-bottom:28px">בחרי טיפוגרפיה לשם שלך</p>
+    <div class="font-grid" id="font-grid"></div>
+    <button class="btn" id="font-btn" onclick="proceedToReveal()" disabled>גלי את הכריכה שלך</button>
+  </div>
+  <div class="col-preview">
+    <p class="preview-lbl">הכריכה שלי</p>
+    <div id="cover-preview-4"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 9 — Reveal
+══════════════════════════════════════════════ -->
+<section class="screen" id="s9">
+  <p class="q" style="margin-bottom:44px">הכריכה שלך</p>
+  <div id="cover-big">
+    <div id="cb-bg"></div>
+    <div id="cb-img"></div>
+    <div id="cb-title"></div>
+    <div id="cb-subtitle">לפי הכריכה</div>
+  </div>
+  <div id="summary-text"><span class="loading-dots">טוען...</span></div>
+  <button class="btn inv" onclick="go(10)">לגלויה</button>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 10 — Postcard
+══════════════════════════════════════════════ -->
+<section class="screen" id="s10">
+  <p class="q">הגלויה שלך</p>
+  <div class="postcard-sides">
+    <div class="pc-side">
+      <span class="pc-lbl">צד א׳ — כריכה</span>
+      <div class="postcard" id="pc-front">
+        <div id="pcf-bg" style="position:absolute;inset:0"></div>
+        <div id="pcf-img" style="position:absolute"></div>
+        <div id="pcf-title" style="position:absolute"></div>
+        <div id="pcf-sub" style="position:absolute;bottom:12px;right:0;left:0;text-align:center;font-size:9px;letter-spacing:2px;opacity:.5">לפי הכריכה</div>
+      </div>
+    </div>
+    <div class="pc-side">
+      <span class="pc-lbl">צד ב׳ — סיפור</span>
+      <div class="postcard" id="pc-back">
+        <p id="pc-back-title">לפי הכריכה</p>
+        <div id="pc-back-divider"></div>
+        <p id="pc-back-summary"></p>
+        <p id="pc-back-name"></p>
+      </div>
+    </div>
+  </div>
+  <button class="btn" onclick="printPostcard()">שלח להדפסה</button>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SVG LIBRARY
+══════════════════════════════════════════════ -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="svg-house" viewBox="0 0 100 100">
+    <polygon points="50,8 6,44 16,44 16,88 42,88 42,62 58,62 58,88 84,88 84,44 94,44"/>
+    <path d="M38,96 Q45,85 50,82 Q55,85 62,96 Q55,97 50,97 Q45,97 38,96Z" opacity=".7"/>
+    <rect x="34" y="94" width="32" height="3"/>
+  </symbol>
+  <symbol id="svg-skull" viewBox="0 0 100 100">
+    <path d="M50,10 C25,10 14,30 14,48 C14,62 22,72 34,76 L34,88 L66,88 L66,76 C78,72 86,62 86,48 C86,30 75,10 50,10Z"/>
+    <rect x="34" y="74" width="10" height="16" fill="white"/>
+    <rect x="46" y="74" width="8" height="16" fill="white"/>
+    <rect x="56" y="74" width="10" height="16" fill="white"/>
+    <circle cx="37" cy="46" r="8" fill="white"/>
+    <circle cx="63" cy="46" r="8" fill="white"/>
+    <circle cx="37" cy="46" r="3"/>
+    <circle cx="63" cy="46" r="3"/>
+  </symbol>
+  <symbol id="svg-knife" viewBox="0 0 100 100">
+    <path d="M48,8 C52,8 56,10 57,14 L60,72 L55,72 L52,16 C51,13 49,12 48,12Z"/>
+    <path d="M48,12 L57,14 L60,72 L52,16Z"/>
+    <rect x="44" y="70" width="18" height="26" rx="3"/>
+    <path d="M44,76 L62,76"/>
+    <path d="M44,82 L62,82"/>
+  </symbol>
+  <symbol id="svg-bird" viewBox="0 0 100 100">
+    <path d="M50,50 C38,42 16,36 6,46 C16,40 38,52 50,50Z"/>
+    <path d="M50,50 C62,42 84,36 94,46 C84,40 62,52 50,50Z"/>
+    <ellipse cx="50" cy="52" rx="6" ry="4"/>
+    <circle cx="47" cy="50" r="1.5" fill="white"/>
+    <path d="M44,54 L50,58 L40,60Z"/>
+  </symbol>
+  <symbol id="svg-figure" viewBox="0 0 100 100">
+    <circle cx="50" cy="18" r="10"/>
+    <path d="M36,32 C36,28 40,26 50,26 C60,26 64,28 64,32 L68,58 L56,58 L54,44 L54,90 L46,90 L46,44 L44,58 L32,58Z"/>
+    <path d="M32,58 L24,82 L34,82 L40,60Z"/>
+    <path d="M68,58 L76,82 L66,82 L60,60Z"/>
+  </symbol>
+  <symbol id="svg-astronaut" viewBox="0 0 100 100">
+    <ellipse cx="50" cy="26" rx="18" ry="20"/>
+    <rect x="34" y="12" width="32" height="28" rx="14" fill="none" stroke="currentColor" stroke-width="3"/>
+    <rect x="24" y="42" width="52" height="38" rx="10"/>
+    <rect x="16" y="44" width="14" height="28" rx="7"/>
+    <rect x="70" y="44" width="14" height="28" rx="7"/>
+    <rect x="34" y="80" width="12" height="16" rx="5"/>
+    <rect x="54" y="80" width="12" height="16" rx="5"/>
+    <circle cx="50" cy="26" r="10" fill="white" opacity=".3"/>
+  </symbol>
+  <symbol id="svg-spaceship" viewBox="0 0 100 100">
+    <path d="M50,5 C50,5 34,28 32,52 L68,52 C66,28 50,5 50,5Z"/>
+    <ellipse cx="50" cy="52" rx="22" ry="8"/>
+    <rect x="38" y="60" width="24" height="20" rx="4"/>
+    <path d="M38,78 L28,94 L38,88Z"/>
+    <path d="M62,78 L72,94 L62,88Z"/>
+    <circle cx="50" cy="40" r="7" fill="white" opacity=".35"/>
+    <path d="M42,60 L58,60 L58,80 L42,80Z" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+  </symbol>
+  <symbol id="svg-planet" viewBox="0 0 100 100">
+    <circle cx="50" cy="52" r="26"/>
+    <ellipse cx="50" cy="52" rx="46" ry="14" fill="none" stroke="currentColor" stroke-width="4"/>
+    <circle cx="42" cy="44" r="6" opacity=".2" fill="white"/>
+    <circle cx="56" cy="58" r="4" opacity=".15" fill="white"/>
+  </symbol>
+  <symbol id="svg-chess" viewBox="0 0 100 100">
+    <rect x="34" y="86" width="32" height="6" rx="2"/>
+    <rect x="38" y="80" width="24" height="8" rx="2"/>
+    <path d="M46,80 L46,64 C42,60 38,52 40,44 C44,36 50,30 52,22 C54,30 60,36 64,44 C66,52 62,60 58,64 L58,80Z"/>
+    <path d="M44,28 C46,22 50,16 52,10 C56,16 58,22 60,28"/>
+    <circle cx="52" cy="8" r="4"/>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 100 100">
+    <path d="M10,50 C20,30 34,22 50,22 C66,22 80,30 90,50 C80,70 66,78 50,78 C34,78 20,70 10,50Z" fill="none" stroke="currentColor" stroke-width="4"/>
+    <path d="M10,50 C20,30 34,22 50,22 C66,22 80,30 90,50 C80,70 66,78 50,78 C34,78 20,70 10,50Z"/>
+    <circle cx="50" cy="50" r="14" fill="white"/>
+    <circle cx="50" cy="50" r="9"/>
+    <circle cx="54" cy="46" r="3" fill="white"/>
+  </symbol>
+  <symbol id="svg-girl-pearl" viewBox="0 0 100 100">
+    <path d="M50,6 C42,6 34,14 34,26 C34,38 40,48 50,52 C60,48 66,38 66,26 C66,14 58,6 50,6Z"/>
+    <path d="M34,52 C24,58 18,68 18,82 L82,82 C82,68 76,58 66,52 C62,56 56,60 50,60 C44,60 38,56 34,52Z"/>
+    <circle cx="62" cy="38" r="4"/>
+    <path d="M38,16 C44,12 56,12 62,16"/>
+  </symbol>
+  <symbol id="svg-branch" viewBox="0 0 100 100">
+    <path d="M20,90 C25,70 30,55 40,42 C50,30 60,18 65,8" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M40,42 C30,35 22,28 16,18" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M55,25 C62,20 72,18 80,22" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="16" cy="16" rx="7" ry="5" transform="rotate(-20,16,16)"/>
+    <ellipse cx="80" cy="20" rx="7" ry="5" transform="rotate(15,80,20)"/>
+    <ellipse cx="64" cy="8" rx="6" ry="4" transform="rotate(-10,64,8)"/>
+    <ellipse cx="20" cy="90" rx="5" ry="4"/>
+  </symbol>
+  <symbol id="svg-statue" viewBox="0 0 100 100">
+    <path d="M50,8 C44,8 38,14 38,22 C38,30 43,36 50,38 C57,36 62,30 62,22 C62,14 56,8 50,8Z"/>
+    <path d="M38,38 C32,44 30,54 32,68 L68,68 C70,54 68,44 62,38 C58,42 54,44 50,44 C46,44 42,42 38,38Z"/>
+    <rect x="28" y="66" width="44" height="6" rx="2"/>
+    <rect x="24" y="70" width="52" height="4" rx="1"/>
+    <rect x="20" y="74" width="60" height="4" rx="1"/>
+    <rect x="16" y="78" width="68" height="8" rx="2"/>
+  </symbol>
+  <symbol id="svg-fruit" viewBox="0 0 100 100">
+    <path d="M50,20 C36,20 22,32 22,50 C22,68 34,84 50,84 C66,84 78,68 78,50 C78,32 64,20 50,20Z"/>
+    <path d="M50,20 C50,14 54,8 60,6" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M50,20 C46,16 40,12 34,12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="38" cy="40" r="5" opacity=".2" fill="white"/>
+    <path d="M36,54 C40,62 54,68 62,62" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" opacity=".3"/>
+  </symbol>
+  <symbol id="svg-sword" viewBox="0 0 100 100">
+    <path d="M50,6 L54,68 L50,68 L46,68Z"/>
+    <rect x="34" y="64" width="32" height="6" rx="2"/>
+    <rect x="46" y="70" width="8" height="26" rx="3"/>
+  </symbol>
+  <symbol id="svg-castle" viewBox="0 0 100 100">
+    <rect x="14" y="42" width="20" height="50"/>
+    <rect x="66" y="42" width="20" height="50"/>
+    <rect x="30" y="54" width="40" height="38"/>
+    <rect x="14" y="30" width="20" height="16"/>
+    <rect x="14" y="30" width="6" height="8"/>
+    <rect x="22" y="30" width="6" height="8"/>
+    <rect x="30" y="30" width="6" height="8"/>
+    <rect x="66" y="30" width="20" height="16"/>
+    <rect x="66" y="30" width="6" height="8"/>
+    <rect x="74" y="30" width="6" height="8"/>
+    <rect x="82" y="30" width="6" height="8"/>
+    <rect x="38" y="42" width="24" height="16"/>
+    <rect x="38" y="42" width="8" height="10"/>
+    <rect x="48" y="42" width="8" height="10"/>
+    <rect x="56" y="42" width="8" height="10"/>
+    <path d="M42,80 C42,70 58,70 58,80 L58,92 L42,92Z"/>
+  </symbol>
+  <symbol id="svg-flame" viewBox="0 0 100 100">
+    <path d="M50,6 C50,6 68,26 68,46 C68,62 62,72 50,76 C38,72 32,62 32,46 C32,30 50,6 50,6Z"/>
+    <path d="M50,32 C50,32 60,44 60,54 C60,62 56,68 50,70 C44,68 40,62 40,54 C40,44 50,32 50,32Z" fill="white" opacity=".25"/>
+  </symbol>
+  <symbol id="svg-witch" viewBox="0 0 100 100">
+    <path d="M30,10 L50,52 L70,10 L60,12 L50,46 L40,12Z"/>
+    <line x1="30" y1="10" x2="70" y2="10" stroke="currentColor" stroke-width="3"/>
+    <ellipse cx="50" cy="55" rx="20" ry="8"/>
+    <circle cx="50" cy="42" r="10"/>
+    <path d="M34,62 C28,66 18,70 8,68 L10,72 C20,76 32,72 40,66Z"/>
+    <path d="M8,68 L80,68 L90,80 L8,68Z" opacity=".6"/>
+    <rect x="6" y="66" width="88" height="4" rx="2"/>
+  </symbol>
+  <symbol id="svg-couple" viewBox="0 0 100 100">
+    <circle cx="36" cy="14" r="9"/>
+    <circle cx="64" cy="12" r="9"/>
+    <path d="M26,32 C22,28 22,24 36,24 C40,24 44,26 44,32 L42,72 L28,72Z" opacity=".85"/>
+    <path d="M46,32 C48,28 52,24 64,24 C76,24 78,28 74,32 L70,56 L56,72 L46,72Z" opacity=".85"/>
+    <path d="M36,32 L46,32 C50,40 52,54 48,64 L42,72 L36,72Z"/>
+    <path d="M28,72 L72,72 L72,80 L28,80Z"/>
+  </symbol>
+  <symbol id="svg-butterfly" viewBox="0 0 100 100">
+    <path d="M50,50 C42,40 20,30 10,40 C4,46 6,58 16,60 C28,62 44,54 50,50Z"/>
+    <path d="M50,50 C58,40 80,30 90,40 C96,46 94,58 84,60 C72,62 56,54 50,50Z"/>
+    <path d="M50,50 C44,58 24,70 14,62 C6,56 10,44 22,44 C34,44 46,50 50,50Z"/>
+    <path d="M50,50 C56,58 76,70 86,62 C94,56 90,44 78,44 C66,44 54,50 50,50Z"/>
+    <ellipse cx="50" cy="50" rx="3" ry="18"/>
+    <circle cx="50" cy="32" r="3"/>
+    <path d="M48,30 C46,22 42,18 38,16" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    <path d="M52,30 C54,22 58,18 62,16" stroke="currentColor" stroke-width="1.5" fill="none"/>
+  </symbol>
+  <symbol id="svg-flowers" viewBox="0 0 100 100">
+    <path d="M50,90 C50,90 46,60 44,40" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M44,40 C34,36 28,40 32,50 C36,60 44,52 44,40Z"/>
+    <path d="M44,40 C34,28 36,18 44,24 C52,30 48,40 44,40Z"/>
+    <path d="M44,40 C52,28 62,28 60,38 C58,48 50,44 44,40Z"/>
+    <path d="M44,40 C54,44 58,54 50,56 C42,58 40,48 44,40Z"/>
+    <circle cx="44" cy="40" r="5"/>
+    <path d="M50,90 C50,90 54,62 56,44" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M56,44 C64,38 72,44 68,52 C64,60 56,52 56,44Z"/>
+    <path d="M56,44 C56,34 62,28 66,34 C70,40 62,44 56,44Z"/>
+    <circle cx="56" cy="44" r="4.5"/>
+  </symbol>
+  <symbol id="svg-hand" viewBox="0 0 100 100">
+    <path d="M34,90 L34,44 C34,40 30,38 28,38 C26,38 22,40 22,44 L22,64 C22,64 16,58 14,52 C12,46 16,42 20,44 C20,36 24,32 28,34 L28,28 C28,24 32,22 36,24 L36,18 C36,14 40,12 44,14 L44,10 C44,6 48,4 52,6 C56,8 56,12 56,16 L56,30 C58,28 62,28 64,32 L64,50 C64,68 56,80 50,90Z"/>
+  </symbol>
+</svg>
+
+<!-- Print area -->
+<div class="print-area" id="print-area"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+const state = {
+  screen: 1,
+  name: '',
+  sliders: [3,3,3,3,3,3,3],
+  genre: null,
+  color: null,
+  image: null,
+  imageKey: null,
+  composition: null,
+  typography: null,
+  summary: '',
+  apiKey: '',
+  scores: { emotion:0, logic:0, intro:0, extro:0, order:0, chaos:0, connect:0, indep:0 }
+};
+
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const SLIDERS = [
+  ['כיפי','רציני'],
+  ['ריאליסטי','אידיאליסטי'],
+  ['נגיש','יוקרתי'],
+  ['רטרו','עתידני'],
+  ['אופטימי','פסימי'],
+  ['אישי','אוניברסלי'],
+  ['פנימי','חיצוני']
+];
+
+const PALETTES = [
+  { name:'כהה וקרה',   colors:['#1A1A2E','#0D1B2A','#2D3561'], textColor:'#FFFAF1', score:{A:'S',B:'P',C:'order',D:'indep'} },
+  { name:'חמה ועשירה', colors:['#3D1C02','#8B4513','#C8860A'], textColor:'#FFFAF1', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+  { name:'רכה ועדינה', colors:['#F0E6F6','#E8C8E8','#B5D5E8'], textColor:'#111111', score:{A:'R',B:'P',C:'order',D:'connect'} },
+  { name:'נועזת ופלורסנטית', colors:['#0d0d0d','#FF6600','#CCFF00'], textColor:'#CCFF00', score:{A:'R',B:'E',C:'chaos',D:'indep'} },
+  { name:'נייטרלית ומינימלית', colors:['#FFFAF1','#D4D0C8','#A8A49C'], textColor:'#111111', score:{A:'S',B:'P',C:'order',D:'indep'} }
+];
+
+const CATEGORIES = [
+  { label:'מתח ואימה', images:[
+    { key:'בית עם דרך סלולה', svg:'svg-house', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'גולגלת', svg:'svg-skull', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'סכין', svg:'svg-knife', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'ציפור', svg:'svg-bird', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
+    { key:'צללית גבר', svg:'svg-figure', score:{A:'S',B:'P',C:'order',D:'indep'} }
+  ]},
+  { label:'מדע בדיוני', images:[
+    { key:'אסטרונאוט', svg:'svg-astronaut', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'חללית', svg:'svg-spaceship', score:{A:'S',B:'P',C:'chaos',D:'indep'} },
+    { key:'כוכב לכת', svg:'svg-planet', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
+    { key:'כלי שחמט', svg:'svg-chess', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'עין', svg:'svg-eye', score:{A:'S',B:'P',C:'order',D:'indep'} }
+  ]},
+  { label:'ספרות יפה', images:[
+    { key:'נערה עם עגיל הפנינה', svg:'svg-girl-pearl', score:{A:'R',B:'P',C:'order',D:'connect'} },
+    { key:'ענף', svg:'svg-branch', score:{A:'R',B:'P',C:'order',D:'indep'} },
+    { key:'פסל', svg:'svg-statue', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'פרי', svg:'svg-fruit', score:{A:'R',B:'E',C:'order',D:'connect'} }
+  ]},
+  { label:'פנטזיה', images:[
+    { key:'חרב', svg:'svg-sword', score:{A:'S',B:'E',C:'chaos',D:'indep'} },
+    { key:'טירה', svg:'svg-castle', score:{A:'R',B:'P',C:'order',D:'indep'} },
+    { key:'להבה', svg:'svg-flame', score:{A:'R',B:'E',C:'chaos',D:'indep'} },
+    { key:'מכשפה', svg:'svg-witch', score:{A:'R',B:'P',C:'chaos',D:'indep'} }
+  ]},
+  { label:'רומנטיקה', images:[
+    { key:'זוג רוקד', svg:'svg-couple', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'פרפר', svg:'svg-butterfly', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'פרחים', svg:'svg-flowers', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'יד', svg:'svg-hand', score:{A:'R',B:'E',C:'chaos',D:'connect'} }
+  ]}
+];
+
+const COMPOSITIONS = [
+  { key:'מרכזי עם ריק',    label:'דימוי מרכזי,\nהרבה ריק', score:{A:'S',B:'P',C:'order',D:'indep'},
+    render: (size,imgSvg,fg) => compHTML(size, {x:'50%',y:'40%',w:'50%',h:'50%'}, imgSvg, fg) },
+  { key:'טקסט דומיננטי',  label:'דימוי קטן,\nטקסט גדול', score:{A:'S',B:'P',C:'order',D:'indep'},
+    render: (size,imgSvg,fg) => compHTML(size, {x:'80%',y:'22%',w:'28%',h:'28%'}, imgSvg, fg) },
+  { key:'מכסה הכל',       label:'דימוי מכסה\nהכל', score:{A:'R',B:'E',C:'chaos',D:'connect'},
+    render: (size,imgSvg,fg) => compHTML(size, {x:'50%',y:'50%',w:'90%',h:'90%'}, imgSvg, fg) },
+  { key:'חצוי',           label:'דימוי חצוי,\nמחצית ריקה', score:{A:'R',B:'P',C:'order',D:'connect'},
+    render: (size,imgSvg,fg) => compHTML(size, {x:'25%',y:'50%',w:'48%',h:'90%'}, imgSvg, fg) },
+  { key:'אסימטרי',        label:'אלמנטים\nמפוזרים', score:{A:'R',B:'E',C:'chaos',D:'indep'},
+    render: (size,imgSvg,fg) => compHTML(size, {x:'65%',y:'30%',w:'45%',h:'45%', rot:'-12'}, imgSvg, fg) }
+];
+
+const FONTS = [
+  { key:'סריפית קלאסית',      family:"'Frank Ruhl Libre', Georgia, serif",     sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} },
+  { key:'סנס סריפית מודרנית', family:"'Heebo', Arial, sans-serif",              sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} },
+  { key:'כתב יד',             family:"'Caveat', cursive",                       sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+  { key:'לטרינג דקורטיבי',   family:"'Amatic SC', cursive",                    sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+  { key:'פיקסל / מונו',      family:"'Share Tech Mono', 'Courier New', monospace", sample:'ABCD', score:{A:'S',B:'P',C:'order',D:'indep'} }
+];
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function go(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  state.screen = n;
+  updateProgress();
+  syncPreviews();
+  window.scrollTo(0,0);
+}
+
+function updateProgress() {
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((d,i) => d.classList.toggle('on', i+1 === state.screen));
+  // Progress color on dark screens
+  const darkScreens = [1,9];
+  const prog = document.getElementById('progress');
+  prog.style.display = [1].includes(state.screen) ? 'none' : 'flex';
+}
+
+// Build progress dots
+(function() {
+  const p = document.getElementById('progress');
+  for(let i=1;i<=10;i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===1?' on':'');
+    p.appendChild(d);
+  }
+})();
+
+// ═══════════════════════════════════════════════
+// SCREEN 3 — Sliders
+// ═══════════════════════════════════════════════
+(function buildSliders() {
+  const wrap = document.getElementById('sliders-wrap');
+  SLIDERS.forEach(([right, left], i) => {
+    const row = document.createElement('div');
+    row.className = 'slider-row';
+    row.innerHTML = `
+      <span class="sl-lbl" style="text-align:right">${right}</span>
+      <input type="range" min="1" max="5" value="3" id="sl${i}">
+      <span class="sl-lbl" style="text-align:left">${left}</span>
+    `;
+    row.querySelector('input').addEventListener('input', function() {
+      state.sliders[i] = +this.value;
+    });
+    wrap.appendChild(row);
+  });
+})();
+
+// ═══════════════════════════════════════════════
+// SCREEN 4 — Genre
+// ═══════════════════════════════════════════════
+function selectGenre(el, name) {
+  document.querySelectorAll('.genre-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  state.genre = name;
+  document.getElementById('genre-btn').disabled = false;
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN 5 — Color
+// ═══════════════════════════════════════════════
+(function buildPalettes() {
+  const wrap = document.getElementById('palettes-wrap');
+  PALETTES.forEach(pal => {
+    const el = document.createElement('div');
+    el.className = 'pal-option';
+    el.innerHTML = `
+      <div class="pal-swatches">
+        ${pal.colors.map(c=>`<div class="swatch" style="background:${c}"></div>`).join('')}
+      </div>
+      <span class="pal-name">${pal.name}</span>
+    `;
+    el.onclick = () => {
+      document.querySelectorAll('.pal-option').forEach(e=>e.classList.remove('sel'));
+      el.classList.add('sel');
+      state.color = pal;
+      document.getElementById('color-btn').disabled = false;
+      updatePreview();
+    };
+    wrap.appendChild(el);
+  });
+})();
+
+// ═══════════════════════════════════════════════
+// SCREEN 6 — Images
+// ═══════════════════════════════════════════════
+let activeCat = 0;
+
+(function buildImageScreen() {
+  const tabs = document.getElementById('cat-tabs');
+  CATEGORIES.forEach((cat, i) => {
+    const t = document.createElement('div');
+    t.className = 'cat-tab' + (i===0?' on':'');
+    t.textContent = cat.label;
+    t.onclick = () => { activeCat = i; renderCatImages(); updateCatTabs(); };
+    tabs.appendChild(t);
+  });
+  renderCatImages();
+})();
+
+function updateCatTabs() {
+  document.querySelectorAll('.cat-tab').forEach((t,i) => t.classList.toggle('on', i===activeCat));
+}
+
+function renderCatImages() {
+  const grid = document.getElementById('imgs-grid');
+  grid.innerHTML = '';
+  CATEGORIES[activeCat].images.forEach(img => {
+    const card = document.createElement('div');
+    card.className = 'img-card' + (state.imageKey===img.key?' sel':'');
+    card.innerHTML = `<svg viewBox="0 0 100 100"><use href="#${img.svg}"/></svg><span class="img-lbl">${img.key}</span>`;
+    card.onclick = () => {
+      state.image = img;
+      state.imageKey = img.key;
+      document.querySelectorAll('.img-card').forEach(c=>c.classList.remove('sel'));
+      card.classList.add('sel');
+      document.getElementById('img-btn').disabled = false;
+      updatePreview();
+    };
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN 7 — Composition
+// ═══════════════════════════════════════════════
+(function buildCompositions() {
+  const grid = document.getElementById('comp-grid');
+  COMPOSITIONS.forEach((comp, i) => {
+    const item = document.createElement('div');
+    item.className = 'comp-item';
+    const card = document.createElement('div');
+    card.className = 'comp-card';
+    card.id = 'comp-card-'+i;
+    card.style.background = '#f8f5ee';
+    // Render mini preview inside card
+    card.innerHTML = miniCover(80, 120, comp, i);
+    const lbl = document.createElement('div');
+    lbl.className = 'comp-name';
+    lbl.textContent = comp.label;
+    card.onclick = () => {
+      document.querySelectorAll('.comp-card').forEach(c=>c.classList.remove('sel'));
+      card.classList.add('sel');
+      state.composition = comp;
+      document.getElementById('comp-btn').disabled = false;
+      updatePreview();
+    };
+    item.appendChild(card);
+    item.appendChild(lbl);
+    grid.appendChild(item);
+  });
+})();
+
+function miniCover(w, h, comp, i) {
+  // Simple geometric representation of each composition
+  const type = i;
+  const svgId = state.image ? state.image.svg : 'svg-eye';
+  const fg = state.color ? state.color.textColor : '#111111';
+  switch(type) {
+    case 0: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.25}" y="${h*.2}" width="${w*.5}" height="${w*.5}" fill="${fg}" opacity=".8"/><rect x="${w*.2}" y="${h*.75}" width="${w*.6}" height="2" fill="${fg}" opacity=".3"/><rect x="${w*.25}" y="${h*.82}" width="${w*.5}" height="1.5" fill="${fg}" opacity=".2"/></svg>`;
+    case 1: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.58}" y="${h*.06}" width="${w*.3}" height="${w*.3}" fill="${fg}" opacity=".8"/><rect x="${w*.12}" y="${h*.45}" width="${w*.76}" height="2" fill="${fg}" opacity=".5"/><rect x="${w*.12}" y="${h*.55}" width="${w*.6}" height="1.5" fill="${fg}" opacity=".3"/><rect x="${w*.12}" y="${h*.63}" width="${w*.7}" height="1.5" fill="${fg}" opacity=".3"/></svg>`;
+    case 2: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.05}" y="${h*.05}" width="${w*.9}" height="${h*.9}" fill="${fg}" opacity=".7"/></svg>`;
+    case 3: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.02}" y="${h*.1}" width="${w*.46}" height="${h*.8}" fill="${fg}" opacity=".8"/><rect x="${w*.55}" y="${h*.42}" width="${w*.38}" height="2" fill="${fg}" opacity=".4"/><rect x="${w*.55}" y="${h*.52}" width="${w*.3}" height="1.5" fill="${fg}" opacity=".25"/></svg>`;
+    case 4: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.38}" y="${h*.06}" width="${w*.5}" height="${w*.5}" fill="${fg}" opacity=".7" transform="rotate(-12,${w*.63},${h*.25})"/><use href="#${svgId}" x="${w*.04}" y="${h*.5}" width="${w*.3}" height="${w*.3}" fill="${fg}" opacity=".5"/><rect x="${w*.12}" y="${h*.82}" width="${w*.4}" height="1.5" fill="${fg}" opacity=".35"/></svg>`;
+  }
+  return '';
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN 8 — Typography
+// ═══════════════════════════════════════════════
+(function buildFonts() {
+  const grid = document.getElementById('font-grid');
+  FONTS.forEach(font => {
+    const card = document.createElement('div');
+    card.className = 'font-card';
+    card.innerHTML = `<div class="font-sample" style="font-family:${font.family}">${font.sample}</div><div class="font-lbl">${font.key}</div>`;
+    card.onclick = () => {
+      document.querySelectorAll('.font-card').forEach(c=>c.classList.remove('sel'));
+      card.classList.add('sel');
+      state.typography = font;
+      document.getElementById('font-btn').disabled = false;
+      updatePreview();
+    };
+    grid.appendChild(card);
+  });
+})();
+
+// ═══════════════════════════════════════════════
+// COVER PREVIEW
+// ═══════════════════════════════════════════════
+function compHTML(size, pos, svgId, fg) {
+  const w = size.w || 160, h = size.h || 240;
+  const iw = parseFloat(pos.w)/100 * w;
+  const ih = parseFloat(pos.h)/100 * h;
+  const ix = parseFloat(pos.x)/100 * w - iw/2;
+  const iy = parseFloat(pos.y)/100 * h - ih/2;
+  const rot = pos.rot ? `transform="rotate(${pos.rot},${ix+iw/2},${iy+ih/2})"` : '';
+  return `<use href="#${svgId}" x="${ix}" y="${iy}" width="${iw}" height="${ih}" fill="${fg}" ${rot}/>`;
+}
+
+function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont, titleColor, comp) {
+  if (!imgSvg) return `<rect width="${W}" height="${H}" fill="${bgColor}"/>`;
+
+  let imgUse = '';
+  const fg = titleColor || '#111111';
+  const c = comp ? comp.key : 'מרכזי עם ריק';
+
+  // Position based on composition
+  const positions = {
+    'מרכזי עם ריק':   {x:'50%',y:'40%',w:'55%',h:'55%'},
+    'טקסט דומיננטי': {x:'78%',y:'20%',w:'30%',h:'30%'},
+    'מכסה הכל':      {x:'50%',y:'50%',w:'95%',h:'95%'},
+    'חצוי':          {x:'24%',y:'50%',w:'46%',h:'92%'},
+    'אסימטרי':       {x:'65%',y:'28%',w:'48%',h:'48%', rot:'-14'}
+  };
+  const pos = positions[c] || positions['מרכזי עם ריק'];
+  const iw = parseFloat(pos.w)/100*W, ih = parseFloat(pos.h)/100*H;
+  const ix = parseFloat(pos.x)/100*W - iw/2, iy = parseFloat(pos.y)/100*H - ih/2;
+  const rot = pos.rot ? `transform="rotate(${pos.rot},${ix+iw/2},${iy+ih/2})"` : '';
+  imgUse = `<use href="#${imgSvg}" x="${ix}" y="${iy}" width="${iw}" height="${ih}" fill="${fg}" ${rot} opacity=".88"/>`;
+
+  // Title position based on composition
+  let titleY = H - 22, titleSize = W*0.1;
+  if (c === 'טקסט דומיננטי') { titleY = H*0.62; titleSize = W*0.13; }
+  if (c === 'מכסה הכל') { titleY = H - 16; titleSize = W*0.09; }
+
+  const name = titleText || '';
+  const fontStr = titleFont ? titleFont.family : "'Heebo', sans-serif";
+  const subtitleY = H - 8;
+
+  return `
+    <rect width="${W}" height="${H}" fill="${bgColor}"/>
+    ${accentColor ? `<rect width="${W}" height="${H}" fill="${accentColor}" opacity=".12"/>` : ''}
+    ${imgUse}
+    <text x="${W/2}" y="${titleY}" text-anchor="middle" font-family="${fontStr}" font-size="${titleSize}" font-weight="700" fill="${fg}" opacity=".95">${name}</text>
+    <text x="${W/2}" y="${subtitleY}" text-anchor="middle" font-family="'Heebo',sans-serif" font-size="${W*0.055}" letter-spacing="2" fill="${fg}" opacity=".45">לפי הכריכה</text>
+  `;
+}
+
+let coverSyncId = null;
+function syncPreviews() {
+  clearTimeout(coverSyncId);
+  coverSyncId = setTimeout(_syncPreviews, 20);
+}
+
+function _syncPreviews() {
+  const bg = state.color ? state.color.colors[0] : '#FFFAF1';
+  const accent = state.color ? state.color.colors[2] : null;
+  const fg = state.color ? state.color.textColor : '#111111';
+  const imgSvg = state.image ? state.image.svg : null;
+  const comp = state.composition;
+  const font = state.typography;
+  const name = state.name || '';
+
+  // Small previews (screens 5-8) — clone or share
+  ['cover-preview','cover-preview-2','cover-preview-3','cover-preview-4'].forEach((id, idx) => {
+    let el = document.getElementById(id);
+    if (!el) return;
+    if (idx > 0 && el.innerHTML === '') {
+      // Clone structure from cover-preview
+      el.style.cssText = 'width:160px;height:240px;position:relative;overflow:hidden;box-shadow:3px 3px 18px rgba(0,0,0,.22)';
+    }
+    el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 160 240">
+      <defs><style>.ff{font-family:'Heebo',sans-serif}</style></defs>
+      ${buildCoverSVG(160, 240, bg, accent, imgSvg, name, font, fg, comp)}
+    </svg>`;
+  });
+
+  // Big cover for screen 9
+  const big = document.getElementById('cover-big');
+  if (big) {
+    big.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 220 330">
+      ${buildCoverSVG(220, 330, bg, accent, imgSvg, name, font, fg, comp)}
+    </svg>`;
+  }
+
+  // Postcard front
+  const pcf = document.getElementById('pc-front');
+  if (pcf) {
+    pcf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 283 425">
+      ${buildCoverSVG(283, 425, bg, accent, imgSvg, name, font, fg, comp)}
+    </svg>`;
+  }
+}
+
+function updatePreview() { syncPreviews(); }
+
+// ═══════════════════════════════════════════════
+// SCORING
+// ═══════════════════════════════════════════════
+function calcScores() {
+  const sc = { emotion:0, logic:0, intro:0, extro:0, order:0, chaos:0, connect:0, indep:0 };
+
+  const addScore = (s) => {
+    if (!s) return;
+    if (s.A==='R') sc.emotion++; else sc.logic++;
+    if (s.B==='P') sc.intro++;  else sc.extro++;
+    if (s.C==='order') sc.order++; else sc.chaos++;
+    if (s.D==='connect') sc.connect++; else sc.indep++;
+  };
+
+  // Genre
+  const genreMap = {
+    'רומנטיקה':   {A:'R',B:'E',C:'chaos',D:'connect'},
+    'מתח ואימה':  {A:'S',B:'P',C:'order',D:'indep'},
+    'פנטזיה':     {A:'R',B:'E',C:'chaos',D:'connect'},
+    'מדע בדיוני': {A:'S',B:'P',C:'order',D:'indep'},
+    'ספרות יפה':  {A:'R',B:'P',C:'order',D:'indep'},
+    'ספרי עיון':  {A:'S',B:'P',C:'order',D:'indep'}
+  };
+  addScore(genreMap[state.genre]);
+
+  // Color
+  if (state.color) addScore(state.color.score);
+
+  // Image
+  if (state.image) addScore(state.image.score);
+
+  // Composition
+  if (state.composition) addScore(state.composition.score);
+
+  // Typography
+  if (state.typography) addScore(state.typography.score);
+
+  // Sliders contribute slightly
+  state.sliders.forEach((v,i) => {
+    if (v >= 4) { // towards "left" pole
+      if ([0,1,2].includes(i)) sc.logic += 0.5;
+      else if ([3].includes(i)) sc.logic += 0.5;
+      else if ([4].includes(i)) sc.logic += 0.3;
+      else if ([5].includes(i)) sc.intro += 0.5;
+      else if ([6].includes(i)) sc.intro += 0.5;
+    } else if (v <= 2) { // towards "right" pole
+      if ([0,1,2].includes(i)) sc.emotion += 0.5;
+      else if ([3].includes(i)) sc.emotion += 0.5;
+      else if ([4].includes(i)) sc.emotion += 0.3;
+      else if ([5].includes(i)) sc.extro += 0.5;
+      else if ([6].includes(i)) sc.extro += 0.5;
+    }
+  });
+
+  state.scores = sc;
+  return sc;
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN 9 — Reveal
+// ═══════════════════════════════════════════════
+async function proceedToReveal() {
+  // Check if we have API key
+  if (!state.apiKey) {
+    document.getElementById('api-modal').classList.add('show');
+    return;
+  }
+  go(9);
+  triggerReveal();
+}
+
+function saveApiKey() {
+  state.apiKey = document.getElementById('api-key-inp').value.trim();
+  document.getElementById('api-modal').classList.remove('show');
+  if (state.apiKey) {
+    go(9);
+    triggerReveal();
+  }
+}
+
+function skipApi() {
+  state.apiKey = 'DEMO';
+  document.getElementById('api-modal').classList.remove('show');
+  go(9);
+  triggerReveal();
+}
+
+async function triggerReveal() {
+  syncPreviews();
+
+  // Animate cover reveal
+  setTimeout(() => {
+    document.getElementById('cover-big').classList.add('show');
+  }, 300);
+
+  // Fetch summary
+  const sc = calcScores();
+  const profile = {
+    emotion: sc.emotion > sc.logic ? 'רגשי' : 'שכלי',
+    social:  sc.intro > sc.extro   ? 'מופנם' : 'מוחצן',
+    order:   sc.order > sc.chaos   ? 'מסודר' : 'ספונטני',
+    connect: sc.connect > sc.indep ? 'מחפש קשר' : 'עצמאי'
+  };
+
+  const summaryEl = document.getElementById('summary-text');
+
+  if (state.apiKey === 'DEMO') {
+    summaryEl.classList.add('show');
+    summaryEl.textContent = demoSummary(profile);
+    document.getElementById('pc-back-summary').textContent = summaryEl.textContent;
+    document.getElementById('pc-back-name').textContent = state.name || '';
+    return;
+  }
+
+  try {
+    const prompt = `אתה כותב תקציר ספרותי קצר ואינטימי של 4-5 שורות.
+התקציר מתאר את הסיפור הפנימי של אדם בשם ${state.name} בגוף שני.
+הפרופיל:
+- רגש/שכל: ${profile.emotion}
+- פנים/חוץ: ${profile.social}
+- סדר/כאוס: ${profile.order}
+- קשר/עצמאות: ${profile.connect}
+- ז'אנר: ${state.genre}
+- ערכים (1-5): כיפי↔רציני: ${state.sliders[0]}, ריאליסטי↔אידיאליסטי: ${state.sliders[1]}, נגיש↔יוקרתי: ${state.sliders[2]}, רטרו↔עתידני: ${state.sliders[3]}, אופטימי↔פסימי: ${state.sliders[4]}, אישי↔אוניברסלי: ${state.sliders[5]}, פנימי↔חיצוני: ${state.sliders[6]}
+כתוב כגב ספר — לא ניתוח פסיכולוגי אלא סיפור. אל תזכיר צירים או מונחים טכניים. בעברית בלבד. תחילת התקציר עם השם.`;
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': state.apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-5',
+        max_tokens: 400,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) throw new Error('API error ' + res.status);
+    const data = await res.json();
+    state.summary = data.content[0].text;
+    summaryEl.textContent = state.summary;
+    summaryEl.classList.add('show');
+    document.getElementById('pc-back-summary').textContent = state.summary;
+    document.getElementById('pc-back-name').textContent = state.name || '';
+  } catch(e) {
+    console.error(e);
+    const fallback = demoSummary(profile);
+    state.summary = fallback;
+    summaryEl.textContent = fallback;
+    summaryEl.classList.add('show');
+    document.getElementById('pc-back-summary').textContent = fallback;
+    document.getElementById('pc-back-name').textContent = state.name || '';
+  }
+}
+
+function demoSummary(p) {
+  const name = state.name || 'את/ה';
+  const genre = state.genre || 'ספרות';
+  return `${name} יודע/ת לשמור דברים לעצמם.\nיש בך עולמות שלמים שרק מעטים זכו להציץ אליהם —\nוגם הם לא ראו הכל.\nפעם תצא/י מהדלת הזו. פעם תגיד/י את זה בקול.\nעד אז, הכריכה שומרת את הסוד.`;
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN 10 — Postcard
+// ═══════════════════════════════════════════════
+function printPostcard() {
+  // Render print-quality postcard
+  const bg = state.color ? state.color.colors[0] : '#FFFAF1';
+  const accent = state.color ? state.color.colors[2] : null;
+  const fg = state.color ? state.color.textColor : '#111111';
+  const imgSvg = state.image ? state.image.svg : null;
+  const comp = state.composition;
+  const font = state.typography;
+  const name = state.name || '';
+
+  const frontSVG = buildCoverSVG(1134, 1701, bg, accent, imgSvg, name, font, fg, comp);
+
+  const printArea = document.getElementById('print-area');
+  printArea.innerHTML = `
+    <style>
+      @page { size: 10cm 15cm; margin: 0; }
+      body { margin: 0; }
+      .pc-print { width: 10cm; height: 15cm; overflow: hidden; page-break-after: always; }
+      .pc-back-print {
+        width: 10cm; height: 15cm;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        text-align: center; font-family: 'Heebo', sans-serif; padding: 1.5cm;
+        box-sizing: border-box;
+      }
+      .pc-back-title { font-size: 9pt; letter-spacing: 4px; opacity: .4; margin-bottom: 1em; }
+      .pc-back-divider { width: 1cm; height: 0.5px; background: #111; opacity: .2; margin: .5em auto; }
+      .pc-back-summary { font-size: 11pt; line-height: 2; font-weight: 300; white-space: pre-line; direction: rtl; }
+      .pc-back-name { font-size: 8pt; letter-spacing: 3px; opacity: .3; margin-top: 1em; }
+    </style>
+    <div class="pc-print">
+      <svg xmlns="http://www.w3.org/2000/svg" width="10cm" height="15cm" viewBox="0 0 283 425">
+        ${frontSVG}
+      </svg>
+    </div>
+    <div class="pc-back-print">
+      <p class="pc-back-title">לפי הכריכה</p>
+      <div class="pc-back-divider"></div>
+      <p class="pc-back-summary">${state.summary || ''}</p>
+      <p class="pc-back-name">${name}</p>
+    </div>
+  `;
+
+  setTimeout(() => window.print(), 100);
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+go(1);
+</script>
+</body>
+</html>
