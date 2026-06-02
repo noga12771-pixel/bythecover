@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Amatic+SC:wght@700&family=Caveat:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/vqd6nzr.css">
   <style>
     :root {
       --black: #111111;
@@ -15,10 +16,11 @@
       --font: 'Heebo', sans-serif;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "narkiss-yair-variable", sans-serif; font-variation-settings: "MONO" 0, "wght" 400; }
 
     body {
-      font-family: var(--font);
+      font-family: "narkiss-yair-variable", sans-serif;
+      font-variation-settings: "MONO" 0, "wght" 400;
       background: var(--cream);
       color: var(--black);
       min-height: 100vh;
@@ -82,18 +84,39 @@
     .btn:disabled { opacity: .28; pointer-events: none; }
 
     /* ─── Screen 1: Opening ─── */
-    #s1 { background: var(--black); }
+    #s1 { background: var(--cream); position: relative; overflow: hidden; }
     #s1 .sub {
-      color: var(--cream);
+      color: var(--black);
       font-size: 11px;
       letter-spacing: 5px;
       opacity: .5;
       margin-bottom: 56px;
+      position: relative;
+      z-index: 1;
+    }
+    #s1 #logo-svg { position: relative; z-index: 1; }
+    #s1 .btn { position: relative; z-index: 1; margin-top: -60px; }
+
+    /* ─── Scattered opening icons ─── */
+    .intro-icons { position: absolute; inset: 0; pointer-events: none; }
+    .intro-icon {
+      position: absolute;
+      pointer-events: all;
+      cursor: default;
+    }
+    .intro-icon img {
+      width: 100%;
+      height: 100%;
+      pointer-events: all;
+      object-fit: contain;
+      opacity: 1;
+      filter: brightness(0);
+      transition: filter 0.3s ease, opacity 0.3s ease;
     }
 
     /* ─── Logo SVG ─── */
     #logo-svg {
-      width: 320px;
+      width: 400px;
       max-width: 80vw;
       margin-bottom: 24px;
     }
@@ -104,9 +127,10 @@
       background: transparent;
       border: none;
       border-bottom: 1px solid var(--black);
-      font-family: var(--font);
+      font-family: "letter-gothic-recast", sans-serif;
+      font-weight: 400;
+      font-style: normal;
       font-size: 38px;
-      font-weight: 300;
       color: var(--black);
       width: 380px;
       max-width: 80vw;
@@ -153,27 +177,77 @@
     }
     input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.4); }
 
-    /* ─── Screen 4: Genre ─── */
-    .genre-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      max-width: 560px;
-      margin-bottom: 48px;
+    /* ─── Screen 4: Genre Columns ─── */
+    #s4 {
+      padding: 0 !important;
+      justify-content: flex-start;
+      gap: 0;
     }
-    .genre-card {
-      border: 1px solid rgba(17,17,17,.25);
-      padding: 28px 16px;
-      text-align: center;
+    .genre-columns {
+      display: flex;
+      width: 100%;
+      height: 78vh;
+      min-height: 380px;
+    }
+    .genre-col {
+      flex: 1;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 22px;
       cursor: pointer;
-      font-size: 14px;
-      letter-spacing: 2px;
-      transition: all .25s;
-      background: transparent;
-      color: var(--black);
+      transition: flex 0.55s cubic-bezier(0.4,0,0.2,1);
+      overflow: hidden;
+      position: relative;
+      border-left: 1px solid rgba(255,255,255,0.06);
     }
-    .genre-card:hover, .genre-card.sel { background: var(--black); color: var(--cream); border-color: var(--black); }
-    .genre-icon { font-size: 22px; display: block; margin-bottom: 10px; }
+    .genre-col:last-child { border-left: none; }
+    .genre-col:hover, .genre-col.sel { flex: 3.5; }
+    .genre-col-name {
+      color: white;
+      font-size: 12px;
+      letter-spacing: 3px;
+      white-space: nowrap;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    .genre-col:hover .genre-col-name,
+    .genre-col.sel .genre-col-name { opacity: 1; }
+    .genre-imgs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .genre-img {
+      position: absolute;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .genre-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: brightness(0) invert(1) sepia(8%) saturate(300%) hue-rotate(10deg);
+    }
+    .genre-col:hover .genre-img:nth-child(1),
+    .genre-col.sel .genre-img:nth-child(1) { opacity: 1; transition-delay: 0.05s; }
+    .genre-col:hover .genre-img:nth-child(2),
+    .genre-col.sel .genre-img:nth-child(2) { opacity: 1; transition-delay: 0.12s; }
+    .genre-col:hover .genre-img:nth-child(3),
+    .genre-col.sel .genre-img:nth-child(3) { opacity: 1; transition-delay: 0.19s; }
+    .genre-col:hover .genre-img:nth-child(4),
+    .genre-col.sel .genre-img:nth-child(4) { opacity: 1; transition-delay: 0.26s; }
+    .genre-question {
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      margin: 28px 40px 16px;
+      text-align: center;
+    }
 
     /* ─── Screens 5-8: Two-column with preview ─── */
     .two-col {
@@ -492,45 +566,41 @@
 <!-- Progress dots -->
 <div id="progress"></div>
 
-<!-- API Key Modal -->
-<div id="api-modal">
-  <div class="modal-box">
-    <h3>מפתח API</h3>
-    <p>כדי לייצר את התקציר האישי שלך, נדרש מפתח Anthropic API.<br>המפתח נשמר רק בדפדפן שלך ולא נשלח לשום מקום אחר.</p>
-    <input id="api-key-inp" type="password" placeholder="sk-ant-..." autocomplete="off">
-    <div class="modal-row">
-      <button class="btn" onclick="saveApiKey()">אישור</button>
-      <button class="btn" style="background:transparent;color:var(--black)" onclick="skipApi()">דלג (הדגמה)</button>
-    </div>
-  </div>
-</div>
+<!-- API key: set here if you have one, otherwise demo mode is used -->
+<script>const ANTHROPIC_KEY = '';</script>
 
 <!-- ══════════════════════════════════════════════
      SCREEN 1 — Opening
 ══════════════════════════════════════════════ -->
 <section class="screen active" id="s1">
-  <svg id="logo-svg" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Decorative scattered elements -->
-    <circle cx="18" cy="18" r="2" stroke="#FFFAF1" stroke-width="1.2"/>
-    <circle cx="300" cy="95" r="2.5" stroke="#FFFAF1" stroke-width="1.2"/>
-    <line x1="290" y1="20" x2="298" y2="28" stroke="#FFFAF1" stroke-width="1" opacity=".5"/>
-    <line x1="294" y1="20" x2="298" y2="24" stroke="#FFFAF1" stroke-width="1" opacity=".5"/>
-    <circle cx="30" cy="98" r="1.2" fill="#FFFAF1" opacity=".4"/>
-    <circle cx="285" cy="45" r="1.5" fill="#FFFAF1" opacity=".4"/>
-    <path d="M8 55 L14 49 L20 55" stroke="#FFFAF1" stroke-width="1" fill="none" opacity=".4"/>
-    <path d="M306 65 L312 59 L318 65" stroke="#FFFAF1" stroke-width="1" fill="none" opacity=".4"/>
-    <!-- Main text outline -->
-    <text x="160" y="72" text-anchor="middle"
-          font-family="'Frank Ruhl Libre', serif"
-          font-size="52" font-weight="400"
-          fill="none" stroke="#FFFAF1" stroke-width="1.2"
-          letter-spacing="6">לפי הכריכה</text>
-    <!-- Small decorative dots on letters -->
-    <circle cx="75" cy="40" r="1.8" fill="#FFFAF1" opacity=".6"/>
-    <circle cx="245" cy="42" r="1.8" fill="#FFFAF1" opacity=".6"/>
-  </svg>
-  <p class="sub">ממשק עיצוב אינטראקטיבי</p>
-  <button class="btn inv" onclick="go(2)">ליצור את הסיפור שלי</button>
+  <div class="intro-icons">
+    <!-- שורה 1 (עליונה) – עמודות 1–6 -->
+    <div class="intro-icon" style="left:calc(8.3% - 100px);top:calc(12.5% - 100px);width:200px;height:200px"><img src="בנק אלמנטים מפורט/אימה ומתח/צללית גב גבר.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(25% - 105px);top:calc(12.5% - 92px);width:210px;height:185px"><img src="בנק אלמנטים מפורט/אימה ומתח/גולגולת.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(41.7% - 110px);top:calc(12.5% - 100px);width:220px;height:200px"><img src="בנק אלמנטים מפורט/ספרות יפה/ענף.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(58.3% - 103px);top:calc(12.5% - 100px);width:205px;height:200px"><img src="בנק אלמנטים מפורט/רומנטיקה/פרחים.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(75% - 90px);top:calc(12.5% - 110px);width:180px;height:220px"><img src="בנק אלמנטים מפורט/ספרות יפה/נערה עם עגיל הפנינה.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(91.7% - 105px);top:calc(12.5% - 98px);width:210px;height:195px"><img src="בנק אלמנטים מפורט/אימה ומתח/ציפור.svg" alt=""></div>
+    <!-- שורה 2 – עמודות 1, 2, 5, 6 בלבד -->
+    <div class="intro-icon" style="left:calc(8.3% - 110px);top:calc(37.5% - 95px);width:220px;height:190px"><img src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(25% - 103px);top:calc(37.5% - 103px);width:205px;height:205px"><img src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(75% - 100px);top:calc(37.5% - 100px);width:200px;height:200px"><img src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(91.7% - 100px);top:calc(37.5% - 110px);width:200px;height:220px"><img src="בנק אלמנטים מפורט/פנטזיה/טירה.svg" alt=""></div>
+    <!-- שורה 3 – עמודות 1, 2, 5, 6 בלבד -->
+    <div class="intro-icon" style="left:calc(8.3% - 108px);top:calc(62.5% - 103px);width:215px;height:205px"><img src="בנק אלמנטים מפורט/אימה ומתח/בית ודרך.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(25% - 90px);top:calc(62.5% - 125px);width:180px;height:250px"><img src="בנק אלמנטים מפורט/פנטזיה/חרב.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(75% - 100px);top:calc(62.5% - 128px);width:200px;height:255px"><img src="בנק אלמנטים מפורט/אימה ומתח/סכין.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(91.7% - 103px);top:calc(62.5% - 95px);width:205px;height:190px"><img src="בנק אלמנטים מפורט/מדע בדיוני/חללית.svg" alt=""></div>
+    <!-- שורה 4 (תחתונה) – עמודות 1–6 -->
+    <div class="intro-icon" style="left:calc(8.3% - 93px);top:calc(87.5% - 108px);width:185px;height:215px"><img src="בנק אלמנטים מפורט/רומנטיקה/יד.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(25% - 108px);top:calc(87.5% - 100px);width:215px;height:200px"><img src="בנק אלמנטים מפורט/רומנטיקה/פרפר.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(41.7% - 113px);top:calc(87.5% - 108px);width:225px;height:215px"><img src="בנק אלמנטים מפורט/רומנטיקה/צללית זוג רוקד.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(58.3% - 100px);top:calc(87.5% - 95px);width:200px;height:190px"><img src="בנק אלמנטים מפורט/ספרות יפה/פרי.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(75% - 108px);top:calc(87.5% - 120px);width:215px;height:240px"><img src="בנק אלמנטים מפורט/פנטזיה/להבה.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(91.7% - 95px);top:calc(87.5% - 108px);width:190px;height:215px"><img src="בנק אלמנטים מפורט/ספרות יפה/פסל.svg" alt=""></div>
+  </div>
+  <img id="logo-svg" src="logo.svg" alt="לפי הכריכה">
+  <button class="btn" onclick="go(2)">שנתחיל?</button>
 </section>
 
 <!-- ══════════════════════════════════════════════
@@ -541,7 +611,8 @@
   <input id="name-input" type="text" placeholder="שם" autocomplete="off"
     oninput="state.name=this.value; updatePreview()"
     onkeydown="if(event.key==='Enter'&&state.name.trim())go(3)">
-  <button class="btn" id="name-btn" onclick="go(3)" disabled>המשך</button>
+  <button class="btn" onclick="go(1)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+  <button class="btn" id="name-btn" onclick="go(3)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
   <script>
     document.getElementById('name-input').addEventListener('input', function() {
       document.getElementById('name-btn').disabled = !this.value.trim();
@@ -555,23 +626,64 @@
 <section class="screen" id="s3">
   <p class="q">איך היית מתאר/ת את עצמך?</p>
   <div class="sliders-wrap" id="sliders-wrap"></div>
-  <button class="btn" onclick="go(4)">המשך</button>
+  <button class="btn" onclick="go(2)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+  <button class="btn" onclick="go(4)" style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
 </section>
 
 <!-- ══════════════════════════════════════════════
      SCREEN 4 — Genre
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s4">
-  <p class="q">איזה ז'אנר מדבר אליך?</p>
-  <div class="genre-grid">
-    <div class="genre-card" onclick="selectGenre(this,'רומנטיקה')"><span class="genre-icon">♡</span>רומנטיקה</div>
-    <div class="genre-card" onclick="selectGenre(this,'מתח ואימה')"><span class="genre-icon">☽</span>מתח ואימה</div>
-    <div class="genre-card" onclick="selectGenre(this,'פנטזיה')"><span class="genre-icon">✦</span>פנטזיה</div>
-    <div class="genre-card" onclick="selectGenre(this,'מדע בדיוני')"><span class="genre-icon">◎</span>מדע בדיוני</div>
-    <div class="genre-card" onclick="selectGenre(this,'ספרות יפה')"><span class="genre-icon">◇</span>ספרות יפה</div>
-    <div class="genre-card" onclick="selectGenre(this,'ספרי עיון')"><span class="genre-icon">▣</span>ספרי עיון</div>
+  <div class="genre-columns">
+    <div class="genre-col" onclick="selectGenreCol(this,'פנטזיה')">
+      <span class="genre-col-name">פנטזיה</span>
+      <div class="genre-imgs">
+        <div class="genre-img" style="left:4%;top:16%;width:17%"><img src="בנק אלמנטים מפורט/פנטזיה/חרב.svg" alt=""></div>
+        <div class="genre-img" style="left:52%;top:8%;width:30%"><img src="בנק אלמנטים מפורט/פנטזיה/טירה.svg" alt=""></div>
+        <div class="genre-img" style="left:26%;top:50%;width:22%;transform:rotate(-7deg)"><img src="בנק אלמנטים מפורט/פנטזיה/להבה.svg" alt=""></div>
+        <div class="genre-img" style="left:57%;top:56%;width:26%;transform:rotate(4deg)"><img src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="genre-col" onclick="selectGenreCol(this,'מתח ואימה')">
+      <span class="genre-col-name">מתח ואימה</span>
+      <div class="genre-imgs">
+        <div class="genre-img" style="left:3%;top:10%;width:32%"><img src="בנק אלמנטים מפורט/אימה ומתח/בית ודרך.svg" alt=""></div>
+        <div class="genre-img" style="left:56%;top:26%;width:22%;transform:rotate(5deg)"><img src="בנק אלמנטים מפורט/אימה ומתח/גולגולת.svg" alt=""></div>
+        <div class="genre-img" style="left:44%;top:52%;width:15%;transform:rotate(-10deg)"><img src="בנק אלמנטים מפורט/אימה ומתח/סכין.svg" alt=""></div>
+        <div class="genre-img" style="left:5%;top:63%;width:26%"><img src="בנק אלמנטים מפורט/אימה ומתח/ציפור.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="genre-col" onclick="selectGenreCol(this,'מדע בדיוני')">
+      <span class="genre-col-name">מדע בדיוני</span>
+      <div class="genre-imgs">
+        <div class="genre-img" style="left:4%;top:8%;width:32%"><img src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""></div>
+        <div class="genre-img" style="left:55%;top:22%;width:22%"><img src="בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg" alt=""></div>
+        <div class="genre-img" style="left:40%;top:50%;width:21%;transform:rotate(-6deg)"><img src="בנק אלמנטים מפורט/מדע בדיוני/חללית.svg" alt=""></div>
+        <div class="genre-img" style="left:7%;top:58%;width:19%;transform:rotate(7deg)"><img src="בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="genre-col" onclick="selectGenreCol(this,'ספרות יפה')">
+      <span class="genre-col-name">ספרות יפה</span>
+      <div class="genre-imgs">
+        <div class="genre-img" style="left:4%;top:10%;width:29%"><img src="בנק אלמנטים מפורט/ספרות יפה/נערה עם עגיל הפנינה.svg" alt=""></div>
+        <div class="genre-img" style="left:54%;top:8%;width:24%;transform:rotate(8deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/ענף.svg" alt=""></div>
+        <div class="genre-img" style="left:37%;top:52%;width:21%;transform:rotate(-5deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/פרי.svg" alt=""></div>
+        <div class="genre-img" style="left:6%;top:57%;width:22%"><img src="בנק אלמנטים מפורט/ספרות יפה/פסל.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="genre-col" onclick="selectGenreCol(this,'רומנטיקה')">
+      <span class="genre-col-name">רומנטיקה</span>
+      <div class="genre-imgs">
+        <div class="genre-img" style="left:3%;top:12%;width:31%"><img src="בנק אלמנטים מפורט/רומנטיקה/צללית זוג רוקד.svg" alt=""></div>
+        <div class="genre-img" style="left:52%;top:10%;width:26%"><img src="בנק אלמנטים מפורט/רומנטיקה/פרפר.svg" alt=""></div>
+        <div class="genre-img" style="left:41%;top:53%;width:21%;transform:rotate(-4deg)"><img src="בנק אלמנטים מפורט/רומנטיקה/יד.svg" alt=""></div>
+        <div class="genre-img" style="left:5%;top:58%;width:26%;transform:rotate(5deg)"><img src="בנק אלמנטים מפורט/רומנטיקה/פרחים.svg" alt=""></div>
+      </div>
+    </div>
   </div>
-  <button class="btn" id="genre-btn" onclick="go(5)" disabled>המשך</button>
+  <p class="genre-question">איזה ז'אנר הכי קורא לך?</p>
+  <button class="btn" onclick="go(3)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+  <button class="btn" id="genre-btn" onclick="go(5)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
 </section>
 
 <!-- ══════════════════════════════════════════════
@@ -581,7 +693,8 @@
   <div class="col-main">
     <p class="q" style="align-self:flex-start;margin-bottom:28px">בחרי פלטת צבעים לכריכה</p>
     <div class="palettes-wrap" id="palettes-wrap"></div>
-    <button class="btn" id="color-btn" onclick="go(6)" disabled>המשך</button>
+    <button class="btn" onclick="go(4)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+    <button class="btn" id="color-btn" onclick="go(6)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
   </div>
   <div class="col-preview">
     <p class="preview-lbl">הכריכה שלי</p>
@@ -603,7 +716,8 @@
     <p class="q" style="align-self:flex-start;margin-bottom:16px">בחרי דימוי לכריכה</p>
     <div class="cat-tabs" id="cat-tabs"></div>
     <div class="imgs-grid" id="imgs-grid"></div>
-    <button class="btn" id="img-btn" onclick="go(7)" disabled>המשך</button>
+    <button class="btn" onclick="go(5)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+    <button class="btn" id="img-btn" onclick="go(7)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
   </div>
   <div class="col-preview">
     <p class="preview-lbl">הכריכה שלי</p>
@@ -618,7 +732,8 @@
   <div class="col-main">
     <p class="q" style="align-self:flex-start;margin-bottom:28px">בחרי פריסה לכריכה</p>
     <div class="comp-grid" id="comp-grid"></div>
-    <button class="btn" id="comp-btn" onclick="go(8)" disabled style="margin-top:16px">המשך</button>
+    <button class="btn" onclick="go(6)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+    <button class="btn" id="comp-btn" onclick="go(8)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
   </div>
   <div class="col-preview">
     <p class="preview-lbl">הכריכה שלי</p>
@@ -633,7 +748,8 @@
   <div class="col-main">
     <p class="q" style="align-self:flex-start;margin-bottom:28px">בחרי טיפוגרפיה לשם שלך</p>
     <div class="font-grid" id="font-grid"></div>
-    <button class="btn" id="font-btn" onclick="proceedToReveal()" disabled>גלי את הכריכה שלך</button>
+    <button class="btn" onclick="go(7)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+    <button class="btn" id="font-btn" onclick="if(!state.apiKey)state.apiKey='DEMO';go(9);triggerReveal();" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
   </div>
   <div class="col-preview">
     <p class="preview-lbl">הכריכה שלי</p>
@@ -653,7 +769,8 @@
     <div id="cb-subtitle">לפי הכריכה</div>
   </div>
   <div id="summary-text"><span class="loading-dots">טוען...</span></div>
-  <button class="btn inv" onclick="go(10)">לגלויה</button>
+  <button class="btn inv" onclick="go(8)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+  <button class="btn inv" onclick="go(10)" style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
 </section>
 
 <!-- ══════════════════════════════════════════════
@@ -681,13 +798,15 @@
       </div>
     </div>
   </div>
-  <button class="btn" onclick="printPostcard()">שלח להדפסה</button>
+  <button class="btn" onclick="go(9)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+  <button class="btn" onclick="printPostcard()" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%)">שלח להדפסה</button>
+  <button class="btn" onclick="go(1)" style="position:fixed;bottom:20px;left:20px">לעמוד הבית</button>
 </section>
 
 <!-- ══════════════════════════════════════════════
      SVG LIBRARY
 ══════════════════════════════════════════════ -->
-<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+<svg style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
   <symbol id="svg-house" viewBox="0 0 100 100">
     <polygon points="50,8 6,44 16,44 16,88 42,88 42,62 58,62 58,88 84,88 84,44 94,44"/>
     <path d="M38,96 Q45,85 50,82 Q55,85 62,96 Q55,97 50,97 Q45,97 38,96Z" opacity=".7"/>
@@ -858,6 +977,13 @@
     <path d="M56,44 C56,34 62,28 66,34 C70,40 62,44 56,44Z"/>
     <circle cx="56" cy="44" r="4.5"/>
   </symbol>
+  <symbol id="svg-jewelry-box" viewBox="0 0 100 100">
+    <rect x="18" y="55" width="64" height="32" rx="4"/>
+    <path d="M18,55 C18,36 28,16 50,10 C72,16 82,36 82,55 Z"/>
+    <path d="M50,44 C46,34 30,34 30,44 C30,52 40,60 50,65 C60,60 70,52 70,44 C70,34 54,34 50,44Z" fill="white" opacity="0.28"/>
+    <circle cx="44" cy="72" r="6" fill="none" stroke="white" stroke-width="2.5" opacity="0.65"/>
+    <circle cx="56" cy="72" r="6" fill="none" stroke="white" stroke-width="2.5" opacity="0.65"/>
+  </symbol>
   <symbol id="svg-hand" viewBox="0 0 100 100">
     <path d="M34,90 L34,44 C34,40 30,38 28,38 C26,38 22,40 22,44 L22,64 C22,64 16,58 14,52 C12,46 16,42 20,44 C20,36 24,32 28,34 L28,28 C28,24 32,22 36,24 L36,18 C36,14 40,12 44,14 L44,10 C44,6 48,4 52,6 C56,8 56,12 56,16 L56,30 C58,28 62,28 64,32 L64,50 C64,68 56,80 50,90Z"/>
   </symbol>
@@ -908,36 +1034,36 @@ const PALETTES = [
 
 const CATEGORIES = [
   { label:'מתח ואימה', images:[
-    { key:'בית עם דרך סלולה', svg:'svg-house', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
-    { key:'גולגלת', svg:'svg-skull', score:{A:'S',B:'P',C:'order',D:'indep'} },
-    { key:'סכין', svg:'svg-knife', score:{A:'S',B:'P',C:'order',D:'indep'} },
-    { key:'ציפור', svg:'svg-bird', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
-    { key:'צללית גבר', svg:'svg-figure', score:{A:'S',B:'P',C:'order',D:'indep'} }
+    { key:'בית עם דרך סלולה', svg:'בנק אלמנטים מפורט/אימה ומתח/בית ודרך.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'גולגלת', svg:'בנק אלמנטים מפורט/אימה ומתח/גולגולת.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'סכין', svg:'בנק אלמנטים מפורט/אימה ומתח/סכין.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'ציפור', svg:'בנק אלמנטים מפורט/אימה ומתח/ציפור.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
+    { key:'צללית גבר', svg:'בנק אלמנטים מפורט/אימה ומתח/צללית גב גבר.svg', score:{A:'S',B:'P',C:'order',D:'indep'} }
   ]},
   { label:'מדע בדיוני', images:[
-    { key:'אסטרונאוט', svg:'svg-astronaut', score:{A:'S',B:'P',C:'order',D:'indep'} },
-    { key:'חללית', svg:'svg-spaceship', score:{A:'S',B:'P',C:'chaos',D:'indep'} },
-    { key:'כוכב לכת', svg:'svg-planet', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
-    { key:'כלי שחמט', svg:'svg-chess', score:{A:'S',B:'P',C:'order',D:'indep'} },
-    { key:'עין', svg:'svg-eye', score:{A:'S',B:'P',C:'order',D:'indep'} }
+    { key:'אסטרונאוט', svg:'בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'חללית', svg:'בנק אלמנטים מפורט/מדע בדיוני/חללית.svg', score:{A:'S',B:'P',C:'chaos',D:'indep'} },
+    { key:'כוכב לכת', svg:'בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
+    { key:'כלי שחמט', svg:'בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'עין', svg:'בנק אלמנטים מפורט/מדע בדיוני/עין.svg', score:{A:'S',B:'P',C:'order',D:'indep'} }
   ]},
   { label:'ספרות יפה', images:[
-    { key:'נערה עם עגיל הפנינה', svg:'svg-girl-pearl', score:{A:'R',B:'P',C:'order',D:'connect'} },
-    { key:'ענף', svg:'svg-branch', score:{A:'R',B:'P',C:'order',D:'indep'} },
-    { key:'פסל', svg:'svg-statue', score:{A:'S',B:'P',C:'order',D:'indep'} },
-    { key:'פרי', svg:'svg-fruit', score:{A:'R',B:'E',C:'order',D:'connect'} }
+    { key:'נערה עם עגיל הפנינה', svg:'בנק אלמנטים מפורט/ספרות יפה/נערה עם עגיל הפנינה.svg', score:{A:'R',B:'P',C:'order',D:'connect'} },
+    { key:'ענף', svg:'בנק אלמנטים מפורט/ספרות יפה/ענף.svg', score:{A:'R',B:'P',C:'order',D:'indep'} },
+    { key:'פסל', svg:'בנק אלמנטים מפורט/ספרות יפה/פסל.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'פרי', svg:'בנק אלמנטים מפורט/ספרות יפה/פרי.svg', score:{A:'R',B:'E',C:'order',D:'connect'} }
   ]},
   { label:'פנטזיה', images:[
-    { key:'חרב', svg:'svg-sword', score:{A:'S',B:'E',C:'chaos',D:'indep'} },
-    { key:'טירה', svg:'svg-castle', score:{A:'R',B:'P',C:'order',D:'indep'} },
-    { key:'להבה', svg:'svg-flame', score:{A:'R',B:'E',C:'chaos',D:'indep'} },
-    { key:'מכשפה', svg:'svg-witch', score:{A:'R',B:'P',C:'chaos',D:'indep'} }
+    { key:'חרב', svg:'בנק אלמנטים מפורט/פנטזיה/חרב.svg', score:{A:'S',B:'E',C:'chaos',D:'indep'} },
+    { key:'טירה', svg:'בנק אלמנטים מפורט/פנטזיה/טירה.svg', score:{A:'R',B:'P',C:'order',D:'indep'} },
+    { key:'להבה', svg:'בנק אלמנטים מפורט/פנטזיה/להבה.svg', score:{A:'R',B:'E',C:'chaos',D:'indep'} },
+    { key:'מכשפה', svg:'בנק אלמנטים מפורט/פנטזיה/מכשפה.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} }
   ]},
   { label:'רומנטיקה', images:[
-    { key:'זוג רוקד', svg:'svg-couple', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
-    { key:'פרפר', svg:'svg-butterfly', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
-    { key:'פרחים', svg:'svg-flowers', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
-    { key:'יד', svg:'svg-hand', score:{A:'R',B:'E',C:'chaos',D:'connect'} }
+    { key:'זוג רוקד', svg:'בנק אלמנטים מפורט/רומנטיקה/צללית זוג רוקד.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'פרפר', svg:'בנק אלמנטים מפורט/רומנטיקה/פרפר.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'פרחים', svg:'בנק אלמנטים מפורט/רומנטיקה/פרחים.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'יד', svg:'בנק אלמנטים מפורט/רומנטיקה/יד.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} }
   ]}
 ];
 
@@ -961,6 +1087,34 @@ const FONTS = [
   { key:'לטרינג דקורטיבי',   family:"'Amatic SC', cursive",                    sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
   { key:'פיקסל / מונו',      family:"'Share Tech Mono', 'Courier New', monospace", sample:'ABCD', score:{A:'S',B:'P',C:'order',D:'indep'} }
 ];
+
+// ═══════════════════════════════════════════════
+// INTRO ICON HOVER — CSS filter
+// ═══════════════════════════════════════════════
+// INTRO ICON HOVER
+// ═══════════════════════════════════════════════
+(function() {
+  var imgs = Array.from(document.querySelectorAll('.intro-icon img'));
+  var hovered = null;
+  document.addEventListener('mousemove', function(e) {
+    var found = null;
+    for (var i = 0; i < imgs.length; i++) {
+      var r = imgs[i].getBoundingClientRect();
+      if (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
+        found = imgs[i];
+        break;
+      }
+    }
+    if (found !== hovered) {
+      if (hovered) hovered.style.filter = '';
+      if (found) {
+        var hue = Math.floor(Math.random() * 360);
+        found.style.filter = 'invert(1) sepia(1) saturate(5) hue-rotate(' + hue + 'deg)';
+      }
+      hovered = found;
+    }
+  });
+})();
 
 // ═══════════════════════════════════════════════
 // NAVIGATION
@@ -1016,8 +1170,8 @@ function updateProgress() {
 // ═══════════════════════════════════════════════
 // SCREEN 4 — Genre
 // ═══════════════════════════════════════════════
-function selectGenre(el, name) {
-  document.querySelectorAll('.genre-card').forEach(c => c.classList.remove('sel'));
+function selectGenreCol(el, name) {
+  document.querySelectorAll('.genre-col').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
   state.genre = name;
   document.getElementById('genre-btn').disabled = false;
@@ -1075,7 +1229,7 @@ function renderCatImages() {
   CATEGORIES[activeCat].images.forEach(img => {
     const card = document.createElement('div');
     card.className = 'img-card' + (state.imageKey===img.key?' sel':'');
-    card.innerHTML = `<svg viewBox="0 0 100 100"><use href="#${img.svg}"/></svg><span class="img-lbl">${img.key}</span>`;
+    card.innerHTML = `<img src="${img.svg}" style="width:56%;height:56%;object-fit:contain;flex-shrink:0"><span class="img-lbl">${img.key}</span>`;
     card.onclick = () => {
       state.image = img;
       state.imageKey = img.key;
@@ -1121,14 +1275,14 @@ function renderCatImages() {
 function miniCover(w, h, comp, i) {
   // Simple geometric representation of each composition
   const type = i;
-  const svgId = state.image ? state.image.svg : 'svg-eye';
+  const svgId = state.image ? state.image.svg : '';
   const fg = state.color ? state.color.textColor : '#111111';
   switch(type) {
-    case 0: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.25}" y="${h*.2}" width="${w*.5}" height="${w*.5}" fill="${fg}" opacity=".8"/><rect x="${w*.2}" y="${h*.75}" width="${w*.6}" height="2" fill="${fg}" opacity=".3"/><rect x="${w*.25}" y="${h*.82}" width="${w*.5}" height="1.5" fill="${fg}" opacity=".2"/></svg>`;
-    case 1: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.58}" y="${h*.06}" width="${w*.3}" height="${w*.3}" fill="${fg}" opacity=".8"/><rect x="${w*.12}" y="${h*.45}" width="${w*.76}" height="2" fill="${fg}" opacity=".5"/><rect x="${w*.12}" y="${h*.55}" width="${w*.6}" height="1.5" fill="${fg}" opacity=".3"/><rect x="${w*.12}" y="${h*.63}" width="${w*.7}" height="1.5" fill="${fg}" opacity=".3"/></svg>`;
-    case 2: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.05}" y="${h*.05}" width="${w*.9}" height="${h*.9}" fill="${fg}" opacity=".7"/></svg>`;
-    case 3: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.02}" y="${h*.1}" width="${w*.46}" height="${h*.8}" fill="${fg}" opacity=".8"/><rect x="${w*.55}" y="${h*.42}" width="${w*.38}" height="2" fill="${fg}" opacity=".4"/><rect x="${w*.55}" y="${h*.52}" width="${w*.3}" height="1.5" fill="${fg}" opacity=".25"/></svg>`;
-    case 4: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/><use href="#${svgId}" x="${w*.38}" y="${h*.06}" width="${w*.5}" height="${w*.5}" fill="${fg}" opacity=".7" transform="rotate(-12,${w*.63},${h*.25})"/><use href="#${svgId}" x="${w*.04}" y="${h*.5}" width="${w*.3}" height="${w*.3}" fill="${fg}" opacity=".5"/><rect x="${w*.12}" y="${h*.82}" width="${w*.4}" height="1.5" fill="${fg}" opacity=".35"/></svg>`;
+    case 0: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/>${svgId?`<image href="${svgId}" x="${w*.25}" y="${h*.2}" width="${w*.5}" height="${w*.5}" opacity=".8"/>`:''}<rect x="${w*.2}" y="${h*.75}" width="${w*.6}" height="2" fill="${fg}" opacity=".3"/><rect x="${w*.25}" y="${h*.82}" width="${w*.5}" height="1.5" fill="${fg}" opacity=".2"/></svg>`;
+    case 1: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/>${svgId?`<image href="${svgId}" x="${w*.58}" y="${h*.06}" width="${w*.3}" height="${w*.3}" opacity=".8"/>`:''}<rect x="${w*.12}" y="${h*.45}" width="${w*.76}" height="2" fill="${fg}" opacity=".5"/><rect x="${w*.12}" y="${h*.55}" width="${w*.6}" height="1.5" fill="${fg}" opacity=".3"/><rect x="${w*.12}" y="${h*.63}" width="${w*.7}" height="1.5" fill="${fg}" opacity=".3"/></svg>`;
+    case 2: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/>${svgId?`<image href="${svgId}" x="${w*.05}" y="${h*.05}" width="${w*.9}" height="${h*.9}" opacity=".7"/>`:''}</svg>`;
+    case 3: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/>${svgId?`<image href="${svgId}" x="${w*.02}" y="${h*.1}" width="${w*.46}" height="${h*.8}" opacity=".8"/>`:''}<rect x="${w*.55}" y="${h*.42}" width="${w*.38}" height="2" fill="${fg}" opacity=".4"/><rect x="${w*.55}" y="${h*.52}" width="${w*.3}" height="1.5" fill="${fg}" opacity=".25"/></svg>`;
+    case 4: return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#f0ede6"/>${svgId?`<image href="${svgId}" x="${w*.38}" y="${h*.06}" width="${w*.5}" height="${w*.5}" opacity=".7" transform="rotate(-12,${w*.63},${h*.25})"/><image href="${svgId}" x="${w*.04}" y="${h*.5}" width="${w*.3}" height="${w*.3}" opacity=".5"/>`:''}<rect x="${w*.12}" y="${h*.82}" width="${w*.4}" height="1.5" fill="${fg}" opacity=".35"/></svg>`;
   }
   return '';
 }
@@ -1163,7 +1317,7 @@ function compHTML(size, pos, svgId, fg) {
   const ix = parseFloat(pos.x)/100 * w - iw/2;
   const iy = parseFloat(pos.y)/100 * h - ih/2;
   const rot = pos.rot ? `transform="rotate(${pos.rot},${ix+iw/2},${iy+ih/2})"` : '';
-  return `<use href="#${svgId}" x="${ix}" y="${iy}" width="${iw}" height="${ih}" fill="${fg}" ${rot}/>`;
+  return `<image href="${svgId}" x="${ix}" y="${iy}" width="${iw}" height="${ih}" ${rot}/>`;
 }
 
 function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont, titleColor, comp) {
@@ -1185,7 +1339,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   const iw = parseFloat(pos.w)/100*W, ih = parseFloat(pos.h)/100*H;
   const ix = parseFloat(pos.x)/100*W - iw/2, iy = parseFloat(pos.y)/100*H - ih/2;
   const rot = pos.rot ? `transform="rotate(${pos.rot},${ix+iw/2},${iy+ih/2})"` : '';
-  imgUse = `<use href="#${imgSvg}" x="${ix}" y="${iy}" width="${iw}" height="${ih}" fill="${fg}" ${rot} opacity=".88"/>`;
+  imgUse = `<image href="${imgSvg}" x="${ix}" y="${iy}" width="${iw}" height="${ih}" ${rot} opacity=".88"/>`;
 
   // Title position based on composition
   let titleY = H - 22, titleSize = W*0.1;
