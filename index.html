@@ -876,39 +876,260 @@
     }
 
     /* ─── Screen 9: Reveal ─── */
-    #s9 { background: var(--black); gap: 0; }
-    #s9 .q { color: var(--cream); margin-bottom: 50px; opacity: .5; font-size: 32px; }
-    #cover-big {
-      width: 220px;
-      height: 330px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    #s9 { background: #FFFAF1; gap: 0; justify-content: center; padding-bottom: 80px; }
+    #s9 .q { color: var(--black); opacity: 1; margin-bottom: 40px; font-family: 'Masada', serif; font-style: italic; font-size: 32px; }
+    #s9-scene {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      perspective: 2400px;
+      perspective-origin: 50% 45%;
+      cursor: grab;
+      user-select: none;
       opacity: 0;
-      transform: translateY(32px) scale(.96);
-      transition: all 1.1s cubic-bezier(.22,1,.36,1);
-      margin-bottom: 46px;
+      transition: opacity 1s ease;
     }
-    #cover-big.show { opacity: 1; transform: translateY(0) scale(1); }
+    #s9-scene.show { opacity: 1; }
+    #s9-scene:active { cursor: grabbing; }
+    #s9-book-wrap {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #s9-book-shadow {
+      position: absolute;
+      bottom: -24px; left: 50%;
+      transform: translateX(-50%);
+      width: 75%; height: 36px;
+      background: rgba(0,0,0,.45);
+      filter: blur(22px);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    #s9-book {
+      width: 288px; height: 432px;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+    .s9-face { position: absolute; overflow: hidden; }
+    #s9-front, #s9-back-face { backface-visibility: hidden; }
+    /* Front cover */
+    #s9-front { inset: 0; transform: translateZ(65px); overflow: visible; }
+    #s9-front::after {
+      content: '';
+      position: absolute;
+      right: -22px; top: 3px; bottom: 3px;
+      width: 22px;
+      background: var(--s9-spine-bg, linear-gradient(to right, #0d0d0d 0%, #2a2a2a 60%, #111 100%));
+      border-radius: 0 3px 3px 0;
+    }
+    #cover-big {
+      width: 100%; height: 100%;
+      position: relative; overflow: hidden;
+      opacity: 1; transform: none; transition: none;
+    }
+    /* Back face — same color as front cover */
+    #s9-back-face {
+      inset: 0;
+      transform: rotateY(180deg) translateZ(65px);
+      background: var(--s9-back-bg, #111);
+      overflow: visible;
+    }
+    #s9-back-face::after {
+      content: '';
+      position: absolute;
+      left: -22px; top: 3px; bottom: 3px;
+      width: 22px;
+      background: var(--s9-spine-bg, linear-gradient(to right, #0d0d0d 0%, #2a2a2a 60%, #111 100%));
+      border-radius: 3px 0 0 3px;
+    }
+    /* Right side — spine (matches front cover color) */
+    #s9-spine-face {
+      top: 0; right: -65px;
+      width: 130px; height: 432px;
+      transform-origin: center;
+      transform: rotateY(90deg);
+      background: var(--s9-spine-bg, #111);
+    }
+    #s9-spine-face::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right,
+        rgba(0,0,0,.65) 0%,
+        rgba(0,0,0,.15) 18%,
+        rgba(255,255,255,.18) 45%,
+        rgba(0,0,0,.15) 72%,
+        rgba(0,0,0,.6) 100%
+      );
+    }
+    /* Left side — pages */
+    #s9-pages-face {
+      top: 0; left: -65px;
+      width: 130px; height: 432px;
+      transform-origin: center;
+      transform: rotateY(-90deg);
+      background: repeating-linear-gradient(
+        to bottom,
+        #f5f0e8 0px, #f5f0e8 1px,
+        #ede8df 2px, #ede8df 3px
+      );
+    }
+    #s9-back-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.12) 0%, transparent 50%, rgba(0,0,0,.08) 100%);
+      pointer-events: none; z-index: 1;
+    }
     #summary-text {
-      max-width: 480px;
-      text-align: center;
-      color: var(--cream);
-      font-size: 16px;
-      line-height: 1.8;
-      font-weight: 300;
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 18px;
+      max-width: none; margin: 0;
+      color: var(--s9-back-fg, #FFFAF1);
+      font-size: 11px; line-height: 1.85; font-weight: 300;
+      text-align: right; direction: rtl;
       opacity: 0;
       transition: opacity 1.4s ease .9s;
-      padding: 0 20px;
-      margin-bottom: 50px;
+      z-index: 2;
     }
     #summary-text.show { opacity: 1; }
-    .loading-dots { color: var(--cream); opacity: .35; letter-spacing: 4px; font-size: 11px; }
+    .loading-dots { opacity: .35; letter-spacing: 4px; font-size: 11px; }
     #s9 .btn { margin-top: 0; }
 
-    /* ─── Screen 10: Postcard ─── */
-    #s10 { padding-top: 50px !important; }
-    #s10 .q { margin-bottom: 36px; font-size: 32px; }
+    /* ─── Screen 10: Library ─── */
+    #s10 { padding: 0 !important; display: block !important; overflow: hidden; }
+    #s10 > .q {
+      position: absolute; top: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 10; pointer-events: none; margin: 0; font-size: 32px;
+    }
+    #library-viewport {
+      position: absolute; inset: 0; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #library-world {
+      transform-origin: center center;
+      padding: 80px 48px 80px;
+      will-change: transform;
+    }
+    #library-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 112px);
+      gap: 28px 20px;
+      justify-items: center;
+    }
+    /* outer wrapper — spine + hover, overflow visible so spine peeks out */
+    .lib-book {
+      width: 112px; height: 168px;
+      position: relative;
+      display: inline-block;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform .22s cubic-bezier(.4,0,.2,1), filter .22s;
+    }
+    /* spine (RTL: to the right of the cover) */
+    .lib-book::before {
+      content: '';
+      position: absolute;
+      left: 100%; top: 2px; bottom: 2px;
+      width: 12px;
+      background: var(--lib-spine, linear-gradient(to right, #080808 0%, #242424 55%, #111 100%));
+      border-radius: 0 3px 3px 0;
+      box-shadow: 3px 0 6px rgba(0,0,0,.38);
+    }
+    .lib-book:hover {
+      transform: translateY(-10px) scale(1.05);
+      filter: drop-shadow(0 14px 22px rgba(0,0,0,.42));
+    }
+    /* inner face — clips SVG + depth overlay */
+    .lib-book-face {
+      width: 100%; height: 100%;
+      border-radius: 4px 2px 2px 4px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 3px 5px 18px rgba(0,0,0,.32);
+    }
+    /* depth / gloss overlay */
+    .lib-book-face::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg,
+        rgba(255,255,255,0.07) 0%, transparent 45%, rgba(0,0,0,0.28) 100%);
+      pointer-events: none;
+      z-index: 3;
+    }
+    .lib-book svg { display: block; width: 100%; height: 100%; }
+    .lib-empty {
+      grid-column: 1 / -1; text-align: center; opacity: .3;
+      font-family: 'Masada', serif; font-size: 18px; padding: 60px 20px;
+    }
+
+    /* ─── Book modal ─── */
+    #book-modal {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.55);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    #book-modal.open { opacity: 1; pointer-events: all; }
+    #book-modal-inner {
+      background: var(--cream, #FFFAF1);
+      border-radius: 6px;
+      padding: 36px 32px 32px;
+      max-width: 360px; width: 90%;
+      display: flex; flex-direction: column; align-items: center; gap: 24px;
+      transform: translateY(18px) scale(.96);
+      transition: transform .25s ease;
+      max-height: 90vh; overflow-y: auto;
+    }
+    #book-modal.open #book-modal-inner { transform: none; }
+    #book-modal-cover {
+      width: 180px; height: 270px;
+      position: relative; flex-shrink: 0;
+    }
+    /* spine */
+    #book-modal-cover::before {
+      content: '';
+      position: absolute;
+      left: 100%; top: 3px; bottom: 3px;
+      width: 18px;
+      background: var(--modal-spine, linear-gradient(to right, #080808 0%, #242424 55%, #111 100%));
+      border-radius: 0 4px 4px 0;
+      box-shadow: 4px 0 10px rgba(0,0,0,.4);
+    }
+    #book-modal-face {
+      width: 100%; height: 100%;
+      border-radius: 4px 2px 2px 4px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 5px 10px 32px rgba(0,0,0,.38);
+    }
+    #book-modal-face::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg,
+        rgba(255,255,255,0.07) 0%, transparent 45%, rgba(0,0,0,0.28) 100%);
+      pointer-events: none; z-index: 3;
+    }
+    #book-modal-cover svg { display: block; width: 100%; height: 100%; }
+    #book-modal-summary {
+      font-family: 'Arbel', sans-serif;
+      font-size: 14px; line-height: 2;
+      text-align: center; direction: rtl;
+      white-space: pre-line; color: var(--black, #111);
+      opacity: .85;
+    }
+    #book-modal-name {
+      font-size: 10px; letter-spacing: 3px; opacity: .35;
+      font-family: 'Arbel', sans-serif;
+    }
+    #book-modal-close {
+      position: absolute; top: 14px; right: 18px;
+      background: none; border: none; cursor: pointer;
+      font-size: 22px; opacity: .4; line-height: 1;
+      font-family: sans-serif;
+      transition: opacity .15s;
+    }
+    #book-modal-close:hover { opacity: .85; }
     .postcard-sides { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 40px; flex-wrap: wrap; justify-content: center; }
     .pc-side { display: flex; flex-direction: column; align-items: center; gap: 8px; }
     .pc-lbl { font-size: 9px; letter-spacing: 4px; opacity: .35; }
@@ -1189,45 +1410,39 @@
      SCREEN 9 — Reveal
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s9">
-  <p class="q" style="margin-bottom:44px">הכריכה שלך</p>
-  <div id="cover-big">
-    <div id="cb-bg"></div>
-    <div id="cb-img"></div>
-    <div id="cb-title"></div>
-    <div id="cb-subtitle">לפי הכריכה</div>
+  <p class="q">לפי הכריכה שלך</p>
+  <div id="s9-scene">
+    <div id="s9-book-wrap">
+      <div id="s9-book-shadow"></div>
+      <div id="s9-book">
+        <div id="s9-front" class="s9-face">
+          <div id="cover-big"></div>
+        </div>
+        <div id="s9-back-face" class="s9-face">
+          <div id="s9-back-overlay"></div>
+          <div id="summary-text"><span class="loading-dots">טוען...</span></div>
+        </div>
+        <div id="s9-spine-face" class="s9-face"></div>
+        <div id="s9-pages-face" class="s9-face"></div>
+      </div>
+    </div>
   </div>
-  <div id="summary-text"><span class="loading-dots">טוען...</span></div>
-  <button class="btn inv" onclick="go(8)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
-  <button class="btn inv" onclick="go(10)" style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
+  <button class="btn" onclick="go(8)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+  <button class="btn" onclick="printPostcard()" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%)">שלח להדפסה</button>
+  <button class="btn" onclick="go(10)" style="position:fixed;bottom:20px;left:20px">לספרייה</button>
 </section>
 
 <!-- ══════════════════════════════════════════════
      SCREEN 10 — Postcard
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s10">
-  <p class="q">הגלויה שלך</p>
-  <div class="postcard-sides">
-    <div class="pc-side">
-      <span class="pc-lbl">צד א׳ — כריכה</span>
-      <div class="postcard" id="pc-front">
-        <div id="pcf-bg" style="position:absolute;inset:0"></div>
-        <div id="pcf-img" style="position:absolute"></div>
-        <div id="pcf-title" style="position:absolute"></div>
-        <div id="pcf-sub" style="position:absolute;bottom:12px;right:0;left:0;text-align:center;font-size:9px;letter-spacing:2px;opacity:.5">לפי הכריכה</div>
-      </div>
-    </div>
-    <div class="pc-side">
-      <span class="pc-lbl">צד ב׳ — סיפור</span>
-      <div class="postcard" id="pc-back">
-        <p id="pc-back-title">לפי הכריכה</p>
-        <div id="pc-back-divider"></div>
-        <p id="pc-back-summary"></p>
-        <p id="pc-back-name"></p>
-      </div>
+  <p class="q">הספרייה</p>
+  <div id="library-viewport">
+    <div id="library-world">
+      <div id="library-grid"></div>
     </div>
   </div>
   <button class="btn" onclick="go(9)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
-  <button class="btn" onclick="printPostcard()" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%)">שלח להדפסה</button>
   <button class="btn" onclick="go(1)" style="position:fixed;bottom:20px;left:20px">לעמוד הבית</button>
 </section>
 
@@ -1420,6 +1635,16 @@
 <!-- Print area -->
 <div class="print-area" id="print-area"></div>
 
+<!-- Book detail modal -->
+<div id="book-modal" onclick="if(event.target===this)closeBookModal()">
+  <div id="book-modal-inner" style="position:relative">
+    <button id="book-modal-close" onclick="closeBookModal()">✕</button>
+    <div id="book-modal-cover"><div id="book-modal-face"></div></div>
+    <p id="book-modal-summary"></p>
+    <p id="book-modal-name"></p>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════
 // STATE
@@ -1559,19 +1784,21 @@ const FONTS = [
 // NAVIGATION
 // ═══════════════════════════════════════════════
 function go(n) {
+  if (state.screen === 10 && n !== 10) stopLibParallax();
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s'+n).classList.add('active');
   state.screen = n;
   updateProgress();
   syncPreviews();
   if (n === 5) populateImageBooks();
+  if (n === 10) { libZoom = 1; libTX = 0; libTY = 0; renderLibrary(); }
   window.scrollTo(0,0);
 }
 
 function updateProgress() {
   const prog = document.getElementById('progress');
-  prog.style.display = state.screen === 1 ? 'none' : 'block';
-  prog.style.color = state.screen === 9 ? 'var(--cream)' : 'var(--black)';
+  prog.style.display = (state.screen === 1 || state.screen === 9) ? 'none' : 'block';
+  prog.style.color = 'var(--black)';
   prog.textContent = state.screen + ' / 10';
 }
 
@@ -1979,15 +2206,19 @@ function miniCover(w, h, comp, i) {
     col.addEventListener('mouseenter', () => {
       grid.classList.add('grid-hovered');
       col.classList.add('col-hovered');
-      const titleDiv = document.querySelector('.cp4-html-title');
-      if (titleDiv) titleDiv.style.fontFamily = font.family;
+      if (!state.typography) {
+        const titleDiv = document.querySelector('.cp4-html-title');
+        if (titleDiv) titleDiv.style.fontFamily = font.family;
+      }
     });
 
     col.addEventListener('mouseleave', () => {
       col.classList.remove('col-hovered');
       grid.classList.remove('grid-hovered');
-      const titleDiv = document.querySelector('.cp4-html-title');
-      if (titleDiv) titleDiv.style.fontFamily = state.typography ? state.typography.family : "'Heebo', sans-serif";
+      if (!state.typography) {
+        const titleDiv = document.querySelector('.cp4-html-title');
+        if (titleDiv) titleDiv.style.fontFamily = "'Heebo', sans-serif";
+      }
     });
 
     col.addEventListener('click', () => {
@@ -2023,23 +2254,49 @@ function getPalImgTint(pal) {
   return null;
 }
 function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont, titleColor, comp, imgTint) {
-  if (!imgSvg) return `<rect width="${W}" height="${H}" fill="${bgColor}"/>`;
 
   let imgUse = '';
   const fg = titleColor || '#111111';
   const c = comp ? comp.key : 'מרכזי עם ריק';
+
+  // Text positions — computed first so image can be clamped around them
+  const authorName = titleText || '';
+  const fontStr = titleFont ? titleFont.family : "'Heebo', sans-serif";
+
+  let bookTitleY = H - 22, bookTitleSize = W * 0.1;
+  let bookTitleX = W * 0.5, bookTitleAnchor = 'middle';
+  let authorX = W * 0.5;
+  if (c === 'מרכזי עם ריק')  { bookTitleY = H - 40; }
+  if (c === 'טקסט דומיננטי') { bookTitleY = H * 0.62; bookTitleSize = W * 0.195; }
+  if (c === 'מכסה הכל')      { bookTitleY = H * 0.15; bookTitleSize = W * 0.09 + 2; }
+  if (c === 'חצוי')           { bookTitleY = H * 0.12; bookTitleX = W * 0.75; authorX = W * 0.78; }
+  if (c === 'אסימטרי')        { bookTitleY = H * 0.14; bookTitleX = W * 0.72; bookTitleAnchor = 'end'; }
+
+  // Safe image boundaries — keep image clear of text zones
+  const CLEAR = 16;
+  const titleTopY   = bookTitleY - bookTitleSize - CLEAR;
+  const authorTopY  = H - 8 - W * 0.065 - CLEAR;
+  const imgBottomMax = Math.min(titleTopY, authorTopY); // lowest the image may reach
 
   // Position based on composition
   const positions = {
     'מרכזי עם ריק':   {x:'50%',y:'40%',w:'55%',h:'55%'},
     'טקסט דומיננטי': {x:'78%',y:'20%',w:'30%',h:'30%'},
     'מכסה הכל':      {x:'50%',y:'50%',w:'95%',h:'95%'},
-    'חצוי':          {x:'24%',y:'50%',w:'46%',h:'92%'},
-    'אסימטרי':       {x:'28%',y:'72%',w:'55%',h:'55%', rot:'12'}
+    'חצוי':          {x:'24%',y:'46%',w:'44%',h:'84%'},
+    'אסימטרי':       {x:'28%',y:'64%',w:'50%',h:'48%', rot:'12'}
   };
   const pos = positions[c] || positions['מרכזי עם ריק'];
-  const iw = parseFloat(pos.w)/100*W, ih = parseFloat(pos.h)/100*H;
-  const ix = parseFloat(pos.x)/100*W - iw/2, iy = parseFloat(pos.y)/100*H - ih/2;
+  const iw = parseFloat(pos.w)/100*W;
+  let ih = parseFloat(pos.h)/100*H;
+  const ix = parseFloat(pos.x)/100*W - iw/2;
+  let iy = parseFloat(pos.y)/100*H - ih/2;
+
+  // Clamp image bottom to stay clear of text (skip full-bleed and rotated)
+  if (c !== 'מכסה הכל' && !pos.rot && iy + ih > imgBottomMax) {
+    ih = Math.max(iw * 0.25, imgBottomMax - iy);
+  }
+
   const rot = pos.rot ? `transform="rotate(${pos.rot},${ix+iw/2},${iy+ih/2})"` : '';
   if (imgTint) {
     const fid = `bxf${++_bxFid}`;
@@ -2065,28 +2322,16 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   }
 
   // Title position based on composition
-  const authorName = titleText || '';
-  const fontStr = titleFont ? titleFont.family : "'Heebo', sans-serif";
-
-  // Title placeholder — positioned by composition
-  let bookTitleY = H - 22, bookTitleSize = W * 0.1;
-  let bookTitleX = W * 0.5, bookTitleAnchor = 'middle';
-  if (c === 'מרכזי עם ריק')  { bookTitleY = H - 40; }
-  if (c === 'טקסט דומיננטי') { bookTitleY = H * 0.62; bookTitleSize = W * 0.195; }
-  if (c === 'מכסה הכל')      { bookTitleY = H * 0.15;  bookTitleSize = W * 0.09 + 2; }
-  if (c === 'חצוי')           { bookTitleY = H * 0.12; bookTitleX = W * 0.75; }
-  if (c === 'אסימטרי')        { bookTitleY = H * 0.14; bookTitleX = W * 0.72; bookTitleAnchor = 'end'; }
-
   const bookTitleEl = `<text
     x="${bookTitleX}" y="${bookTitleY}"
     font-family="${fontStr}" font-size="${bookTitleSize}"
     fill="${fg}" text-anchor="${bookTitleAnchor}" opacity="0.9"
   >כותרת</text>`;
 
-  // Author name — always small and fixed at bottom
+  // Author name — always small and fixed at bottom, always in Arbel
   const authorEl = authorName ? `<text
-    x="${W * 0.5}" y="${H - 8}"
-    font-family="${fontStr}" font-size="${W * 0.065}"
+    x="${authorX}" y="${H - 8}"
+    font-family="'Arbel', sans-serif" font-size="${W * 0.065}"
     fill="${fg}" text-anchor="middle" opacity="0.55"
   >${authorName}</text>` : '';
 
@@ -2178,9 +2423,45 @@ function _syncPreviews() {
   // Big cover for screen 9
   const big = document.getElementById('cover-big');
   if (big) {
-    big.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 220 330">
-      ${buildCoverSVG(220, 330, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color))}
+    big.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 288 432">
+      ${buildCoverSVG(288, 432, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color))}
     </svg>`;
+    big.querySelectorAll('text').forEach(t => t.style.display = 'none');
+    const ck = comp ? comp.key : '';
+    const fontFamily = font ? font.family : "'Heebo', sans-serif";
+
+    let cbName = big.querySelector('.cb-html-name');
+    if (!cbName) { cbName = document.createElement('div'); cbName.className = 'cp4-html-name cb-html-name'; big.appendChild(cbName); }
+    cbName.style.fontFamily = "'Arbel', sans-serif";
+    cbName.style.color = fg;
+    cbName.style.fontSize = '19px';
+    cbName.textContent = name;
+
+    let cbTitle = big.querySelector('.cb-html-title');
+    if (!cbTitle) { cbTitle = document.createElement('div'); cbTitle.className = 'cp4-html-title cb-html-title'; big.appendChild(cbTitle); }
+    cbTitle.style.fontFamily = fontFamily;
+    cbTitle.style.color = fg;
+    cbTitle.style.fontSize = '34px';
+    cbTitle.textContent = 'כותרת';
+    cbTitle.style.top = ''; cbTitle.style.bottom = ''; cbTitle.style.left = '0'; cbTitle.style.right = '0';
+    cbTitle.style.textAlign = 'center';
+    if (ck === 'טקסט דומיננטי') { cbTitle.style.top = '56%'; cbTitle.style.fontSize = '46px'; }
+    else if (ck === 'מכסה הכל') { cbTitle.style.top = '8%'; }
+    else if (ck === 'חצוי')     { cbTitle.style.top = '8%'; cbTitle.style.textAlign = 'right'; cbTitle.style.right = '8%'; cbTitle.style.left = ''; }
+    else if (ck === 'אסימטרי')  { cbTitle.style.top = '8%'; cbTitle.style.textAlign = 'right'; cbTitle.style.right = '8%'; cbTitle.style.left = ''; }
+    else                         { cbTitle.style.top = 'auto'; cbTitle.style.bottom = '82px'; }
+  }
+
+  // Screen 9 spinning book — spine + back cover colors
+  const s9Book = document.getElementById('s9-book');
+  if (s9Book) {
+    const s9SpineColor = state.color ? state.color.colors[1] : null;
+    const s9SpineGrad = s9SpineColor
+      ? `linear-gradient(to bottom, color-mix(in srgb,${s9SpineColor} 50%,#000) 0%, ${s9SpineColor} 45%, color-mix(in srgb,${s9SpineColor} 70%,#000) 100%)`
+      : 'linear-gradient(to bottom, #0d0d0d 0%, #2a2a2a 60%, #111 100%)';
+    s9Book.style.setProperty('--s9-spine-bg', s9SpineGrad);
+    s9Book.style.setProperty('--s9-back-bg', bg);
+    s9Book.style.setProperty('--s9-back-fg', fg);
   }
 
   // Postcard front
@@ -2253,6 +2534,47 @@ function calcScores() {
 }
 
 // ═══════════════════════════════════════════════
+// SCREEN 9 — Spinning book
+// ═══════════════════════════════════════════════
+(function initS9Spin() {
+  let rotY = 0, vel = 0.1, isDragging = false, lastX = 0, rafId = null, active = false;
+
+  function tick() {
+    if (!active) return;
+    if (!isDragging) {
+      if (Math.abs(vel) < 0.04) vel = 0.1;
+      else vel *= 0.985;
+    }
+    rotY += vel;
+    const book = document.getElementById('s9-book');
+    if (book) book.style.transform = `rotateY(${rotY}deg)`;
+    rafId = requestAnimationFrame(tick);
+  }
+
+  window._s9SpinStart = function() {
+    active = true; vel = 0.1; rotY = 0;
+    if (!rafId) tick();
+  };
+  window._s9SpinStop = function() {
+    active = false;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  };
+
+  document.addEventListener('mousedown', e => {
+    const scene = document.getElementById('s9-scene');
+    if (!scene || !scene.contains(e.target)) return;
+    isDragging = true; lastX = e.clientX; vel = 0; e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    vel = Math.max(-6, Math.min(6, (e.clientX - lastX) * 0.4));
+    lastX = e.clientX;
+  });
+  document.addEventListener('mouseup',    () => { isDragging = false; });
+  document.addEventListener('mouseleave', () => { isDragging = false; });
+})();
+
+// ═══════════════════════════════════════════════
 // SCREEN 9 — Reveal
 // ═══════════════════════════════════════════════
 async function proceedToReveal() {
@@ -2284,9 +2606,13 @@ function skipApi() {
 async function triggerReveal() {
   syncPreviews();
 
-  // Animate cover reveal
+  // Animate cover reveal + start spin
+  const scene = document.getElementById('s9-scene');
+  if (scene) scene.classList.remove('show');
+  if (window._s9SpinStop) window._s9SpinStop();
   setTimeout(() => {
-    document.getElementById('cover-big').classList.add('show');
+    if (scene) scene.classList.add('show');
+    if (window._s9SpinStart) window._s9SpinStart();
   }, 300);
 
   // Fetch summary
@@ -2301,9 +2627,10 @@ async function triggerReveal() {
   const summaryEl = document.getElementById('summary-text');
 
   if (state.apiKey === 'DEMO') {
+    state.summary = demoSummary(profile);
+    summaryEl.textContent = state.summary;
     summaryEl.classList.add('show');
-    summaryEl.textContent = demoSummary(profile);
-    document.getElementById('pc-back-summary').textContent = summaryEl.textContent;
+    document.getElementById('pc-back-summary').textContent = state.summary;
     document.getElementById('pc-back-name').textContent = state.name || '';
     return;
   }
@@ -2363,53 +2690,207 @@ function demoSummary(p) {
 // SCREEN 10 — Postcard
 // ═══════════════════════════════════════════════
 function printPostcard() {
-  // Render print-quality postcard
-  const bg = state.color ? state.color.colors[0] : '#111111';
-  const accent = state.color ? state.color.colors[2] : null;
-  const fg = state.color ? state.color.textColor : '#111111';
-  const imgSvg = state.image ? state.image.svg : null;
-  const comp = state.composition;
-  const font = state.typography;
-  const name = state.name || '';
+  const bg    = state.color ? state.color.colors[0] : '#111111';
+  const accent= state.color ? state.color.colors[2] : null;
+  const fg    = state.color ? state.color.textColor : '#111111';
+  const imgSvg= state.image ? state.image.svg : null;
+  const comp  = state.composition;
+  const font  = state.typography;
+  const name  = state.name || '';
+  const summary = state.summary || document.getElementById('summary-text')?.textContent || '';
 
-  const frontSVG = buildCoverSVG(1134, 1701, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color));
+  const W = 283, H = 425;
+  const frontSVG = buildCoverSVG(W, H, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color));
 
-  const printArea = document.getElementById('print-area');
-  printArea.innerHTML = `
-    <style>
-      @page { size: 10cm 15cm; margin: 0; }
-      body { margin: 0; }
-      .pc-print { width: 10cm; height: 15cm; overflow: hidden; page-break-after: always; }
-      .pc-back-print {
-        width: 10cm; height: 15cm;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        text-align: center; font-family: 'Heebo', sans-serif; padding: 1.5cm;
-        box-sizing: border-box;
-      }
-      .pc-back-title { font-size: 9pt; letter-spacing: 4px; opacity: .4; margin-bottom: 1em; }
-      .pc-back-divider { width: 1cm; height: 0.5px; background: #111; opacity: .2; margin: .5em auto; }
-      .pc-back-summary { font-size: 11pt; line-height: 2; font-weight: 300; white-space: pre-line; direction: rtl; }
-      .pc-back-name { font-size: 8pt; letter-spacing: 3px; opacity: .3; margin-top: 1em; }
-    </style>
-    <div class="pc-print">
-      <svg xmlns="http://www.w3.org/2000/svg" width="10cm" height="15cm" viewBox="0 0 283 425">
-        ${frontSVG}
-      </svg>
-    </div>
-    <div class="pc-back-print">
-      <p class="pc-back-title">לפי הכריכה</p>
-      <div class="pc-back-divider"></div>
-      <p class="pc-back-summary">${state.summary || ''}</p>
-      <p class="pc-back-name">${name}</p>
-    </div>
-  `;
+  const baseHref = document.location.href.replace(/[^/]*$/, '');
+  const html = `<!DOCTYPE html>
+<html dir="rtl"><head><meta charset="utf-8">
+<base href="${baseHref}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Amatic+SC:wght@700&family=Caveat:wght@400;700&family=Share+Tech+Mono&display=swap">
+<style>
+  @font-face { font-family: 'Arbel';         src: url('ArbelG-Regular.otf') format('opentype'); }
+  @font-face { font-family: 'Masada';        src: url('Masada-BoldItalic.otf') format('opentype'); font-weight: bold; font-style: italic; }
+  @font-face { font-family: 'OHSalmanHabaka'; src: url('פונטים/OHSalmanHabaka1.0-Regular.otf') format('opentype'); }
+  @font-face { font-family: 'FlamingoBM';    src: url('פונטים/flamingo-regular-fm.otf') format('opentype'); }
+  @font-face { font-family: 'IndexDL';       src: url('פונטים/index-mono-regular-aaa.otf') format('opentype'); }
+  @page { size: 10cm 15cm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Heebo', Arial, sans-serif; }
+  .page { width: 10cm; height: 15cm; overflow: hidden; page-break-after: always; }
+  .page svg { display: block; width: 100%; height: 100%; }
+  .back { width: 10cm; height: 15cm; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 1.5cm;
+    text-align: center; direction: rtl; }
+  .back-logo { width: 55px; opacity: .35; margin-bottom: 1.2em; }
+  .back-line  { width: 1cm; height: 1px; background: #111; opacity: .2; margin: 0 auto .8em; }
+  .back-text  { font-family: 'Arbel', sans-serif; font-size: 11pt; line-height: 2; font-weight: normal; white-space: pre-line; }
+</style></head><body>
+<div class="page">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${frontSVG}</svg>
+</div>
+<div class="back">
+  <img class="back-logo" src="logo.svg" alt="">
+  <div class="back-line"></div>
+  <p class="back-text">${summary.replace(/</g,'&lt;')}</p>
+</div>
+</body></html>`;
 
-  setTimeout(() => window.print(), 100);
+  const iframe = document.createElement('iframe');
+  iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:10cm;height:30cm;border:none;';
+  document.body.appendChild(iframe);
+  iframe.contentDocument.open();
+  iframe.onload = () => {
+    setTimeout(() => {
+      iframe.contentWindow.print();
+      setTimeout(() => document.body.removeChild(iframe), 1000);
+    }, 800);
+  };
+  iframe.contentDocument.open();
+  iframe.contentDocument.write(html);
+  iframe.contentDocument.close();
+}
+
+// ═══════════════════════════════════════════════
+// LIBRARY
+// ═══════════════════════════════════════════════
+const LIBRARY_KEY = 'bythecover_library';
+
+function loadLibrary() {
+  try { return JSON.parse(localStorage.getItem(LIBRARY_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveToLibrary() {
+  if (!state.color || !state.image) return;
+  const lib = loadLibrary();
+  // Skip if identical to last saved cover
+  const last = lib[lib.length - 1];
+  if (last && last.name === (state.name || '') &&
+      last.image?.svg === state.image?.svg &&
+      last.color?.colors?.[0] === state.color?.colors?.[0]) return;
+  lib.push({
+    color:       state.color,
+    image:       state.image,
+    composition: state.composition,
+    typography:  state.typography,
+    name:        state.name || '',
+    summary:     state.summary || '',
+    id:          Date.now()
+  });
+  if (lib.length > 60) lib.shift();
+  try { localStorage.setItem(LIBRARY_KEY, JSON.stringify(lib)); } catch {}
+}
+
+let libZoom = 1, libTX = 0, libTY = 0;
+let libTargetX = 0, libTargetY = 0;
+let libRafId = null;
+
+function renderLibrary() {
+  saveToLibrary();
+  const lib = loadLibrary();
+  const grid = document.getElementById('library-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  if (!lib.length) {
+    grid.innerHTML = '<p class="lib-empty">הספרייה ריקה — עצבי כריכה כדי לאכלס אותה</p>';
+    return;
+  }
+
+  lib.forEach(entry => {
+    const W = 112, H = 168;
+    const bg     = entry.color?.colors?.[0]  || '#111';
+    const accent = entry.color?.colors?.[2]  || null;
+    const fg     = entry.color?.textColor    || '#fff';
+    const imgSvg = entry.image?.svg          || null;
+    const inner  = buildCoverSVG(W, H, bg, accent, imgSvg, entry.name,
+                                 entry.typography, fg, entry.composition,
+                                 getPalImgTint(entry.color));
+    const spineCol = entry.color?.colors?.[1];
+    const spineGrad = spineCol
+      ? `linear-gradient(to right, color-mix(in srgb,${spineCol} 50%,#000) 0%, ${spineCol} 45%, color-mix(in srgb,${spineCol} 70%,#000) 100%)`
+      : 'linear-gradient(to right, #080808 0%, #242424 55%, #111 100%)';
+    const div = document.createElement('div');
+    div.className = 'lib-book';
+    div.style.setProperty('--lib-spine', spineGrad);
+    div.innerHTML = `<div class="lib-book-face"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${inner}</svg></div>`;
+    div.addEventListener('click', () => openBookModal(entry));
+    grid.appendChild(div);
+  });
+
+  applyLibTransform();
+  startLibParallax();
+}
+
+function applyLibTransform() {
+  const world = document.getElementById('library-world');
+  if (world) world.style.transform = `translate(${libTX.toFixed(2)}px,${libTY.toFixed(2)}px) scale(${libZoom.toFixed(4)})`;
+}
+
+function startLibParallax() {
+  const vp = document.getElementById('library-viewport');
+  if (!vp) return;
+
+  vp.onmousemove = e => {
+    const r = vp.getBoundingClientRect();
+    libTargetX = ((e.clientX - r.left) / r.width  - 0.5) * -32;
+    libTargetY = ((e.clientY - r.top)  / r.height - 0.5) * -20;
+  };
+  vp.onmouseleave = () => { libTargetX = 0; libTargetY = 0; };
+  vp.onwheel = e => {
+    e.preventDefault();
+    libZoom = Math.max(0.22, Math.min(2.4, libZoom - e.deltaY * 0.0012));
+    applyLibTransform();
+  };
+
+  if (libRafId) cancelAnimationFrame(libRafId);
+  (function tick() {
+    libTX += (libTargetX - libTX) * 0.07;
+    libTY += (libTargetY - libTY) * 0.07;
+    applyLibTransform();
+    libRafId = requestAnimationFrame(tick);
+  })();
+}
+
+function openBookModal(entry) {
+  const W = 180, H = 270;
+  const bg     = entry.color?.colors?.[0] || '#111';
+  const accent = entry.color?.colors?.[2] || null;
+  const fg     = entry.color?.textColor   || '#fff';
+  const imgSvg = entry.image?.svg         || null;
+  const inner  = buildCoverSVG(W, H, bg, accent, imgSvg, entry.name,
+                               entry.typography, fg, entry.composition,
+                               getPalImgTint(entry.color));
+  const spineCol = entry.color?.colors?.[1];
+  const spineGrad = spineCol
+    ? `linear-gradient(to right, color-mix(in srgb,${spineCol} 50%,#000) 0%, ${spineCol} 45%, color-mix(in srgb,${spineCol} 70%,#000) 100%)`
+    : 'linear-gradient(to right, #080808 0%, #242424 55%, #111 100%)';
+  document.getElementById('book-modal-cover').style.setProperty('--modal-spine', spineGrad);
+  document.getElementById('book-modal-face').innerHTML =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${inner}</svg>`;
+  document.getElementById('book-modal-summary').textContent = entry.summary || '';
+  document.getElementById('book-modal-name').textContent    = entry.name    || '';
+  document.getElementById('book-modal').classList.add('open');
+  document.addEventListener('keydown', _modalEsc);
+}
+
+function closeBookModal() {
+  document.getElementById('book-modal').classList.remove('open');
+  document.removeEventListener('keydown', _modalEsc);
+}
+
+function _modalEsc(e) { if (e.key === 'Escape') closeBookModal(); }
+
+function stopLibParallax() {
+  const vp = document.getElementById('library-viewport');
+  if (vp) { vp.onmousemove = null; vp.onmouseleave = null; vp.onwheel = null; }
+  if (libRafId) { cancelAnimationFrame(libRafId); libRafId = null; }
 }
 
 // ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
+localStorage.removeItem(LIBRARY_KEY);
 go(1);
 </script>
 </body>
