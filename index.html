@@ -2834,38 +2834,29 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
   const BACK  = { x: Math.round((1-0.433)*TEX), y: _Y, w: Math.round((0.433-0.017)*TEX), h: _H };
 
   function buildTextureCanvas(callback) {
-    console.log('S9 buildTextureCanvas called');
-    try {
-    const bg       = state.color ? state.color.colors[0] : '#111111';
-    const spineCol = state.color ? state.color.colors[1] : '#222222';
-    const accent   = state.color ? state.color.colors[2] : null;
-    const fg       = state.color ? state.color.textColor : '#FFFAF1';
-    const imgPath  = state.image ? state.image.svg : null;
-    const font     = state.typography;
-    const name     = state.name || '';
-    const title    = state.bookTitle || 'כותרת';
-    const comp     = state.composition;
-    const summary  = state.summary || '';
-
-    // 3D front cover face is ~1.4 wide × 2.0 tall.
-    // FRONT texture slot is 411×971 px (aspect 0.423 vs 0.70 needed).
-    // Fix: draw on offscreen canvas at correct 3D proportions, then squish into slot.
-    const COV_H = FRONT.h;                                  // 971 px
-    const COV_W = Math.round(COV_H * (1.4 / 2.0));         // ≈ 680 px
+    const bg      = state.color ? state.color.colors[0] : '#111111';
+    const spineCol= state.color ? state.color.colors[1] : '#222222';
+    const accent  = state.color ? state.color.colors[2] : null;
+    const fg      = state.color ? state.color.textColor : '#FFFAF1';
+    const imgPath = state.image ? state.image.svg : null;
+    const font    = state.typography;
+    const name    = state.name || '';
+    const title   = state.bookTitle || 'כותרת';
+    const comp    = state.composition;
+    const summary = state.summary || '';
+    const COV_H   = FRONT.h;
+    const COV_W   = Math.round(COV_H * (1.4 / 2.0)); // ≈680, correct 3D aspect
 
     function draw(loadedImg) {
-      console.log('S9 draw() bg=', bg, 'fg=', fg, 'title=', title, 'img=', !!loadedImg);
       const canvas = document.createElement('canvas');
       canvas.width = TEX; canvas.height = TEX;
       const ctx = canvas.getContext('2d');
 
-      // fill entire texture with bg first (no transparent holes)
-      ctx.fillStyle = (typeof bg === 'string' && bg) ? bg : '#222222';
-      ctx.fillRect(0, 0, TEX, TEX);
+      // base fill
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, TEX, TEX);
 
-      // ── BACK COVER ──────────────────────────────────────────────────────────
-      ctx.fillStyle = bg;
-      ctx.fillRect(BACK.x, BACK.y, BACK.w, BACK.h);
+      // BACK COVER
+      ctx.fillStyle = bg; ctx.fillRect(BACK.x, BACK.y, BACK.w, BACK.h);
       if (accent) {
         ctx.save(); ctx.globalAlpha = 0.12; ctx.fillStyle = accent;
         ctx.fillRect(BACK.x, BACK.y, BACK.w, BACK.h); ctx.restore();
@@ -2874,7 +2865,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         const fs = Math.max(11, Math.round(BACK.w * 0.055));
         ctx.save();
         ctx.font = `${fs}px Arbel, sans-serif`;
-        ctx.fillStyle = fg; ctx.globalAlpha = 0.75;
+        ctx.fillStyle = fg; ctx.globalAlpha = 0.80;
         ctx.textAlign = 'center'; ctx.direction = 'rtl';
         const maxW = BACK.w * 0.80;
         const words = summary.split(' ');
@@ -2894,67 +2885,45 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         ctx.restore();
       }
 
-      // ── SPINE ────────────────────────────────────────────────────────────────
-      ctx.fillStyle = spineCol;
-      ctx.fillRect(SPINE.x, SPINE.y, SPINE.w, SPINE.h);
+      // SPINE
+      ctx.fillStyle = spineCol; ctx.fillRect(SPINE.x, SPINE.y, SPINE.w, SPINE.h);
       const sg = ctx.createLinearGradient(SPINE.x, 0, SPINE.x + SPINE.w, 0);
-      sg.addColorStop(0,   'rgba(0,0,0,0.45)');
-      sg.addColorStop(0.4, 'rgba(0,0,0,0.10)');
-      sg.addColorStop(0.7, 'rgba(255,255,255,0.12)');
-      sg.addColorStop(1,   'rgba(0,0,0,0.30)');
+      sg.addColorStop(0, 'rgba(0,0,0,0.45)'); sg.addColorStop(0.4, 'rgba(0,0,0,0.10)');
+      sg.addColorStop(0.7, 'rgba(255,255,255,0.12)'); sg.addColorStop(1, 'rgba(0,0,0,0.30)');
       ctx.fillStyle = sg; ctx.fillRect(SPINE.x, SPINE.y, SPINE.w, SPINE.h);
 
-      // ── FRONT COVER on offscreen canvas at correct 3D proportions ───────────
-      const oc  = document.createElement('canvas');
-      oc.width  = COV_W; oc.height = COV_H;
+      // FRONT COVER — offscreen at correct 3D proportions, squished into texture slot
+      const oc = document.createElement('canvas');
+      oc.width = COV_W; oc.height = COV_H;
       const oc2 = oc.getContext('2d');
-
       oc2.fillStyle = bg; oc2.fillRect(0, 0, COV_W, COV_H);
       if (accent) {
         oc2.save(); oc2.globalAlpha = 0.12; oc2.fillStyle = accent;
         oc2.fillRect(0, 0, COV_W, COV_H); oc2.restore();
       }
 
-      // check if image would taint the canvas (blocked on file:// protocol)
-      function imgSafe(img) {
-        try {
-          const t = document.createElement('canvas'); t.width=1; t.height=1;
-          t.getContext('2d').drawImage(img, 0, 0, 1, 1);
-          t.toDataURL(); return true;
-        } catch(e) { return false; }
-      }
-
-      if (loadedImg && imgSafe(loadedImg)) {
+      if (loadedImg) {
         const ck = comp ? comp.key : 'מרכזי עם ריק';
         const POS = {
           'מרכזי עם ריק':  { cx:.50, cy:.40, pw:.55, ph:.55 },
           'טקסט דומיננטי':{ cx:.78, cy:.20, pw:.30, ph:.30 },
-          'מכסה הכל':     { cx:.50, cy:.50, pw:.95, ph:.95 },
+          'מכסה הכל':     { cx:.50, cy:.50, pw:.90, ph:.90 },
           'חצוי':         { cx:.24, cy:.46, pw:.44, ph:.84 },
           'אסימטרי':      { cx:.28, cy:.64, pw:.50, ph:.48 }
         };
-        const p  = POS[ck] || POS['מרכזי עם ריק'];
+        const p = POS[ck] || POS['מרכזי עם ריק'];
         const iw = p.pw * COV_W, ih = p.ph * COV_H;
-        const ix = p.cx * COV_W - iw / 2;
-        const iy = p.cy * COV_H - ih / 2;
-        // tint on separate canvas so bg isn't affected
-        const imgC = document.createElement('canvas');
-        imgC.width = Math.ceil(iw); imgC.height = Math.ceil(ih);
-        const imgCtx = imgC.getContext('2d');
-        imgCtx.drawImage(loadedImg, 0, 0, iw, ih);
-        imgCtx.globalCompositeOperation = 'source-in';
-        imgCtx.fillStyle = fg;
-        imgCtx.fillRect(0, 0, iw, ih);
-        oc2.save();
-        oc2.globalAlpha = 0.9;
-        oc2.drawImage(imgC, ix, iy, iw, ih);
+        const ix = p.cx * COV_W - iw / 2, iy = p.cy * COV_H - ih / 2;
+        oc2.save(); oc2.globalAlpha = 0.88;
+        oc2.drawImage(loadedImg, ix, iy, iw, ih);
         oc2.restore();
       }
 
+      // title + author
       const ck2 = comp ? comp.key : '';
       let tY = COV_H - 55, tX = COV_W * 0.5;
       if (ck2 === 'טקסט דומיננטי') tY = COV_H * 0.62;
-      if (ck2 === 'מכסה הכל')      tY = COV_H * 0.88;  // bottom, over image
+      if (ck2 === 'מכסה הכל')      tY = COV_H * 0.88;
       if (ck2 === 'חצוי')          { tY = COV_H * 0.12; tX = COV_W * 0.75; }
       if (ck2 === 'אסימטרי')       { tY = COV_H * 0.14; tX = COV_W * 0.72; }
       const ff = font ? font.family.replace(/['"]/g, '') : 'Heebo';
@@ -2968,49 +2937,31 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       oc2.font = `${as}px Arbel, sans-serif`;
       oc2.fillText(name, COV_W * 0.5, COV_H - 14);
 
-      // squish offscreen canvas into FRONT texture slot (GPU un-squishes it back)
+      // squish into FRONT slot (GPU un-squishes back to correct proportions)
       ctx.save();
       ctx.beginPath(); ctx.rect(FRONT.x, FRONT.y, FRONT.w, FRONT.h); ctx.clip();
       ctx.drawImage(oc, FRONT.x, FRONT.y, FRONT.w, FRONT.h);
       ctx.restore();
-
       callback(canvas);
     }
 
-    function loadImgAsDataUrl(path) {
-      return fetch(path)
-        .then(r => { if (!r.ok) throw new Error('fetch ' + r.status); return r.blob(); })
-        .then(b => new Promise((res, rej) => {
-          const fr = new FileReader();
-          fr.onload = e => {
-            const img = new Image();
-            img.onload  = () => res(img);
-            img.onerror = () => rej(new Error('img decode'));
-            img.src = e.target.result; // data URL — safe for WebGL
-          };
-          fr.onerror = () => rej(new Error('FileReader'));
-          fr.readAsDataURL(b);
-        }));
-    }
-
-    // wait for fonts, then load image (if any), then draw
     document.fonts.ready.then(() => {
-      if (imgPath) {
-        loadImgAsDataUrl(imgPath)
-          .then(img => draw(img))
-          .catch(err => { console.log('S9 img fallback:', err.message); draw(null); });
-      } else {
-        draw(null);
-      }
+      if (!imgPath) { draw(null); return; }
+      const img = new Image();
+      img.onload = () => {
+        // check if drawing this image would taint the canvas (file:// security)
+        try {
+          const t = document.createElement('canvas'); t.width = 1; t.height = 1;
+          t.getContext('2d').drawImage(img, 0, 0, 1, 1);
+          t.toDataURL(); // throws SecurityError if tainted
+          draw(img);    // safe — same-origin server
+        } catch(e) {
+          draw(null);   // tainted (file://) — skip image, show rest
+        }
+      };
+      img.onerror = () => draw(null);
+      img.src = imgPath;
     });
-    } catch(e) { console.error('S9 buildTextureCanvas ERROR:', e); }
-  }
-
-  function _buildTextureCanvas_OLD_UNUSED(callback) {
-    // REMOVED — replaced by buildTextureCanvas above
-    if (false) {
-      render(null);
-    }
   }
 
   function parseOBJ(text) {
