@@ -2904,10 +2904,10 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
 
       if (loadedImg) {
         const ck = comp ? comp.key : 'מרכזי עם ריק';
-        const POS = {
+        const POS = {   // matches buildCoverSVG positions exactly
           'מרכזי עם ריק':  { cx:.50, cy:.40, pw:.55, ph:.55 },
           'טקסט דומיננטי':{ cx:.78, cy:.20, pw:.30, ph:.30 },
-          'מכסה הכל':     { cx:.50, cy:.50, pw:.90, ph:.90 },
+          'מכסה הכל':     { cx:.50, cy:.60, pw:.95, ph:.72 },
           'חצוי':         { cx:.24, cy:.46, pw:.44, ph:.84 },
           'אסימטרי':      { cx:.28, cy:.64, pw:.50, ph:.48 }
         };
@@ -2929,9 +2929,9 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
 
       // title + author
       const ck2 = comp ? comp.key : '';
-      let tY = COV_H - 55, tX = COV_W * 0.5;
+      let tY = COV_H - 40, tX = COV_W * 0.5;  // matches buildCoverSVG
       if (ck2 === 'טקסט דומיננטי') tY = COV_H * 0.62;
-      if (ck2 === 'מכסה הכל')      tY = COV_H * 0.88;
+      if (ck2 === 'מכסה הכל')      tY = COV_H * 0.15;
       if (ck2 === 'חצוי')          { tY = COV_H * 0.12; tX = COV_W * 0.75; }
       if (ck2 === 'אסימטרי')       { tY = COV_H * 0.14; tX = COV_W * 0.72; }
       const ff = font ? font.family.replace(/['"]/g, '') : 'Heebo';
