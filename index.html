@@ -897,20 +897,24 @@
     }
 
     /* ─── Screen 9: Reveal ─── */
-    #s9 { background: #FFFAF1; gap: 0; justify-content: center; padding-bottom: 80px; }
+    #s9 { background: #FFFAF1; gap: 0; justify-content: flex-start; padding-bottom: 80px; overflow-y: auto; }
     #s9 .q { color: var(--black); opacity: 1; margin-bottom: 40px; font-family: 'Masada', serif; font-style: italic; font-size: 32px; }
     #s9-scene {
-      flex: 1;
+      flex: none;
+      width: 100%;
+      height: 52vh;
+      max-height: 420px;
+      min-height: 260px;
       display: flex; align-items: center; justify-content: center;
-      perspective: 2400px;
-      perspective-origin: 50% 45%;
       cursor: grab;
       user-select: none;
       opacity: 0;
       transition: opacity 1s ease;
+      position: relative;
     }
     #s9-scene.show { opacity: 1; }
     #s9-scene:active { cursor: grabbing; }
+    #s9-three-canvas { display: block; touch-action: none; }
     #s9-book-wrap {
       position: relative;
       display: flex; align-items: center; justify-content: center;
@@ -1330,6 +1334,8 @@
       .print-area { display: block !important; }
     }
   </style>
+<!-- Three.js r128 for 3D book in screen 9 (OBJ parsed inline, no extra CDN needed) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
@@ -1348,30 +1354,32 @@
     <!-- שורה 1 – רוחב מלא, 7 פריטים (y≈7%) -->
     <div class="intro-icon" style="left:calc(7% - 92px);top:calc(7% - 90px);width:185px;height:180px"><img src="בנק אלמנטים מפורט/אימה ומתח/גולגולת.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(21% - 90px);top:calc(7% - 74px);width:180px;height:148px"><img src="בנק אלמנטים מפורט/פנטזיה/כתר.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(35% - 85px);top:calc(7% - 102px);width:170px;height:205px;transform:rotate(-5deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/ענף.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(50% - 84px);top:calc(7% - 96px);width:168px;height:192px;transform:rotate(3deg)"><img src="בנק אלמנטים מפורט/רומנטיקה/פרחים קטנים.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(65% - 62px);top:calc(7% - 92px);width:125px;height:185px"><img src="בנק אלמנטים מפורט/ספרות יפה/נערה עם עגיל הפנינה.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(35% - 85px);top:calc(7% - 102px);width:170px;height:205px;transform:rotate(-5deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(50% - 84px);top:calc(14% - 96px);width:168px;height:192px;transform:rotate(3deg)"><img src="בנק אלמנטים מפורט/רומנטיקה/פרחים קטנים.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(65% - 52px);top:calc(7% - 55px);width:105px;height:155px"><img src="בנק אלמנטים מפורט/ספרות יפה/נערה עם עגיל הפנינה.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(79% - 85px);top:calc(7% - 82px);width:170px;height:165px"><img src="בנק אלמנטים מפורט/אימה ומתח/ציפור.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(93% - 70px);top:calc(7% - 77px);width:140px;height:155px"><img src="בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg" alt=""></div>
     <!-- שורה 2 – 6 פריטים, צדדים (y≈25%) -->
     <div class="intro-icon" style="left:calc(4% - 105px);top:calc(25% - 81px);width:210px;height:162px"><img src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(17% - 97px);top:calc(25% - 97px);width:195px;height:195px"><img src="בנק אלמנטים מפורט/פנטזיה/דרקון.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(33% - 102px);top:calc(25% - 102px);width:205px;height:205px;transform:rotate(-6deg)"><img src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(67% - 82px);top:calc(25% - 82px);width:165px;height:165px"><img src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(33% - 155px);top:calc(33% - 155px);width:310px;height:310px;transform:rotate(-6deg)"><img src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(72% - 82px);top:calc(28% - 82px);width:165px;height:165px"><img src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(83% - 65px);top:calc(25% - 92px);width:130px;height:185px"><img src="בנק אלמנטים מפורט/אימה ומתח/צללית גב אישה.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(96% - 82px);top:calc(25% - 105px);width:165px;height:210px"><img src="בנק אלמנטים מפורט/פנטזיה/טירה.svg" alt=""></div>
-    <!-- שורה 3 – קצוות בלבד, 4 פריטים (y≈50%) -->
+    <!-- שורה 3 – קצוות + מרכז, 6 פריטים (y≈50%) -->
     <div class="intro-icon" style="left:calc(4% - 102px);top:calc(50% - 96px);width:205px;height:192px"><img src="בנק אלמנטים מפורט/אימה ומתח/בית ודרך.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(16% - 65px);top:calc(50% - 112px);width:130px;height:225px;transform:rotate(4deg)"><img src="בנק אלמנטים מפורט/פנטזיה/חרב.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(27% - 90px);top:calc(50% - 90px);width:180px;height:180px"><img src="בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(74% - 105px);top:calc(50% - 105px);width:210px;height:210px;transform:rotate(5deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(84% - 67px);top:calc(50% - 107px);width:135px;height:215px;transform:rotate(-4deg)"><img src="בנק אלמנטים מפורט/אימה ומתח/סכין.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(96% - 82px);top:calc(50% - 77px);width:165px;height:155px;transform:rotate(8deg)"><img src="בנק אלמנטים מפורט/מדע בדיוני/חללית.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(93% - 82px);top:calc(43% - 77px);width:165px;height:155px;transform:rotate(8deg)"><img src="בנק אלמנטים מפורט/מדע בדיוני/חללית.svg" alt=""></div>
     <!-- שורה 4 – צדדים, 6 פריטים (y≈72%) -->
     <div class="intro-icon" style="left:calc(4% - 67px);top:calc(72% - 97px);width:135px;height:195px"><img src="בנק אלמנטים מפורט/אימה ומתח/צללית אדם עומד.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(20% - 87px);top:calc(72% - 87px);width:175px;height:175px"><img src="בנק אלמנטים מפורט/רומנטיקה/ורד.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(34% - 82px);top:calc(72% - 76px);width:165px;height:152px"><img src="בנק אלמנטים מפורט/רומנטיקה/טבעת.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(66% - 67px);top:calc(72% - 97px);width:135px;height:195px"><img src="בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(83% - 71px);top:calc(72% - 133px);width:142px;height:266px;transform:rotate(-8deg)"><img src="בנק אלמנטים מפורט/מדע בדיוני/טיל.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(96% - 82px);top:calc(72% - 112px);width:165px;height:225px"><img src="בנק אלמנטים מפורט/מדע בדיוני/צללית פרופיל.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(96% - 60px);top:calc(65% - 80px);width:120px;height:160px"><img src="בנק אלמנטים מפורט/מדע בדיוני/צללית פרופיל.svg" alt=""></div>
     <!-- שורה 5 – רוחב מלא, 7 פריטים (y≈90%) -->
     <div class="intro-icon" style="left:calc(7% - 70px);top:calc(90% - 95px);width:140px;height:190px"><img src="בנק אלמנטים מפורט/רומנטיקה/יד.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(21% - 77px);top:calc(90% - 72px);width:155px;height:145px;transform:rotate(-4deg)"><img src="בנק אלמנטים מפורט/רומנטיקה/פרפר.svg" alt=""></div>
@@ -1379,7 +1387,7 @@
     <div class="intro-icon" style="left:calc(49% - 92px);top:calc(90% - 92px);width:185px;height:185px"><img src="בנק אלמנטים מפורט/ספרות יפה/פרי.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(63% - 92px);top:calc(90% - 115px);width:185px;height:230px;transform:rotate(-3deg)"><img src="בנק אלמנטים מפורט/פנטזיה/להבה.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(77% - 92px);top:calc(90% - 105px);width:185px;height:210px;transform:rotate(4deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/פסל.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(93% - 100px);top:calc(90% - 97px);width:200px;height:194px"><img src="בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(93% - 100px);top:calc(90% - 97px);width:200px;height:194px"><img src="בנק אלמנטים מפורט/ספרות יפה/ענף.svg" alt=""></div>
   </div>
   <img id="logo-svg" src="logo.svg" alt="לפי הכריכה">
   <button class="btn" onclick="go(2)">שנתחיל?</button>
@@ -1427,6 +1435,7 @@
         <div class="genre-img" style="left:57%;top:56%;width:26%;transform:rotate(4deg)"><img src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
         <div class="genre-img" style="left:10%;top:70%;width:35%;transform:rotate(-5deg)"><img src="בנק אלמנטים מפורט/פנטזיה/דרקון.svg" alt=""></div>
         <div class="genre-img" style="left:62%;top:74%;width:20%"><img src="בנק אלמנטים מפורט/פנטזיה/כתר.svg" alt=""></div>
+        <div class="genre-img" style="left:38%;top:28%;width:22%"><img src="בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg" alt=""></div>
       </div>
     </div>
     <div class="genre-col" onclick="selectGenreCol(this,'מתח ואימה')">
@@ -1460,6 +1469,7 @@
         <div class="genre-img" style="left:37%;top:52%;width:21%;transform:rotate(-5deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/פרי.svg" alt=""></div>
         <div class="genre-img" style="left:6%;top:57%;width:22%"><img src="בנק אלמנטים מפורט/ספרות יפה/פסל.svg" alt=""></div>
         <div class="genre-img" style="left:55%;top:62%;width:34%"><img src="בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg" alt=""></div>
+        <div class="genre-img" style="left:62%;top:34%;width:22%;transform:rotate(-6deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg" alt=""></div>
       </div>
     </div>
     <div class="genre-col" onclick="selectGenreCol(this,'רומנטיקה')">
@@ -1534,20 +1544,11 @@
 <section class="screen" id="s9">
   <p class="q">לפי הכריכה שלך</p>
   <div id="s9-scene">
-    <div id="s9-book-wrap">
-      <div id="s9-book-shadow"></div>
-      <div id="s9-book">
-        <div id="s9-front" class="s9-face">
-          <div id="cover-big"></div>
-        </div>
-        <div id="s9-back-face" class="s9-face">
-          <div id="s9-back-overlay"></div>
-          <div id="summary-text"><span class="loading-dots">טוען...</span></div>
-        </div>
-        <div id="s9-spine-face" class="s9-face"></div>
-        <div id="s9-pages-face" class="s9-face"></div>
-      </div>
-    </div>
+    <canvas id="s9-three-canvas"></canvas>
+    <!-- hidden cover-big used for texture generation only -->
+    <div id="cover-big" style="position:absolute;left:-9999px;top:-9999px;width:288px;height:432px;overflow:hidden;"></div>
+    <!-- kept for summary text on back cover -->
+    <div id="summary-text" style="display:none"><span class="loading-dots">טוען...</span></div>
   </div>
   <div id="s9-info-panel">
     <p id="s9-info-title"></p>
@@ -1839,7 +1840,8 @@ const CATEGORIES = [
     { key:'ענף', svg:'בנק אלמנטים מפורט/ספרות יפה/ענף.svg', score:{A:'R',B:'P',C:'order',D:'indep'} },
     { key:'פסל', svg:'בנק אלמנטים מפורט/ספרות יפה/פסל.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
     { key:'פרי', svg:'בנק אלמנטים מפורט/ספרות יפה/פרי.svg', score:{A:'R',B:'E',C:'order',D:'connect'} },
-    { key:'צללית ילדים', svg:'בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} }
+    { key:'צללית ילדים', svg:'בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'חתולה שחורה', svg:'בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} }
   ]},
   { label:'פנטזיה', color:'#1a0a3d', images:[
     { key:'חרב', svg:'בנק אלמנטים מפורט/פנטזיה/חרב.svg', score:{A:'S',B:'E',C:'chaos',D:'indep'} },
@@ -1847,7 +1849,8 @@ const CATEGORIES = [
     { key:'להבה', svg:'בנק אלמנטים מפורט/פנטזיה/להבה.svg', score:{A:'R',B:'E',C:'chaos',D:'indep'} },
     { key:'מכשפה', svg:'בנק אלמנטים מפורט/פנטזיה/מכשפה.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
     { key:'דרקון', svg:'בנק אלמנטים מפורט/פנטזיה/דרקון.svg', score:{A:'R',B:'E',C:'chaos',D:'indep'} },
-    { key:'כתר', svg:'בנק אלמנטים מפורט/פנטזיה/כתר.svg', score:{A:'S',B:'P',C:'order',D:'indep'} }
+    { key:'כתר', svg:'בנק אלמנטים מפורט/פנטזיה/כתר.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
+    { key:'כדור בדולח', svg:'בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg', score:{A:'R',B:'P',C:'order',D:'connect'} }
   ]},
   { label:'רומנטיקה', color:'#3d0a1f', images:[
     { key:'יד', svg:'בנק אלמנטים מפורט/רומנטיקה/יד.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
@@ -1998,12 +2001,12 @@ function selectGenreCol(el, name) {
 function scatterGenreImages(col) {
   const imgs = Array.from(col.querySelectorAll('.genre-img'));
   const pad = 3;          // % gap from column edges
-  const gap = 4;          // % min gap between images
+  const gap = 7;          // % min gap between images
   const placed = [];
 
   imgs.forEach(img => {
-    // Random size: 14–26% of column width
-    const w = 14 + Math.random() * 12;
+    // Random size: 14–22% of column width
+    const w = 14 + Math.random() * 8;
     // Estimate height in %-space: images are roughly square-ish icons
     const h = w * 1.25;
     // Random gentle rotation
@@ -2016,8 +2019,8 @@ function scatterGenreImages(col) {
     let bestY = pad + Math.random() * (maxY - pad);
     let bestOverlap = Infinity;
 
-    // Try 80 candidates, keep the one with least overlap
-    for (let t = 0; t < 80; t++) {
+    // Try 150 candidates, keep the one with least overlap
+    for (let t = 0; t < 150; t++) {
       const tx = pad + Math.random() * (maxX - pad);
       const ty = pad + Math.random() * (maxY - pad);
       let totalOverlap = 0;
@@ -2073,7 +2076,7 @@ function populateImageBooks() {
     { l:'16%', t:'51%', r: 18 },
     { l:'46%', t:'53%', r:-14 },
     { l:'76%', t:'49%', r: 8  },
-    { l:'86%', t:'23%', r:-5  },
+    { l:'86%', t:'3%',  r:-5  },
   ];
 
   images.forEach((img, i) => {
@@ -2584,17 +2587,8 @@ function _syncPreviews() {
     else                         { cbTitle.style.top = 'auto'; cbTitle.style.bottom = '82px'; }
   }
 
-  // Screen 9 spinning book — spine + back cover colors
-  const s9Book = document.getElementById('s9-book');
-  if (s9Book) {
-    const s9SpineColor = state.color ? state.color.colors[1] : null;
-    const s9SpineGrad = s9SpineColor
-      ? `linear-gradient(to bottom, color-mix(in srgb,${s9SpineColor} 50%,#000) 0%, ${s9SpineColor} 45%, color-mix(in srgb,${s9SpineColor} 70%,#000) 100%)`
-      : 'linear-gradient(to bottom, #0d0d0d 0%, #2a2a2a 60%, #111 100%)';
-    s9Book.style.setProperty('--s9-spine-bg', s9SpineGrad);
-    s9Book.style.setProperty('--s9-back-bg', bg);
-    s9Book.style.setProperty('--s9-back-fg', fg);
-  }
+  // Screen 9 Three.js texture update
+  if (window._s9UpdateTexture && state.screen === 9) window._s9UpdateTexture();
 
   // Postcard front
   const pcf = document.getElementById('pc-front');
@@ -2666,32 +2660,449 @@ function calcScores() {
 }
 
 // ═══════════════════════════════════════════════
-// SCREEN 9 — Spinning book
+// SCREEN 9 — Three.js 3D book
 // ═══════════════════════════════════════════════
-(function initS9Spin() {
-  let rotY = 0, vel = 0.1, isDragging = false, lastX = 0, rafId = null, active = false;
+(function initS9Three() {
+  let threeRenderer = null, threeScene = null, threeCamera = null;
+  let threeBook = null, threeInner = null, threeRafId = null, threeActive = false;
+  let rotY = 0, vel = 0.003, isDragging = false, lastX = 0;
+
+  // OBJ data embedded inline (avoids file:// fetch issues)
+  const OBJ_DATA = `# Blender v2.76 (sub 0) OBJ File
+mtllib book.mtl
+o Plane_Plane.020
+v -15.380597 0.000000 15.380597
+v 15.380597 0.000000 15.380597
+v -15.380597 0.000000 -15.380597
+v 15.380597 0.000000 -15.380597
+vn 0.000000 1.000000 0.000000
+usemtl None
+s off
+f 1//1 2//1 4//1 3//1
+o Plane.019
+v -0.864038 0.311236 0.245424
+v 1.022199 0.311236 0.910336
+v -0.400195 0.311236 -1.070415
+v 1.486042 0.311236 -0.405503
+v -0.864038 0.292482 0.245424
+v 1.022199 0.292482 0.910336
+v -0.400195 0.292482 -1.070415
+v 1.486042 0.292482 -0.405503
+v -0.864038 0.281679 0.245424
+v 1.022199 0.281679 0.910336
+v -0.400195 0.281679 -1.070415
+v 1.486042 0.281679 -0.405503
+v -0.864038 0.268176 0.245424
+v 1.022199 0.268176 0.910336
+v -0.400195 0.268176 -1.070415
+v 1.486042 0.268176 -0.405503
+v -0.864038 0.257374 0.245424
+v 1.022199 0.257374 0.910336
+v -0.400195 0.257374 -1.070415
+v 1.486042 0.257374 -0.405503
+v -0.864038 0.241170 0.245424
+v 1.022199 0.241170 0.910336
+v -0.400195 0.241170 -1.070415
+v 1.486042 0.241170 -0.405503
+v -0.864038 0.227667 0.245424
+v 1.022199 0.227667 0.910336
+v -0.400195 0.227667 -1.070415
+v 1.486042 0.227667 -0.405503
+v -0.864038 0.214164 0.245424
+v 1.022199 0.214164 0.910336
+v -0.400195 0.214164 -1.070415
+v 1.486042 0.214164 -0.405503
+v -0.864038 0.200661 0.245424
+v 1.022199 0.200661 0.910336
+v -0.400195 0.200661 -1.070415
+v 1.486042 0.200661 -0.405503
+v -0.864038 0.181756 0.245424
+v 1.022199 0.181756 0.910336
+v -0.400195 0.181756 -1.070415
+v 1.486042 0.181756 -0.405503
+v -0.864038 0.162852 0.245424
+v 1.022199 0.162852 0.910336
+v -0.400195 0.162852 -1.070415
+v 1.486042 0.162852 -0.405503
+v -0.864038 0.146648 0.245424
+v 1.022199 0.146648 0.910336
+v -0.400195 0.146648 -1.070415
+v 1.486042 0.146648 -0.405503
+v -0.864038 0.130445 0.245424
+v 1.022199 0.130445 0.910336
+v -0.400195 0.130445 -1.070415
+v 1.486042 0.130445 -0.405503
+v -0.864038 0.114241 0.245424
+v 1.022199 0.114241 0.910336
+v -0.400195 0.114241 -1.070415
+v 1.486042 0.114241 -0.405503
+v -0.864038 0.103438 0.245424
+v 1.022199 0.103438 0.910336
+v -0.400195 0.103438 -1.070415
+v 1.486042 0.103438 -0.405503
+v -0.864038 0.084534 0.245424
+v 1.022199 0.084534 0.910336
+v -0.400195 0.084534 -1.070415
+v 1.486042 0.084534 -0.405503
+v -0.864038 0.065630 0.245424
+v 1.022199 0.065630 0.910336
+v -0.400195 0.065630 -1.070415
+v 1.486042 0.065630 -0.405503
+v -0.864038 0.052127 0.245424
+v 1.022199 0.052127 0.910336
+v -0.400195 0.052127 -1.070415
+v 1.486042 0.052127 -0.405503
+v -0.864038 0.038624 0.245424
+v 1.022199 0.038624 0.910336
+v -0.400195 0.038624 -1.070415
+v 1.486042 0.038624 -0.405503
+vn 0.000000 1.000000 0.000000
+usemtl Material.002
+s off
+f 5//2 6//2 8//2 7//2
+f 9//2 10//2 12//2 11//2
+f 13//2 14//2 16//2 15//2
+f 17//2 18//2 20//2 19//2
+f 21//2 22//2 24//2 23//2
+f 25//2 26//2 28//2 27//2
+f 29//2 30//2 32//2 31//2
+f 33//2 34//2 36//2 35//2
+f 37//2 38//2 40//2 39//2
+f 41//2 42//2 44//2 43//2
+f 45//2 46//2 48//2 47//2
+f 49//2 50//2 52//2 51//2
+f 53//2 54//2 56//2 55//2
+f 57//2 58//2 60//2 59//2
+f 61//2 62//2 64//2 63//2
+f 65//2 66//2 68//2 67//2
+f 69//2 70//2 72//2 71//2
+f 73//2 74//2 76//2 75//2
+f 77//2 78//2 80//2 79//2
+o sites_Plane
+v -0.403920 0.322741 -1.067809
+v -0.404206 0.021491 -1.066998
+v 1.482317 0.322742 -0.402896
+v 1.482031 0.021491 -0.402085
+v -0.869194 0.321795 0.252089
+v -0.869194 0.020822 0.252089
+v 1.017043 0.020822 0.917001
+v 1.017043 0.321795 0.917001
+vt 0.433192 0.974450
+vt 0.018603 0.974450
+vt 0.017353 0.026738
+vt 0.431533 0.027005
+vt 0.980502 0.976323
+vt 0.579901 0.976322
+vt 0.578242 0.027005
+vt 0.979252 0.028201
+vn 0.000200 -1.000000 -0.000500
+vn -0.000200 1.000000 0.000600
+vn -0.332500 -0.000000 0.943100
+usemtl Material.001
+s off
+f 86/1/3 82/2/3 84/3/3 87/4/3
+f 81/5/4 85/6/4 88/7/4 83/8/4
+f 85/6/5 86/1/5 87/4/5 88/7/5`;
+
+  // UV regions for the shared cover texture (1024×1024, flipY=false)
+  // UV u is FLIPPED (u_new = 1-u_old) so front cover u_old 0.579-0.980 → u_new 0.020-0.421
+  // Canvas x = u_new * TEX; canvas y = v * TEX (flipY=false, v=0 = top of book)
+  const TEX = 1024;
+  const _Y = Math.round((1-0.976)*TEX);  // = 25
+  const _H = Math.round((0.976-0.027)*TEX); // = 971
+  const FRONT = { x: Math.round((1-0.980)*TEX), y: _Y, w: Math.round((0.980-0.579)*TEX), h: _H };
+  const SPINE = { x: Math.round((1-0.579)*TEX), y: _Y, w: Math.round((0.579-0.431)*TEX), h: _H };
+  const BACK  = { x: Math.round((1-0.433)*TEX), y: _Y, w: Math.round((0.433-0.017)*TEX), h: _H };
+
+  function buildTextureCanvas(callback) {
+    const bg       = state.color ? state.color.colors[0] : '#111111';
+    const spineCol = state.color ? state.color.colors[1] : '#222222';
+    const accent   = state.color ? state.color.colors[2] : null;
+    const fg       = state.color ? state.color.textColor : '#FFFAF1';
+    const imgPath  = state.image ? state.image.svg : null;
+    const font     = state.typography;
+    const name     = state.name || '';
+    const title    = state.bookTitle || 'כותרת';
+    const comp     = state.composition;
+
+    function render(imgDataUrl) {
+      const canvas = document.createElement('canvas');
+      canvas.width = TEX; canvas.height = TEX;
+      const ctx = canvas.getContext('2d');
+
+      // back cover
+      ctx.fillStyle = bg;
+      ctx.fillRect(BACK.x, BACK.y, BACK.w, BACK.h);
+
+      // spine
+      ctx.fillStyle = spineCol;
+      ctx.fillRect(SPINE.x, SPINE.y, SPINE.w, SPINE.h);
+      const sg = ctx.createLinearGradient(SPINE.x, 0, SPINE.x + SPINE.w, 0);
+      sg.addColorStop(0,   'rgba(0,0,0,0.45)');
+      sg.addColorStop(0.4, 'rgba(0,0,0,0.1)');
+      sg.addColorStop(0.7, 'rgba(255,255,255,0.12)');
+      sg.addColorStop(1,   'rgba(0,0,0,0.3)');
+      ctx.fillStyle = sg;
+      ctx.fillRect(SPINE.x, SPINE.y, SPINE.w, SPINE.h);
+
+      // front cover: build SVG without text (text rendered below via Canvas 2D for font support)
+      const FW = FRONT.w, FH = FRONT.h;
+      const svgInner = buildCoverSVG(FW, FH, bg, accent, imgDataUrl, '', font, fg, comp, getPalImgTint(state.color), '​');
+      const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${FW}" height="${FH}" viewBox="0 0 ${FW} ${FH}">${svgInner}</svg>`;
+      const blob = new Blob([svgStr], { type: 'image/svg+xml' });
+      const url  = URL.createObjectURL(blob);
+      const si   = new Image();
+      si.onload = () => {
+        ctx.drawImage(si, FRONT.x, FRONT.y, FW, FH);
+        URL.revokeObjectURL(url);
+        // overlay text using Canvas 2D — can access CSS @font-face fonts
+        const ck = comp ? comp.key : '';
+        let tY = FH - 40, tX = FW * 0.5;
+        if (ck === 'טקסט דומיננטי') tY = FH * 0.62;
+        if (ck === 'מכסה הכל')      tY = FH * 0.15;
+        if (ck === 'חצוי')          { tY = FH * 0.12; tX = FW * 0.75; }
+        if (ck === 'אסימטרי')       { tY = FH * 0.14; tX = FW * 0.72; }
+        const ff = font ? font.family.replace(/['"]/g, '') : 'Heebo';
+        const ts = Math.round(FW * 0.1);
+        const as = Math.round(FW * 0.065);
+        ctx.save();
+        ctx.translate(FRONT.x, FRONT.y);
+        ctx.direction = 'rtl';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = fg;
+        ctx.globalAlpha = 0.9;
+        ctx.font = `bold ${ts}px ${ff}, Heebo, sans-serif`;
+        ctx.fillText(title, tX, tY);
+        ctx.globalAlpha = 0.55;
+        ctx.font = `${as}px Arbel, sans-serif`;
+        ctx.fillText(name, FW * 0.5, FH - 8);
+        ctx.restore();
+        callback(canvas);
+      };
+      si.onerror = () => { URL.revokeObjectURL(url); callback(canvas); };
+      si.src = url;
+    }
+
+    // fetch image as data URL so the blob-URL SVG can reference it cross-origin
+    if (imgPath) {
+      fetch(imgPath)
+        .then(r => r.blob())
+        .then(b => { const fr = new FileReader(); fr.onload = e => render(e.target.result); fr.readAsDataURL(b); })
+        .catch(() => render(null));
+    } else {
+      render(null);
+    }
+  }
+
+  function parseOBJ(text) {
+    const pos = [], uvs = [], norms = [], objs = {};
+    let cur = null;
+    for (const raw of text.split('\n')) {
+      const p = raw.trim().split(/\s+/);
+      if (p[0] === 'v')  { pos.push(+p[1], +p[2], +p[3]); }
+      else if (p[0] === 'vt') { uvs.push(+p[1], +p[2]); }
+      else if (p[0] === 'vn') { norms.push(+p[1], +p[2], +p[3]); }
+      else if (p[0] === 'o')  { cur = p[1]; objs[cur] = []; }
+      else if (p[0] === 'f' && cur) {
+        const vs = p.slice(1).map(s => {
+          const t = s.split('/');
+          return { vi: (+t[0]||1)-1, ti: t[1]===''||!t[1] ? -1 : (+t[1])-1, ni: (+t[2]||1)-1 };
+        });
+        for (let i = 1; i < vs.length-1; i++) {
+          objs[cur].push(vs[0], vs[i], vs[i+1]);
+        }
+      }
+    }
+    const group = new THREE.Group();
+    for (const [name, faces] of Object.entries(objs)) {
+      if (!faces.length) continue;
+      const pa = [], ua = [], na = [];
+      for (const v of faces) {
+        pa.push(pos[v.vi*3], pos[v.vi*3+1], pos[v.vi*3+2]);
+        if (v.ti >= 0) ua.push(1 - uvs[v.ti*2], uvs[v.ti*2+1]);
+        na.push(norms[v.ni*3], norms[v.ni*3+1], norms[v.ni*3+2]);
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(pa, 3));
+      if (ua.length === pa.length/3*2) geo.setAttribute('uv', new THREE.Float32BufferAttribute(ua, 2));
+      if (na.length) geo.setAttribute('normal', new THREE.Float32BufferAttribute(na, 3));
+      else geo.computeVertexNormals();
+      const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x888888 }));
+      mesh.name = name;
+      group.add(mesh);
+    }
+    return group;
+  }
+
+  function buildBook() {
+    if (typeof THREE === 'undefined') { console.error('S9: THREE not loaded'); return; }
+    const parsed = parseOBJ(OBJ_DATA);
+
+    // Center ONLY the book (exclude the huge floor plane Plane_Plane.020 which is ±15 units)
+    const bookBox = new THREE.Box3();
+    parsed.traverse(child => {
+      if (!child.isMesh) return;
+      const n = child.name || '';
+      if (n.match(/Plane_Plane|\.020/)) return; // skip floor plane
+      child.geometry.computeBoundingBox();
+      const gb = child.geometry.boundingBox.clone();
+      // apply mesh's own matrix
+      child.updateMatrixWorld(true);
+      bookBox.union(gb);
+    });
+    const c = new THREE.Vector3();
+    bookBox.getCenter(c);
+    // Shift ALL mesh geometries (including hidden plane) so book is centered at origin
+    parsed.traverse(child => {
+      if (child.isMesh) {
+        child.geometry.translate(-c.x, -c.y, -c.z);
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+
+    // Assign materials
+    parsed.traverse(child => {
+      if (!child.isMesh) return;
+      const n = (child.name || '') + '|' + ((child.parent && child.parent.name) || '');
+      if (n.match(/Plane_Plane|\.020/)) {
+        child.visible = false;
+      } else if (n.match(/Plane\.019|\.019/)) {
+        child.material = new THREE.MeshStandardMaterial({
+          color: 0xEDE8DF, roughness: 0.92, metalness: 0.0,
+          side: THREE.DoubleSide
+        });
+      } else {
+        child.material = new THREE.MeshStandardMaterial({
+          roughness: 0.52, metalness: 0.06,
+          side: THREE.DoubleSide
+        });
+        child._isCover = true;
+      }
+    });
+
+    // The OBJ book lies flat: X=width, Y=thickness (front cover faces +Y), Z=height
+    // Use quaternion to orient correctly:
+    //   OBJ height direction (0.943,0,0.332) → world +Y (upright)
+    //   OBJ front cover normal (0,1,0) → world +Z (facing camera)
+    //   OBJ right direction = cross(front,height) → world +X
+    const bookFront  = new THREE.Vector3(0, 1, 0);
+    const bookHeight = new THREE.Vector3(0.943, 0, 0.332).normalize();
+    const bookRight  = new THREE.Vector3().crossVectors(bookHeight, bookFront).normalize();
+    // Build rotation matrix R: maps OBJ axes to world axes
+    const M = new THREE.Matrix4().makeBasis(bookRight, bookHeight, bookFront);
+    M.transpose(); // R = M^T (since M is orthonormal, inverse = transpose)
+    const innerQuat = new THREE.Quaternion().setFromRotationMatrix(M);
+
+    threeInner = parsed;
+    threeInner.quaternion.copy(innerQuat);
+
+    // Wrap in pivot group — tick() animates pivot.rotation.y for spinning
+    const pivot = new THREE.Group();
+    pivot.add(threeInner);
+    threeBook = pivot;
+    threeBook.rotation.y = rotY; // rotY = Math.PI → start with front facing camera
+    threeScene.add(threeBook);
+    console.log('S9: book loaded and added to scene');
+    applyTexture();
+  }
+
+  function initRenderer() {
+    if (threeRenderer) return;
+    const sceneEl = document.getElementById('s9-scene');
+    if (!sceneEl) { console.error('S9: s9-scene not found'); return; }
+    if (typeof THREE === 'undefined') { console.error('S9: THREE not loaded'); return; }
+
+    const rect = sceneEl.getBoundingClientRect();
+    const W = Math.round(rect.width)  || sceneEl.offsetWidth  || (window.innerWidth - 80);
+    const H = Math.round(rect.height) || sceneEl.offsetHeight || Math.round(window.innerHeight * 0.55);
+    console.log('S9: initRenderer', W, 'x', H);
+
+    threeScene = new THREE.Scene();
+    threeScene.background = new THREE.Color(0xFFFAF1);
+
+    threeCamera = new THREE.PerspectiveCamera(28, W / H, 0.1, 100);
+    threeCamera.position.set(0, 0.1, 5);
+    threeCamera.lookAt(0, 0, 0);
+
+    threeRenderer = new THREE.WebGLRenderer({
+      antialias: true,
+      canvas: document.getElementById('s9-three-canvas')
+    });
+    threeRenderer.setSize(W, H);
+    threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    threeRenderer.shadowMap.enabled = true;
+    threeRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // Lighting
+    const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+    threeScene.add(ambient);
+    const key = new THREE.DirectionalLight(0xffffff, 0.9);
+    key.position.set(2, 5, 4); key.castShadow = true;
+    threeScene.add(key);
+    const fill = new THREE.DirectionalLight(0xfff8e8, 0.35);
+    fill.position.set(-3, 1, 2);
+    threeScene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.2);
+    rim.position.set(0, -2, -3);
+    threeScene.add(rim);
+
+    buildBook();
+  }
+
+  function applyTexture() {
+    if (!threeBook) return;
+    buildTextureCanvas(canvas => {
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.flipY = false;
+      threeBook.traverse(child => {
+        if (child.isMesh && child._isCover) {
+          child.material.map = tex;
+          child.material.needsUpdate = true;
+        }
+      });
+    });
+  }
 
   function tick() {
-    if (!active) return;
+    if (!threeActive || !threeRenderer) return;
     if (!isDragging) {
-      if (Math.abs(vel) < 0.04) vel = 0.1;
+      if (Math.abs(vel) < 0.001) vel = 0.003;
       else vel *= 0.985;
     }
     rotY += vel;
-    const book = document.getElementById('s9-book');
-    if (book) book.style.transform = `rotateY(${rotY}deg)`;
-    rafId = requestAnimationFrame(tick);
+    if (threeBook) threeBook.rotation.y = rotY;
+    threeRenderer.render(threeScene, threeCamera);
+    threeRafId = requestAnimationFrame(tick);
   }
 
   window._s9SpinStart = function() {
-    active = true; vel = 0.1; rotY = 0;
-    if (!rafId) tick();
+    if (!threeRenderer) {
+      initRenderer();
+    } else {
+      // resize if scene dimensions changed
+      const sceneEl = document.getElementById('s9-scene');
+      if (sceneEl) {
+        const rect = sceneEl.getBoundingClientRect();
+        const W = Math.round(rect.width) || 400;
+        const H = Math.round(rect.height) || 350;
+        if (Math.abs(threeRenderer.domElement.width / window.devicePixelRatio - W) > 4) {
+          threeRenderer.setSize(W, H);
+          if (threeCamera) { threeCamera.aspect = W / H; threeCamera.updateProjectionMatrix(); }
+        }
+      }
+    }
+    threeActive = true; vel = 0.003;
+    if (threeBook) applyTexture();
+    if (!threeRafId) tick();
   };
   window._s9SpinStop = function() {
-    active = false;
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    threeActive = false;
+    if (threeRafId) { cancelAnimationFrame(threeRafId); threeRafId = null; }
   };
+  window._s9UpdateTexture = function() { applyTexture(); };
 
+  // Mouse drag with inertia
   document.addEventListener('mousedown', e => {
     const scene = document.getElementById('s9-scene');
     if (!scene || !scene.contains(e.target)) return;
@@ -2699,11 +3110,26 @@ function calcScores() {
   });
   document.addEventListener('mousemove', e => {
     if (!isDragging) return;
-    vel = Math.max(-6, Math.min(6, (e.clientX - lastX) * 0.4));
+    const dx = e.clientX - lastX;
+    vel = Math.max(-0.12, Math.min(0.12, dx * 0.008));
     lastX = e.clientX;
   });
   document.addEventListener('mouseup',    () => { isDragging = false; });
   document.addEventListener('mouseleave', () => { isDragging = false; });
+
+  // Touch support
+  document.addEventListener('touchstart', e => {
+    const scene = document.getElementById('s9-scene');
+    if (!scene || !scene.contains(e.target)) return;
+    isDragging = true; lastX = e.touches[0].clientX; vel = 0;
+  }, { passive: true });
+  document.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const dx = e.touches[0].clientX - lastX;
+    vel = Math.max(-0.12, Math.min(0.12, dx * 0.008));
+    lastX = e.touches[0].clientX;
+  }, { passive: true });
+  document.addEventListener('touchend', () => { isDragging = false; });
 })();
 
 // ═══════════════════════════════════════════════
