@@ -102,11 +102,11 @@
       background: var(--black);
       color: var(--cream);
       border: 1.5px solid var(--black);
-      padding: 13px 42px;
+      padding: 13px 22px;
       font-family: var(--font);
       font-size: 13px;
       letter-spacing: 3px;
-      border-radius: 8px;
+      border-radius: 0;
       cursor: pointer;
       transition: all .25s;
     }
@@ -127,7 +127,7 @@
       z-index: 1;
     }
     #s1 #logo-svg { position: relative; z-index: 1; }
-    #s1 .btn { position: relative; z-index: 1; margin-top: -60px; border-radius: 8px; }
+    #s1 .btn { position: relative; z-index: 1; margin-top: -60px; border-radius: 0; }
 
     /* ─── Scattered opening icons ─── */
     .intro-icons { position: absolute; inset: 0; pointer-events: none; }
@@ -192,12 +192,15 @@
     /* ─── Screen 3: Sliders ─── */
     #s3 { transition: background 0.5s ease, color 0.5s ease; }
     #s3 .q { font-size: 32px; margin-bottom: 43px; }
-    #s3 .sliders-wrap { width: 696px; margin-bottom: 53px; }
-    #s3 .slider-row { gap: 17px; margin-bottom: 24px; }
-    #s3 .sl-lbl { font-size: 14px; min-width: 86px; }
+    #s3 .sliders-wrap { width: 835px; margin-bottom: 53px; }
+    #s3 .slider-row { gap: 20px; margin-bottom: 29px; }
+    #s3 .sl-lbl { font-size: 17px; min-width: 103px; }
     #s3 input[type=range] { height: 1px; }
-    #s3 input[type=range]::-webkit-slider-thumb { width: 16px; height: 16px; }
-    #s3 input[type=range]::-moz-range-thumb { width: 16px; height: 16px; }
+    #s3 input[type=range]::-webkit-slider-thumb { width: 19px; height: 19px; }
+    #s3 input[type=range]::-moz-range-thumb { width: 19px; height: 19px; }
+    #s3 input[type=range]::-webkit-slider-runnable-track { height: 1px; background: var(--black); border: none; box-shadow: none; }
+    #s3 input[type=range]::-moz-range-track { height: 1px; background: var(--black); border: none; box-shadow: none; }
+    #s3 input[type=range]::-moz-range-progress { height: 1px; background: var(--black); }
     .sliders-wrap { width: 580px; max-width: 90vw; margin-bottom: 44px; }
     .slider-row {
       display: flex;
@@ -1367,6 +1370,7 @@
     <!-- שורה 2 – 6 פריטים, צדדים (y≈25%) -->
     <div class="intro-icon" style="left:calc(4% - 105px);top:calc(25% - 81px);width:210px;height:162px"><img src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(17% - 97px);top:calc(25% - 97px);width:195px;height:195px"><img src="בנק אלמנטים מפורט/פנטזיה/דרקון.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(26% - 68px);top:calc(22% - 77px);width:136px;height:153px"><img src="בנק אלמנטים מפורט/אימה ומתח/יד.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(33% - 155px);top:calc(33% - 155px);width:310px;height:310px;transform:rotate(-6deg)"><img src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(66% - 60px);top:calc(38% - 60px);width:120px;height:120px;transform:rotate(6deg)"><img src="בנק אלמנטים מפורט/רומנטיקה/מעטפה.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(72% - 82px);top:calc(28% - 82px);width:165px;height:165px"><img src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""></div>
@@ -1385,10 +1389,13 @@
     <div class="intro-icon" style="left:calc(34% - 82px);top:calc(72% - 76px);width:165px;height:152px"><img src="בנק אלמנטים מפורט/רומנטיקה/טבעת.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(12% - 65px);top:calc(40% - 65px);width:130px;height:130px;transform:rotate(-4deg)"><img src="בנק אלמנטים מפורט/רומנטיקה/מנעול בצורת לב.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(57% - 50px);top:calc(18% - 105px);width:100px;height:210px;transform:rotate(3deg)"><img src="בנק אלמנטים מפורט/אימה ומתח/נר.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(67% - 70px);top:calc(50% - 55px);width:140px;height:110px;transform:rotate(-6deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/נעל עקב.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(66% - 67px);top:calc(72% - 97px);width:135px;height:195px"><img src="בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(83% - 71px);top:calc(72% - 133px);width:142px;height:266px;transform:rotate(-8deg)"><img src="בנק אלמנטים מפורט/מדע בדיוני/טיל.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(96% - 60px);top:calc(65% - 80px);width:120px;height:160px"><img src="בנק אלמנטים מפורט/מדע בדיוני/צללית פרופיל.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(44% - 69px);top:calc(30% - 83px);width:138px;height:166px;transform:rotate(-5deg)"><img src="בנק אלמנטים מפורט/מדע בדיוני/רובוט.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(78% - 43px);top:calc(40% - 55px);width:85px;height:110px;transform:rotate(-3deg)"><img src="בנק אלמנטים מפורט/פנטזיה/בת ים.svg" alt=""></div>
+    <div class="intro-icon" style="left:calc(43% - 60px);top:calc(81% - 65px);width:120px;height:130px;transform:rotate(5deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/טלפון.svg" alt=""></div>
     <!-- שורה 5 – רוחב מלא, 7 פריטים (y≈90%) -->
     <div class="intro-icon" style="left:calc(7% - 70px);top:calc(90% - 95px);width:140px;height:190px"><img src="בנק אלמנטים מפורט/רומנטיקה/יד.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(21% - 77px);top:calc(90% - 72px);width:155px;height:145px;transform:rotate(-4deg)"><img src="בנק אלמנטים מפורט/רומנטיקה/פרפר.svg" alt=""></div>
@@ -1445,6 +1452,7 @@
         <div class="genre-img" style="left:10%;top:70%;width:35%;transform:rotate(-5deg)"><img src="בנק אלמנטים מפורט/פנטזיה/דרקון.svg" alt=""></div>
         <div class="genre-img" style="left:62%;top:74%;width:20%"><img src="בנק אלמנטים מפורט/פנטזיה/כתר.svg" alt=""></div>
         <div class="genre-img" style="left:38%;top:28%;width:22%"><img src="בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg" alt=""></div>
+        <div class="genre-img" style="left:68%;top:34%;width:20%;transform:rotate(5deg)"><img src="בנק אלמנטים מפורט/פנטזיה/בת ים.svg" alt=""></div>
       </div>
     </div>
     <div class="genre-col" onclick="selectGenreCol(this,'מתח ואימה')">
@@ -1457,6 +1465,7 @@
         <div class="genre-img" style="left:20%;top:32%;width:20%"><img src="בנק אלמנטים מפורט/אימה ומתח/צללית אדם עומד.svg" alt=""></div>
         <div class="genre-img" style="left:70%;top:40%;width:22%"><img src="בנק אלמנטים מפורט/אימה ומתח/צללית גב אישה.svg" alt=""></div>
         <div class="genre-img" style="left:62%;top:64%;width:14%;transform:rotate(4deg)"><img src="בנק אלמנטים מפורט/אימה ומתח/נר.svg" alt=""></div>
+        <div class="genre-img" style="left:35%;top:75%;width:20%;transform:rotate(-5deg)"><img src="בנק אלמנטים מפורט/אימה ומתח/יד.svg" alt=""></div>
       </div>
     </div>
     <div class="genre-col" onclick="selectGenreCol(this,'מדע בדיוני')">
@@ -1481,6 +1490,8 @@
         <div class="genre-img" style="left:6%;top:57%;width:22%"><img src="בנק אלמנטים מפורט/ספרות יפה/פסל.svg" alt=""></div>
         <div class="genre-img" style="left:55%;top:62%;width:34%"><img src="בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg" alt=""></div>
         <div class="genre-img" style="left:62%;top:34%;width:22%;transform:rotate(-6deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg" alt=""></div>
+        <div class="genre-img" style="left:28%;top:26%;width:22%;transform:rotate(5deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/נעל עקב.svg" alt=""></div>
+        <div class="genre-img" style="left:4%;top:36%;width:18%;transform:rotate(-4deg)"><img src="בנק אלמנטים מפורט/ספרות יפה/טלפון.svg" alt=""></div>
       </div>
     </div>
     <div class="genre-col" onclick="selectGenreCol(this,'רומנטיקה')">
@@ -1838,7 +1849,8 @@ const CATEGORIES = [
     { key:'ציפור', svg:'בנק אלמנטים מפורט/אימה ומתח/ציפור.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
     { key:'צללית אדם עומד', svg:'בנק אלמנטים מפורט/אימה ומתח/צללית אדם עומד.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
     { key:'צללית גב אישה', svg:'בנק אלמנטים מפורט/אימה ומתח/צללית גב אישה.svg', score:{A:'R',B:'P',C:'chaos',D:'connect'} },
-    { key:'נר', svg:'בנק אלמנטים מפורט/אימה ומתח/נר.svg', score:{A:'R',B:'P',C:'order',D:'indep'} }
+    { key:'נר', svg:'בנק אלמנטים מפורט/אימה ומתח/נר.svg', score:{A:'R',B:'P',C:'order',D:'indep'} },
+    { key:'יד', svg:'בנק אלמנטים מפורט/אימה ומתח/יד.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} }
   ]},
   { label:'מדע בדיוני', color:'#0a1a3d', images:[
     { key:'אסטרונאוט', svg:'בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
@@ -1856,7 +1868,9 @@ const CATEGORIES = [
     { key:'פסל', svg:'בנק אלמנטים מפורט/ספרות יפה/פסל.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
     { key:'פרי', svg:'בנק אלמנטים מפורט/ספרות יפה/פרי.svg', score:{A:'R',B:'E',C:'order',D:'connect'} },
     { key:'צללית ילדים', svg:'בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
-    { key:'חתולה שחורה', svg:'בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} }
+    { key:'חתולה שחורה', svg:'בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
+    { key:'נעל עקב', svg:'בנק אלמנטים מפורט/ספרות יפה/נעל עקב.svg', score:{A:'R',B:'E',C:'order',D:'connect'} },
+    { key:'טלפון', svg:'בנק אלמנטים מפורט/ספרות יפה/טלפון.svg', score:{A:'S',B:'P',C:'order',D:'connect'} }
   ]},
   { label:'פנטזיה', color:'#1a0a3d', images:[
     { key:'חרב', svg:'בנק אלמנטים מפורט/פנטזיה/חרב.svg', score:{A:'S',B:'E',C:'chaos',D:'indep'} },
@@ -1864,8 +1878,9 @@ const CATEGORIES = [
     { key:'להבה', svg:'בנק אלמנטים מפורט/פנטזיה/להבה.svg', score:{A:'R',B:'E',C:'chaos',D:'indep'} },
     { key:'מכשפה', svg:'בנק אלמנטים מפורט/פנטזיה/מכשפה.svg', score:{A:'R',B:'P',C:'chaos',D:'indep'} },
     { key:'דרקון', svg:'בנק אלמנטים מפורט/פנטזיה/דרקון.svg', score:{A:'R',B:'E',C:'chaos',D:'indep'} },
-    { key:'כתר', svg:'בנק אלמנטים מפורט/פנטזיה/כתר.svg', score:{A:'S',B:'P',C:'order',D:'indep'} },
-    { key:'כדור בדולח', svg:'בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg', score:{A:'R',B:'P',C:'order',D:'connect'} }
+    { key:'בת ים', svg:'בנק אלמנטים מפורט/פנטזיה/בת ים.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+    { key:'כדור בדולח', svg:'בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg', score:{A:'R',B:'P',C:'order',D:'connect'} },
+    { key:'כתר', svg:'בנק אלמנטים מפורט/פנטזיה/כתר.svg', score:{A:'S',B:'P',C:'order',D:'indep'} }
   ]},
   { label:'רומנטיקה', color:'#3d0a1f', images:[
     { key:'יד', svg:'בנק אלמנטים מפורט/רומנטיקה/יד.svg', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
@@ -2005,6 +2020,50 @@ function updateS3Bg() {
   });
 })();
 
+// Screen 3 — pixel particle effect on mousemove
+(function() {
+  const s3 = document.getElementById('s3');
+  let lastX = -99, lastY = -99, throttle = false;
+
+  s3.addEventListener('mousemove', function(e) {
+    if (throttle) return;
+    throttle = true;
+    requestAnimationFrame(() => { throttle = false; });
+
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    if (Math.abs(dx) + Math.abs(dy) < 4) return;
+    lastX = e.clientX; lastY = e.clientY;
+
+    const count = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < count; i++) {
+      const px = document.createElement('div');
+      const size = 2 + Math.floor(Math.random() * 4);
+      const vx = (Math.random() - 0.5) * 60;
+      const vy = (Math.random() - 0.8) * 60;
+      const dur = 400 + Math.random() * 400;
+      Object.assign(px.style, {
+        position: 'fixed',
+        left: e.clientX + 'px',
+        top:  e.clientY + 'px',
+        width:  size + 'px',
+        height: size + 'px',
+        background: getComputedStyle(document.documentElement).getPropertyValue('--black').trim() || '#231f20',
+        pointerEvents: 'none',
+        zIndex: 9999,
+        opacity: '0.7',
+        transition: `transform ${dur}ms linear, opacity ${dur}ms ease`,
+        transform: 'translate(0,0)',
+      });
+      document.body.appendChild(px);
+      requestAnimationFrame(() => {
+        px.style.transform = `translate(${vx}px, ${vy}px)`;
+        px.style.opacity = '0';
+      });
+      setTimeout(() => px.remove(), dur + 50);
+    }
+  });
+})();
+
 // ═══════════════════════════════════════════════
 // SCREEN 4 — Genre
 // ═══════════════════════════════════════════════
@@ -2016,7 +2075,22 @@ function selectGenreCol(el, name) {
 }
 
 function scatterGenreImages(col) {
-  const imgs = Array.from(col.querySelectorAll('.genre-img'));
+  const allImgs = Array.from(col.querySelectorAll('.genre-img'));
+  const prevShown = col._prevShown || [];
+  // Pick 5 out of 8, guaranteeing at least 3 are different from last time
+  let imgs;
+  let attempts = 0;
+  do {
+    const shuffled = allImgs.slice().sort(() => Math.random() - 0.5);
+    imgs = shuffled.slice(0, 5);
+    attempts++;
+  } while (attempts < 20 && imgs.filter(img => !prevShown.includes(img)).length < 3);
+  col._prevShown = imgs;
+
+  const hidden = allImgs.filter(img => !imgs.includes(img));
+  hidden.forEach(img => { img.style.opacity = '0'; img.style.pointerEvents = 'none'; });
+  imgs.forEach(img => { img.style.opacity = ''; img.style.pointerEvents = ''; });
+
   const pad = 3;          // % gap from column edges
   const gap = 7;          // % min gap between images
   const placed = [];
@@ -3337,40 +3411,76 @@ function demoGenerate(p) {
   const order    = p?.order    || 'מסודר';
   const connect  = p?.connect  || 'מחפש קשר';
 
-  // Title pool by personality combo
+  // Title pool by personality combo (6 per combo)
   const titleMap = {
-    'רגשי_מופנם':   ['מה שלא נאמר', 'בין השיטין', 'קול שקט מבפנים'],
-    'רגשי_מוחצן':   ['כמו אור מתוך ים', 'הכל בקול רם', 'מלא עד הגדות'],
-    'שכלי_מופנם':   ['הפרק הנסתר', 'מפת הפנים', 'לוגיקה של בדידות'],
-    'שכלי_מוחצן':   ['לוגיקת הלב', 'עמוד ראשון', 'פרק חדש'],
+    'רגשי_מופנם':   ['מה שלא נאמר', 'בין השיטין', 'קול שקט מבפנים', 'פנימה', 'דברים חסרי שם', 'עומק שקט', 'תם ולא נשלם', 'האדם החושב (מידי)', 'מחשבות טורדניות'],
+    'רגשי_מוחצן':   ['כמו אור מתוך ים', 'הכל בקול רם', 'רגשנות מתפרצת', 'בוער', 'כל הצבעים בבת אחת', 'פורץ גדות', 'כאוטי לא במקרה', 'נכנס יין - יצא סוד', 'חזיונות'],
+    'שכלי_מופנם':   ['הפרק הנסתר', 'מפת הפנים', 'לוגיקה של בדידות', 'מבנה פנימי', 'תורת הסוד', 'שדה מגנטי', 'נשמות אבודות', 'ההרפתקה הגדולה', 'יום חדש נפלא'],
+    'שכלי_מוחצן':   ['לוגיקת הלב', 'עמוד ראשון', 'פרק חדש', 'חסר מעצורים', 'הסיבה והסיבה שמאחוריה', 'קצב מדויק', 'אינטואיציה', 'בועט וקופצני', 'צפרדעים וקרפדות'],
   };
   const key = `${emotion}_${social}`;
-  const titleList = titleMap[key] || ['הסיפור שבפנים', 'לפי הכריכה', 'עמוד ראשון'];
+  const titleList = titleMap[key] || ['הסיפור שבפנים', 'לפי הכריכה', 'עמוד ראשון', 'פנים אל פנים', 'מה שנשאר', 'בין שתי שורות'];
   const title = titleList[Math.floor(Math.random() * titleList.length)];
 
-  // Summary pool by personality combo
+  // Summary pool by personality combo (3 per combo, chosen randomly)
   const summaryMap = {
-    'רגשי_מופנם_מסודר':
-      `${name} בנה/תה סדר יפה מאד מבחוץ.\nאבל מבפנים — שם הדברים אחרים לגמרי.\nיש ימים שבהם הכאב הוא הדבר היחיד שמרגיש אמיתי,\nויש ימים שבהם דווקא השקט הוא הבית.\nהכריכה הזו לא מסבירה אותך. היא רק מזכירה לך שאתה/ת שם.`,
-    'רגשי_מופנם_ספונטני':
-      `${name} לא תמיד יודע/ת מה יקרה בפסקה הבאה.\nאבל יש משהו בלהיות מופתע/ת מעצמך —\nכאב שצץ לאחר שנים, שמחה שמגיעה בלי אישור.\nהספר הזה לא נכתב בסדר. גם אתה/ת לא.`,
-    'רגשי_מוחצן_מסודר':
-      `${name} יודע/ת להיות בחדר מלא אנשים ועדיין להיות לבד לגמרי.\nאוסף/ת רגעים כמו מי שמפחד שישכח.\nיש לך מתנה — אתה/ת גורם/ת לאנשים להרגיש נראים.\nרק לפעמים שוכח/ת לעשות את זה לעצמך.`,
-    'רגשי_מוחצן_ספונטני':
-      `${name} חי/ה בקול רם ובצבעים.\nכל החלטה מרגישה כמו קפיצה — וזה בסדר גמור.\nאנשים סביבך מרגישים חיים יותר.\nואתה/ת? אתה/ת מרגיש/ה הכי חי/ה כשמשהו עוד לא ידוע.`,
-    'שכלי_מופנם_מסודר':
-      `${name} בונה/ה מערכות. אוהב/ת שדברים נופלים למקומם.\nאבל לפעמים בלילה את/ה שואל/ת אם הסדר הוא מגן או כלא.\nהתשובה, כמו תמיד, יותר מסובכת ממה שחשבת.\nוזה, מוזר ככל שישמע, מנחם.`,
-    'שכלי_מופנם_ספונטני':
+    'רגשי_מופנם_מסודר': [
+      `${name} דואג/ת לסדר יפה מבחוץ, אבל מבפנים - הדברים נראים אחרת לגמרי.\nיש ימים בהם הקושי הוא הדבר היחידי שמרגיש אמיתי\nויש ימים שבהם דווקא השקט הוא הבית.\nהסיפור שלך אינו מתחיל במה שנאמר, אלא דווקא במה שנסתר.`,
+      `${name} מכיר/ה את הכאב הזה:\nלדעת בדיוק מה את/ה מרגיש/ה אך מבלי למצוא את המילים הנכונות לתאר זאת בקול.\nבמקום זה - את/ה מסדר/ת, מארגנ/ת, שומר/ת על הכל בצורה מרשימה כלפי חוץ.\nאבל מבחינתך? ההישג הכי גדול הוא דווקא השקט שלך עם עצמך,\nזה כל מה שאת/ה צריך/ה.`,
+      `${name} הדמות הראשית בסיפור שלנו בעלת יכולות מיוחדים,\nכישורים ייחודים לשמור רגשות בתוך ארגז כלים מסודר ופנימי שמאכלס בו הכל.\nכל דבר שייך למקומו - גם הדברים שפחות נעימים.\nהבעיה? גם ארגזים אלו נפתחים, המנעולים שלהם לא כל כך עמידים כפי שנוטים לחשוב.\nאבל זה בסדר! זה רק אומר שיש עוד מה לגלות.`,
+      `${name} הדמות הראשית בסיפור זה אינה שגרתית,\nהאופי הרגיש מקרין הרבה על הפנימיות שלה\nגם החוסר שקט שלה מתבטא בארגון ודממה מוחלטת.`,
+    ],
+    'רגשי_מופנם_ספונטני': [
+      `${name} לא תמיד יודע/ת מה יקרה בפסקה הבאה.\nאבל יש משהו בלהיות מופתע/ת מעצמך —\nכאב שצץ לאחר שנים, שמחה שמגיעה בלי אישור.\nהספר הזה לא נכתב בצורה מאורגנת ומסודרת. וכך גם את/ה.`,
+      `${name} חי/ה ברגעים. לא בתוכניות.\nוכל רגע שכזה - שמח, כואב, מבלבל - הוא פשוט עוד שורה חדשה בסיפור.\nאת/ה לא תמיד יודע/ת לאן זה הולך.\nאבל הקריאה סוחפת אותך מידי, ופשוט ממשיכים.`,
+      `${name} מרגיש/ה לפני שמבין/ה.\nוזה לא חולשה - זאת הדרך לקרוא את העולם.\nלפעמים זה מוציא אותך מהמסלול.\nלפעמים זה מביא אותך בדיוק לאן שצריך.\nההרפתקה המופלאה שלך רק החלה.`,
+      `${name} נהנית מההפתעות הקטנות שבחיים,\nאי אפשר לדעת מה צופן בעתיד.\nלמעשה, גם ההווה שלנו כרגע לא כל כך ברור\nאבל אנחנו פשוט ממשיכים.`,
+    ],
+    'רגשי_מוחצן_מסודר': [
+      `${name} יודע/ת להיות בחדר מלא אנשים ועדיין להיות לבד לגמרי.\nאוסף/ת רגעים כמו מי שמפחד שישכח.\nיש לך מתנה - את/ה גורם/ת לאנשים להרגיש נראים.\nרק לפעמים שוכח/ת לעשות את זה לעצמך.\nאל תשכח/י מי את/ה ומי נשאר/ת איתך בסופו של יום.`,
+      `${name} אוהב/ת אנשים — ממש אוהב/ת אותם.\nאבל בסוף הערב, כשכולם הולכים, יש תחושה קטנה שמישהו לא ראה אותך.\nאת/ה לא בטוח/ה מי זה צריך להיות.\nאבל את/ה יודע/ת שאת/ה מחפש/ת.\nהסיפור שלך צריך להישמע.`,
+      `${name} מחזיק/ה את החדר יחד.\nמחייך/ת, שואל/ת, מכיל/ה — ואיכשהו תמיד יודע/ת מה אנשים צריכים.\nהשאלה שאף אחד לא שואל אותך: מה את/ה צריך/ה?\nהאם קריאה בספר זה תעניק לך את הפתרון?`,
+      `${name} יוצא/ת למסע מופלא ומשונה,\nהכאוס הזה אינו משתלט עלייך, אבל הוא ממשיך לנסות.\nאת/ה בעל/ת חסינות גבוהה מאוד.\nאת/ה לא יודע/ת לוותר כל כך בקלות אלא את/ה נשאר/ת נחוש/ה.`,
+    ],
+    'רגשי_מוחצן_ספונטני': [
+      `${name} חי/ה בקול רם ובצבעים.\nכל החלטה מרגישה כמו קפיצה — וזה בסדר גמור.\nאנשים סביבך מרגישים חיים יותר.\nואת/ה? את/ה מרגיש/ה הכי חי/ה כשמשהו עוד לא ידוע.`,
+      `${name} לא צריך/ה הרבה זמן כדי להרגיש - את/ה כבר שם.\nאבל לפעמים העוצמה הזו מפחידה אפילו אותך.\nואז את/ה עושה עוד משהו, פוגש/ת עוד מישהו, יוצר/ת עוד.\nזה לא בריחה. זה הדרך שלך לנשום.\nזה בסדר.`,
+      `${name} בעלת נוכחות שאי אפשר להתעלם ממנה.\nאנשים מרגישים אותך לפני שאת/ה מדבר/ת.\nאת/ה לא תמיד בטוח/ה שזה טוב.\nאבל זה את/ה — ואי אפשר לכתוב את זה אחרת.\nסיפור זה יחשוף בפנייך כמה עוד נותר לך לגלות.`,
+      `${name} נותנת לרגעים הכי לא צפויים להרגיש כאילו תמיד היו חלק מהתוכנית.\nדברים לא מערערים אותך בקלות,\nאומנם את/ה כמו ספר פתוח, אבל וואו! איזה סיפור מעניין יש לך לספר!`,
+    ],
+    'שכלי_מופנם_מסודר': [
+      `${name} בונה מערכות. אוהב/ת שדברים נופלים למקומם.\nאבל לפעמים בלילה את/ה שואל/ת אם הסדר הוא מגן או כלא.\nהתשובה, כמו תמיד, יותר מסובכת ממה שחשבת.\nוזה, מוזר ככל שישמע, מנחם.`,
+      `${name} מעדיף/ה להבין לפני שמרגיש/ה.\nזה עובד רוב הזמן. אבל יש דברים שלא נכנסים לתרשים.\nאת/ה לומד/ת לשבת איתם בכל זאת.\nלאט, בזהירות - בדרך שלך.\nזה הסיפור שלך.`,
+      `${name} חושב/ת בדיוק. מתכנן/ת בקפידה. מצפה לסדר.\nואז החיים עושים משהו שלא היה בתוכנית.\nוגם אז - את/ה מוצא/ת דרך לסדר את זה.\nרק לפעמים צריך קצת יותר זמן.`,
+      `${name} הדמות הראשית שלנו בעלת סוד עמוק ואפל,\nהסובבים אותך גם לא יודעים זאת,\nלא קל להבין אותך,\nאולי כי גם את/ה לא מבין/ה את עצמך כל כך טוב\nאבל אם את/ה כאן, כנראה שאת/ה מנסה.`,
+    ],
+    'שכלי_מופנם_ספונטני': [
       `${name} יש לך תיאוריה על כמעט כל דבר.\nאבל הדבר הכי מעניין קרה בדיוק כשהפסקת לתכנן.\nאולי הכאוס הוא רק סדר שעוד לא הבנת.\nאולי לא. שניהם נשמעים נכון.`,
-    'שכלי_מוחצן_מסודר':
-      `${name} יודע/ת לדבר בצורה שאנשים מבינים.\nמסביר/ה, מארגן/ת, מוביל/ה — לפעמים מתוך כוח, לפעמים מתוך צורך.\nבפנים יש שאלה שחוזרת: האם מספיק לעשות טוב, או שצריך גם להרגיש טוב?\nאין לך תשובה עדיין. אבל את/ה שואל/ת — וזה מה שחשוב.`,
-    'שכלי_מוחצן_ספונטני':
-      `${name} חושב/ת מהר ומדבר/ת אפילו יותר מהר.\nהעולם מרגיש כמו שדה משחק של רעיונות,\nוכל אדם שאתה/ת פוגש/ת הוא פרק חדש.\nהספר הזה לא מסתיים. הוא רק מתחיל שוב.`,
+      `${name} מסוגל/ת לחשוב על עשרה דברים בו זמנית\nואף אחד מהם לא בסדר הנכון.\nאבל בדיוק מהבלגן הזה - צצים הרעיונות הכי חדים.\nואת/ה יודע/ת זאת.`,
+      `${name} סקרן/ית יותר מכל דבר אחר.\nשאלה מעניינת שווה לך יותר מכל תשובה מוכנה.\nואם התשובה מוציאה אותך ממסלול - מצוין.\nזה אומר שזה מעניין.\nאל תירתע/י מזה. זאת העלילה שלך, זה הספר שלך.`,
+      `${name} הלך/ה קצת לאיבוד בדרך\nאבל וואו, כמה שהדרך החדשה הזאת יפה ומעניינת.\nזה די בגדול מתאר את מי שאת/ה -\nנוטה לכיוון ההיגיון מאשר הרגש, אבל יודע/ת להעריך את הכל בחיים. גם לרגש.`,
+    ],
+    'שכלי_מוחצן_מסודר': [
+      `${name} יודע/ת לדבר בצורה שאנשים מבינים.\nמסביר/ה, מארגן/ת, מוביל/ה — לפעמים מתוך כוח, לפעמים מתוך צורך.\nבפנים יש שאלה שחוזרת: האם מספיק לעשות טוב, או שצריך גם להרגיש טוב?\nאין לך תשובה עדיין. אבל את/ה שואל/ת - וזה מה שחשוב.`,
+      `${name} יודע/ת לקחת דברים מסובכים ולהפוך אותם לברורים.\nזה כוח אמיתי. אנשים סומכים עליך בגלל זה.\nאבל לפעמים את/ה רוצה שמישהו יעשה את זה בשבילך -\nפשוט יגיד לך: הכל בסדר, את/ה בכיוון.`,
+      `${name} יש לך מבנה פנימי חזק - ערכים ברורים, כיוון מוגדר.\nאנשים מרגישים את זה ובאים אליך.\nהדבר שאף אחד לא רואה: כמה עבודה הושקעה בלבנות את זה.`,
+      `${name} לא מתבייש/ת להביע בקול את מה שמרגיש/ה.\nלמה גם לא בעצם?\nמישהו צריך!\nהבעיה? שלא תמיד יש את מי שיקשיב באמת.\nאת/ה יודע/ת את זה, אבל עדיין לקרוא את זה לא הופך את זה ליותר קל.`,
+    ],
+    'שכלי_מוחצן_ספונטני': [
+      `${name} חושב/ת מהר ומדבר/ת אפילו יותר מהר.\nהעולם מרגיש כמו שדה משחק של רעיונות,\nוכל אדם שאת/ה פוגש/ת הוא פרק חדש.\nהספר הזה לא מסתיים. הוא רק מתחיל שוב.`,
+      `${name} מתחיל/ה שיחות שמשנות כיוון בתוך שלוש שניות.\nרעיון מוביל לרעיון מוביל לרעיון - וכל עצירה מרגישה כמו בזבוז.\nאנשים לפעמים מתקשים לעקוב.\nאבל מי שמצליח - לא שוכח את זה.`,
+      `${name} נולד/ה עם קצב פנימי שרץ קצת יותר מהר משל כולם.\nמחשבות, מילים, תוכניות - הכל בבת אחת.\nוכשמשהו תופס את תשומת ליבך?\nהעולם כולו נעצר עד שמבינים.`,
+      `${name} עלול/ה לאבד את חוט המחשבה קצת מהר מידי מאחרים,\nהמוח לא נח לרגע, יש כל כך הרבה מה להספיק,\nמה להגיד,\nמה לחוות,\nממה מתחילים?\nוכיצד ממשיכים מכאן?`,
+    ],
   };
 
   const summaryKey = `${emotion}_${social}_${order}`;
-  const summary = summaryMap[summaryKey] || summaryMap[`${emotion}_${social}_מסודר`] ||
-    `${name} יודע/ת לשמור דברים לעצמם.\nיש בך עולמות שלמים שרק מעטים זכו להציץ אליהם —\nוגם הם לא ראו הכל.\nפעם תצא/י מהדלת הזו. פעם תגיד/י את זה בקול.\nעד אז, הכריכה שומרת את הסוד.`;
+  const summaryList = summaryMap[summaryKey] || summaryMap[`${emotion}_${social}_מסודר`] || [
+    `${name} יודע/ת לשמור דברים לעצמם.\nיש בך עולמות שלמים שרק מעטים זכו להציץ אליהם -\nוגם הם לא ראו הכל.\nפעם תצא/י מהדלת הזו. פעם תגיד/י את זה בקול.\nעד אז, הסיפור יישאר בסוד.`,
+    `${name} הוא/היא הסוג שנוכח/ת גם כששקט/ה.\nלא צריך/ה לצעוק כדי שירגישו אותך.\nיש בך עומק שרוב האנשים לא מגיעים אליו -\nלא כי הם לא רוצים. כי הדרך שם דורשת סבלנות.`,
+    `${name} לא תמיד יודע/ת מה להגיד — אבל תמיד יודע/ת מה מרגיש/ה.\nוזה, בסופו של דבר, הרבה יותר נדיר.\nזה הסיפור שלך, שווה להתחיל לקרוא.`,
+  ];
+  const summary = summaryList[Math.floor(Math.random() * summaryList.length)];
 
   return { title, summary };
 }
