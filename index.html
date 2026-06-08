@@ -3107,6 +3107,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
     const spineCol= state.color ? state.color.colors[1] : '#222222';
     const accent  = state.color ? state.color.colors[2] : null;
     const fg      = state.color ? state.color.textColor : '#FFFAF1';
+    const imgTint = getPalImgTint(state.color);
     const imgPath = state.image ? state.image.svg : null;
     const font    = state.typography;
     const name    = state.name || '';
@@ -3116,7 +3117,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
     const COV_H   = FRONT.h;
     const COV_W   = Math.round(COV_H * (1.4 / 2.0)); // ≈680, correct 3D aspect
 
-    function draw(loadedImg) {
+    function draw(loadedImg, logoImg) {
       const canvas = document.createElement('canvas');
       canvas.width = TEX; canvas.height = TEX;
       const ctx = canvas.getContext('2d');
@@ -3148,9 +3149,25 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         const lh = fs * 1.65;
         let ty = BACK.y + (BACK.h - lines.length * lh) / 2 + fs;
         for (const l of lines) { ctx.fillText(l, BACK.x + BACK.w / 2, ty); ty += lh; }
-        ctx.globalAlpha = 0.55;
-        ctx.font = `${Math.round(fs * 0.85)}px Arbel, sans-serif`;
-        ctx.fillText(name, BACK.x + BACK.w / 2, BACK.y + BACK.h - 18);
+        ctx.restore();
+      }
+
+      // Logo on back cover — bottom right, tinted with imgTint color
+      if (logoImg) {
+        const tintColor = imgTint || fg;
+        const lw = Math.round(BACK.w * 0.38);
+        const lh_logo = Math.round(lw * (logoImg.height / logoImg.width));
+        const lx = BACK.x + BACK.w - lw - Math.round(BACK.w * 0.08);
+        const ly = BACK.y + BACK.h - lh_logo - Math.round(BACK.h * 0.05);
+        const lc = document.createElement('canvas');
+        lc.width = lw; lc.height = lh_logo;
+        const lctx = lc.getContext('2d');
+        lctx.drawImage(logoImg, 0, 0, lw, lh_logo);
+        lctx.globalCompositeOperation = 'source-atop';
+        lctx.fillStyle = tintColor;
+        lctx.fillRect(0, 0, lw, lh_logo);
+        ctx.save(); ctx.globalAlpha = 0.7;
+        ctx.drawImage(lc, lx, ly, lw, lh_logo);
         ctx.restore();
       }
 
@@ -3171,25 +3188,39 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         oc2.fillRect(0, 0, COV_W, COV_H); oc2.restore();
       }
 
+      // title Y — computed first so image clamp can use it
+      const ck2 = comp ? comp.key : '';
+      let tY = COV_H - 40, tX = COV_W * 0.5;
+      if (ck2 === 'טקסט דומיננטי') tY = COV_H * 0.62;
+      if (ck2 === 'מכסה הכל')      tY = COV_H * 0.15;
+      if (ck2 === 'חצוי')          { tY = COV_H * 0.12; tX = COV_W * 0.75; }
+      if (ck2 === 'אסימטרי')       { tY = COV_H * 0.14; tX = COV_W * 0.72; }
+
       if (loadedImg) {
         const ck = comp ? comp.key : 'מרכזי עם ריק';
         const POS = {   // matches buildCoverSVG positions exactly
           'מרכזי עם ריק':  { cx:.50, cy:.40, pw:.55, ph:.55 },
           'טקסט דומיננטי':{ cx:.78, cy:.20, pw:.30, ph:.30 },
-          'מכסה הכל':     { cx:.50, cy:.50, pw:.95, ph:.95 },
+          'מכסה הכל':     { cx:.50, cy:.60, pw:.95, ph:.72 },
           'חצוי':         { cx:.24, cy:.46, pw:.44, ph:.84 },
           'אסימטרי':      { cx:.28, cy:.64, pw:.50, ph:.48 }
         };
         const p = POS[ck] || POS['מרכזי עם ריק'];
         const iw = p.pw * COV_W, ih = p.ph * COV_H;
-        const ix = p.cx * COV_W - iw / 2, iy = p.cy * COV_H - ih / 2;
+        const ix = p.cx * COV_W - iw / 2;
+        let iy = p.cy * COV_H - ih / 2;
+        // Clamp image so it doesn't overlap title (same logic as buildCoverSVG)
+        if (ck !== 'מכסה הכל') {
+          const imgBottomMax = tY - COV_H * 0.08;
+          if (iy + ih > imgBottomMax) iy = imgBottomMax - ih;
+        }
         // draw on fresh transparent canvas, then source-atop to tint only drawing pixels
         const imgC = document.createElement('canvas');
         imgC.width = Math.ceil(iw); imgC.height = Math.ceil(ih);
         const ic = imgC.getContext('2d');
         ic.drawImage(loadedImg, 0, 0, iw, ih);
         ic.globalCompositeOperation = 'source-atop';
-        ic.fillStyle = fg;
+        ic.fillStyle = imgTint || fg;
         ic.fillRect(0, 0, iw, ih);
         oc2.save(); oc2.globalAlpha = 0.88;
         oc2.drawImage(imgC, ix, iy, iw, ih);
@@ -3197,12 +3228,6 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       }
 
       // title + author
-      const ck2 = comp ? comp.key : '';
-      let tY = COV_H - 40, tX = COV_W * 0.5;  // matches buildCoverSVG
-      if (ck2 === 'טקסט דומיננטי') tY = COV_H * 0.62;
-      if (ck2 === 'מכסה הכל')      tY = COV_H * 0.15;
-      if (ck2 === 'חצוי')          { tY = COV_H * 0.12; tX = COV_W * 0.75; }
-      if (ck2 === 'אסימטרי')       { tY = COV_H * 0.14; tX = COV_W * 0.72; }
       const ff = font ? font.family.replace(/['"]/g, '') : 'Heebo';
       const ts = Math.round(COV_W * 0.10);
       const as = Math.round(COV_W * 0.065);
@@ -3223,21 +3248,32 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
     }
 
     document.fonts.ready.then(() => {
-      if (!imgPath) { draw(null); return; }
-      const img = new Image();
-      img.onload = () => {
-        // check if drawing this image would taint the canvas (file:// security)
-        try {
-          const t = document.createElement('canvas'); t.width = 1; t.height = 1;
-          t.getContext('2d').drawImage(img, 0, 0, 1, 1);
-          t.toDataURL(); // throws SecurityError if tainted
-          draw(img);    // safe — same-origin server
-        } catch(e) {
-          draw(null);   // tainted (file://) — skip image, show rest
+      const loadOne = src => new Promise(res => {
+        const img = new Image();
+        img.onload = () => res(img);
+        img.onerror = () => res(null);
+        img.src = src;
+      });
+
+      // Load logo via fetch→data URL to avoid canvas taint on file://
+      const logoPromise = fetch('logo.svg')
+        .then(r => r.text())
+        .then(text => loadOne('data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(text)))))
+        .catch(() => null);
+
+      const bookPromise = imgPath ? loadOne(imgPath) : Promise.resolve(null);
+
+      Promise.all([bookPromise, logoPromise]).then(([bookImg, logoImg]) => {
+        // Check taint (file:// security)
+        if (bookImg) {
+          try {
+            const t = document.createElement('canvas'); t.width = 1; t.height = 1;
+            t.getContext('2d').drawImage(bookImg, 0, 0, 1, 1);
+            t.toDataURL();
+          } catch(e) { bookImg = null; }
         }
-      };
-      img.onerror = () => draw(null);
-      img.src = imgPath;
+        draw(bookImg, logoImg);
+      });
     });
   }
 
