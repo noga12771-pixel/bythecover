@@ -3754,9 +3754,39 @@ function printPostcard() {
   .back-logo { width: 55px; opacity: .35; margin-bottom: 1.2em; }
   .back-line  { width: 1cm; height: 1px; background: #111; opacity: .2; margin: 0 auto .8em; }
   .back-text  { font-family: 'Arbel', sans-serif; font-size: 11pt; line-height: 2; font-weight: normal; white-space: pre-line; }
+  .page { position: relative; }
+  .page svg text { display: none; }
+  .html-title {
+    position: absolute; left: 0; right: 0;
+    font-size: ${Math.round(W * 0.09)}px;
+    color: ${fg};
+    text-align: center; direction: rtl;
+    font-family: ${font ? font.family : "'Heebo', sans-serif"};
+    padding: 0 8px;
+    line-height: 1.2;
+    pointer-events: none;
+  }
+  .html-author {
+    position: absolute; left: 0; right: 0; bottom: 8px;
+    font-size: ${Math.round(W * 0.065)}px;
+    color: ${state.color?.nameColor || fg};
+    text-align: center; direction: rtl;
+    font-family: 'Arbel', sans-serif;
+    opacity: 0.55;
+    pointer-events: none;
+  }
 </style></head><body>
 <div class="page">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${frontSVG}</svg>
+  <div class="html-title" style="${(()=>{
+    const ck = comp ? comp.key : '';
+    if (ck === 'מכסה הכל')  return 'top:' + Math.round(H*0.10) + 'px;';
+    if (ck === 'חצוי')      return 'top:' + Math.round(H*0.07) + 'px; text-align:right; right:8%; left:auto;';
+    if (ck === 'אסימטרי')   return 'top:' + Math.round(H*0.09) + 'px; text-align:right; right:8%; left:auto;';
+    if (ck === 'טקסט דומיננטי') return 'top:' + Math.round(H*0.56) + 'px; font-size:' + Math.round(W*0.18) + 'px;';
+    return 'bottom:' + Math.round(H*0.13) + 'px;';
+  })()}">${(state.bookTitle || '').replace(/</g,'&lt;')}</div>
+  ${name ? `<div class="html-author">${name.replace(/</g,'&lt;')}</div>` : ''}
 </div>
 <div class="back">
   <img class="back-logo" src="logo.svg" alt="">
@@ -3770,10 +3800,16 @@ function printPostcard() {
   document.body.appendChild(iframe);
   iframe.contentDocument.open();
   iframe.onload = () => {
-    setTimeout(() => {
-      iframe.contentWindow.print();
+    const win = iframe.contentWindow;
+    const doPrint = () => {
+      win.print();
       setTimeout(() => document.body.removeChild(iframe), 1000);
-    }, 800);
+    };
+    if (win.document.fonts && win.document.fonts.ready) {
+      win.document.fonts.ready.then(doPrint);
+    } else {
+      setTimeout(doPrint, 1200);
+    }
   };
   iframe.contentDocument.open();
   iframe.contentDocument.write(html);
