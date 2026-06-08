@@ -3198,33 +3198,68 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
 
       if (loadedImg) {
         const ck = comp ? comp.key : 'מרכזי עם ריק';
-        const POS = {   // matches buildCoverSVG positions exactly
-          'מרכזי עם ריק':  { cx:.50, cy:.40, pw:.55, ph:.55 },
-          'טקסט דומיננטי':{ cx:.78, cy:.20, pw:.30, ph:.30 },
-          'מכסה הכל':     { cx:.50, cy:.60, pw:.95, ph:.72 },
-          'חצוי':         { cx:.24, cy:.46, pw:.44, ph:.84 },
-          'אסימטרי':      { cx:.28, cy:.64, pw:.50, ph:.48 }
-        };
-        const p = POS[ck] || POS['מרכזי עם ריק'];
-        const iw = p.pw * COV_W, ih = p.ph * COV_H;
-        const ix = p.cx * COV_W - iw / 2;
-        let iy = p.cy * COV_H - ih / 2;
-        // Clamp image so it doesn't overlap title (same logic as buildCoverSVG)
-        if (ck !== 'מכסה הכל') {
-          const imgBottomMax = tY - COV_H * 0.08;
-          if (iy + ih > imgBottomMax) iy = imgBottomMax - ih;
+        const tintColor = imgTint || fg;
+
+        // Helper: draw tinted image at given position/size
+        function drawTinted(sx, sy, sw, sh, alpha, rot) {
+          const tc = document.createElement('canvas');
+          tc.width = Math.max(1, Math.ceil(sw));
+          tc.height = Math.max(1, Math.ceil(sh));
+          const tc2 = tc.getContext('2d');
+          tc2.drawImage(loadedImg, 0, 0, sw, sh);
+          tc2.globalCompositeOperation = 'source-atop';
+          tc2.fillStyle = tintColor;
+          tc2.fillRect(0, 0, sw, sh);
+          oc2.save();
+          oc2.globalAlpha = alpha;
+          if (rot) {
+            oc2.translate(sx + sw / 2, sy + sh / 2);
+            oc2.rotate(rot * Math.PI / 180);
+            oc2.drawImage(tc, -sw / 2, -sh / 2, sw, sh);
+          } else {
+            oc2.drawImage(tc, sx, sy, sw, sh);
+          }
+          oc2.restore();
         }
-        // draw on fresh transparent canvas, then source-atop to tint only drawing pixels
-        const imgC = document.createElement('canvas');
-        imgC.width = Math.ceil(iw); imgC.height = Math.ceil(ih);
-        const ic = imgC.getContext('2d');
-        ic.drawImage(loadedImg, 0, 0, iw, ih);
-        ic.globalCompositeOperation = 'source-atop';
-        ic.fillStyle = imgTint || fg;
-        ic.fillRect(0, 0, iw, ih);
-        oc2.save(); oc2.globalAlpha = 0.88;
-        oc2.drawImage(imgC, ix, iy, iw, ih);
-        oc2.restore();
+
+        if (ck === 'אסימטרי') {
+          // Scatter pattern — 9 copies, same logic as buildCoverSVG
+          const safeTop = COV_H * 0.20, safeBottom = COV_H * 0.86;
+          let seed = 0;
+          for (let i = 0; i < imgPath.length; i++) seed = (seed * 31 + imgPath.charCodeAt(i)) & 0xffff;
+          function sr() { seed = (seed * 1664525 + 1013904223) & 0xffffffff; return (seed >>> 16) / 65535; }
+          const instances = [
+            {cx:0.15,cy:0.20},{cx:0.50,cy:0.15},{cx:0.85,cy:0.22},
+            {cx:0.10,cy:0.50},{cx:0.50,cy:0.50},{cx:0.88,cy:0.52},
+            {cx:0.20,cy:0.80},{cx:0.55,cy:0.82},{cx:0.82,cy:0.78},
+          ];
+          instances.forEach(({cx, cy}) => {
+            const scale = 0.22 + sr() * 0.18;
+            const iw2 = COV_W * scale, ih2 = iw2;
+            const rot2 = (sr() - 0.5) * 40;
+            const op2 = 0.55 + sr() * 0.35;
+            const rawY = safeTop + cy * (safeBottom - safeTop);
+            const ix2 = cx * COV_W - iw2 / 2;
+            const iy2 = rawY - ih2 / 2;
+            drawTinted(ix2, iy2, iw2, ih2, op2, rot2);
+          });
+        } else {
+          const POS = {
+            'מרכזי עם ריק':  { cx:.50, cy:.40, pw:.55, ph:.55 },
+            'טקסט דומיננטי':{ cx:.78, cy:.20, pw:.30, ph:.30 },
+            'מכסה הכל':     { cx:.50, cy:.60, pw:.95, ph:.72 },
+            'חצוי':         { cx:.24, cy:.46, pw:.44, ph:.84 },
+          };
+          const p = POS[ck] || POS['מרכזי עם ריק'];
+          const iw = p.pw * COV_W, ih = p.ph * COV_H;
+          const ix = p.cx * COV_W - iw / 2;
+          let iy = p.cy * COV_H - ih / 2;
+          if (ck !== 'מכסה הכל') {
+            const imgBottomMax = tY - COV_H * 0.08;
+            if (iy + ih > imgBottomMax) iy = imgBottomMax - ih;
+          }
+          drawTinted(ix, iy, iw, ih, 0.88, 0);
+        }
       }
 
       // title + author
@@ -3719,6 +3754,82 @@ function demoGenerate(p) {
 // ═══════════════════════════════════════════════
 // SCREEN 10 — Postcard
 // ═══════════════════════════════════════════════
+
+function buildBackCoverDataUrl(callback) {
+  const W = 600, H = 900;
+  const bg       = state.color ? state.color.colors[0] : '#111111';
+  const accent   = state.color ? state.color.colors[2] : null;
+  const fg       = state.color ? state.color.textColor : '#FFFAF1';
+  const tintColor = getPalImgTint(state.color) || fg;
+  const summary  = state.summary || '';
+
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+  if (accent) {
+    ctx.save(); ctx.globalAlpha = 0.12; ctx.fillStyle = accent;
+    ctx.fillRect(0, 0, W, H); ctx.restore();
+  }
+
+  // Summary text (Arbel renders natively in canvas)
+  if (summary) {
+    document.fonts.ready.then(() => {
+      const fs = Math.max(18, Math.round(W * 0.052));
+      ctx.save();
+      ctx.font = `${fs}px Arbel, sans-serif`;
+      ctx.fillStyle = fg; ctx.globalAlpha = 0.82;
+      ctx.textAlign = 'center'; ctx.direction = 'rtl';
+      const maxW = W * 0.80;
+      const words = summary.split(' ');
+      const lines = []; let cur = words[0] || '';
+      for (let i = 1; i < words.length; i++) {
+        const test = cur + ' ' + words[i];
+        if (ctx.measureText(test).width > maxW) { lines.push(cur); cur = words[i]; }
+        else cur = test;
+      }
+      if (cur) lines.push(cur);
+      const lh = fs * 1.7;
+      let ty = (H - lines.length * lh) / 2 + fs;
+      for (const l of lines) { ctx.fillText(l, W / 2, ty); ty += lh; }
+      ctx.restore();
+      addLogo();
+    });
+  } else {
+    addLogo();
+  }
+
+  function addLogo() {
+    fetch('logo.svg')
+      .then(r => r.text())
+      .then(text => {
+        const img = new Image();
+        img.onload = () => {
+          const lw = Math.round(W * 0.38);
+          const lh2 = Math.round(lw * (img.height / img.width));
+          const lx = W - lw - Math.round(W * 0.08);
+          const ly = H - lh2 - Math.round(H * 0.05);
+          const lc = document.createElement('canvas');
+          lc.width = lw; lc.height = lh2;
+          const lctx = lc.getContext('2d');
+          lctx.drawImage(img, 0, 0, lw, lh2);
+          lctx.globalCompositeOperation = 'source-atop';
+          lctx.fillStyle = tintColor;
+          lctx.fillRect(0, 0, lw, lh2);
+          ctx.save(); ctx.globalAlpha = 0.7;
+          ctx.drawImage(lc, lx, ly, lw, lh2);
+          ctx.restore();
+          callback(canvas.toDataURL('image/png'));
+        };
+        img.onerror = () => callback(canvas.toDataURL('image/png'));
+        img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(text)));
+      })
+      .catch(() => callback(canvas.toDataURL('image/png')));
+  }
+}
+
 function printPostcard() {
   const bg    = state.color ? state.color.colors[0] : '#111111';
   const accent= state.color ? state.color.colors[2] : null;
@@ -3732,88 +3843,72 @@ function printPostcard() {
   const W = 283, H = 425;
   const frontSVG = buildCoverSVG(W, H, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor);
 
-  const baseHref = document.location.href.replace(/[^/]*$/, '');
-  const html = `<!DOCTYPE html>
+  buildBackCoverDataUrl(backDataUrl => {
+    const baseHref = document.location.href.replace(/[^/]*$/, '');
+    const ck = comp ? comp.key : '';
+    const titleStyle = (() => {
+      if (ck === 'מכסה הכל')       return `top:${Math.round(H*0.10)}px;`;
+      if (ck === 'חצוי')           return `top:${Math.round(H*0.07)}px;text-align:right;right:8%;left:auto;`;
+      if (ck === 'אסימטרי')        return `top:${Math.round(H*0.09)}px;text-align:right;right:8%;left:auto;`;
+      if (ck === 'טקסט דומיננטי')  return `top:${Math.round(H*0.56)}px;font-size:${Math.round(W*0.18)}px;`;
+      return `bottom:${Math.round(H*0.13)}px;`;
+    })();
+
+    const html = `<!DOCTYPE html>
 <html dir="rtl"><head><meta charset="utf-8">
 <base href="${baseHref}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Amatic+SC:wght@700&family=Caveat:wght@400;700&family=Share+Tech+Mono&display=swap">
 <style>
-  @font-face { font-family: 'Arbel';         src: url('ArbelG-Regular.otf') format('opentype'); }
-  @font-face { font-family: 'Masada';        src: url('Masada-BoldItalic.otf') format('opentype'); font-weight: bold; font-style: italic; }
+  @font-face { font-family: 'Arbel';          src: url('ArbelG-Regular.otf') format('opentype'); }
+  @font-face { font-family: 'Masada';         src: url('Masada-BoldItalic.otf') format('opentype'); font-weight:bold;font-style:italic; }
   @font-face { font-family: 'OHSalmanHabaka'; src: url('פונטים/OHSalmanHabaka1.0-Regular.otf') format('opentype'); }
-  @font-face { font-family: 'FlamingoBM';    src: url('פונטים/flamingo-regular-fm.otf') format('opentype'); }
-  @font-face { font-family: 'IndexDL';       src: url('פונטים/index-mono-regular-aaa.otf') format('opentype'); }
+  @font-face { font-family: 'FlamingoBM';     src: url('פונטים/flamingo-regular-fm.otf') format('opentype'); }
+  @font-face { font-family: 'IndexDL';        src: url('פונטים/index-mono-regular-aaa.otf') format('opentype'); }
   @page { size: 10cm 15cm; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Heebo', Arial, sans-serif; }
-  .page { width: 10cm; height: 15cm; overflow: hidden; page-break-after: always; }
+  .page { position: relative; width: 10cm; height: 15cm; overflow: hidden; page-break-after: always; }
   .page svg { display: block; width: 100%; height: 100%; }
-  .back { width: 10cm; height: 15cm; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; padding: 1.5cm;
-    text-align: center; direction: rtl; }
-  .back-logo { width: 55px; opacity: .35; margin-bottom: 1.2em; }
-  .back-line  { width: 1cm; height: 1px; background: #111; opacity: .2; margin: 0 auto .8em; }
-  .back-text  { font-family: 'Arbel', sans-serif; font-size: 11pt; line-height: 2; font-weight: normal; white-space: pre-line; }
-  .page { position: relative; }
   .page svg text { display: none; }
+  .back { width: 10cm; height: 15cm; overflow: hidden; }
+  .back img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .html-title {
     position: absolute; left: 0; right: 0;
     font-size: ${Math.round(W * 0.09)}px;
-    color: ${fg};
-    text-align: center; direction: rtl;
+    color: ${fg}; text-align: center; direction: rtl;
     font-family: ${font ? font.family : "'Heebo', sans-serif"};
-    padding: 0 8px;
-    line-height: 1.2;
-    pointer-events: none;
+    padding: 0 8px; line-height: 1.2; pointer-events: none;
   }
   .html-author {
     position: absolute; left: 0; right: 0; bottom: 8px;
     font-size: ${Math.round(W * 0.065)}px;
     color: ${state.color?.nameColor || fg};
     text-align: center; direction: rtl;
-    font-family: 'Arbel', sans-serif;
-    opacity: 0.55;
-    pointer-events: none;
+    font-family: 'Arbel', sans-serif; opacity: 0.55; pointer-events: none;
   }
 </style></head><body>
 <div class="page">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${frontSVG}</svg>
-  <div class="html-title" style="${(()=>{
-    const ck = comp ? comp.key : '';
-    if (ck === 'מכסה הכל')  return 'top:' + Math.round(H*0.10) + 'px;';
-    if (ck === 'חצוי')      return 'top:' + Math.round(H*0.07) + 'px; text-align:right; right:8%; left:auto;';
-    if (ck === 'אסימטרי')   return 'top:' + Math.round(H*0.09) + 'px; text-align:right; right:8%; left:auto;';
-    if (ck === 'טקסט דומיננטי') return 'top:' + Math.round(H*0.56) + 'px; font-size:' + Math.round(W*0.18) + 'px;';
-    return 'bottom:' + Math.round(H*0.13) + 'px;';
-  })()}">${(state.bookTitle || '').replace(/</g,'&lt;')}</div>
+  <div class="html-title" style="${titleStyle}">${(state.bookTitle || '').replace(/</g,'&lt;')}</div>
   ${name ? `<div class="html-author">${name.replace(/</g,'&lt;')}</div>` : ''}
 </div>
 <div class="back">
-  <img class="back-logo" src="logo.svg" alt="">
-  <div class="back-line"></div>
-  <p class="back-text">${summary.replace(/</g,'&lt;')}</p>
+  <img src="${backDataUrl}" alt="">
 </div>
 </body></html>`;
 
-  const iframe = document.createElement('iframe');
-  iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:10cm;height:30cm;border:none;';
-  document.body.appendChild(iframe);
-  iframe.contentDocument.open();
-  iframe.onload = () => {
-    const win = iframe.contentWindow;
-    const doPrint = () => {
-      win.print();
-      setTimeout(() => document.body.removeChild(iframe), 1000);
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:10cm;height:30cm;border:none;';
+    document.body.appendChild(iframe);
+    iframe.onload = () => {
+      const win = iframe.contentWindow;
+      const doPrint = () => { win.print(); setTimeout(() => document.body.removeChild(iframe), 1000); };
+      if (win.document.fonts?.ready) win.document.fonts.ready.then(doPrint);
+      else setTimeout(doPrint, 1200);
     };
-    if (win.document.fonts && win.document.fonts.ready) {
-      win.document.fonts.ready.then(doPrint);
-    } else {
-      setTimeout(doPrint, 1200);
-    }
-  };
-  iframe.contentDocument.open();
-  iframe.contentDocument.write(html);
-  iframe.contentDocument.close();
+    iframe.contentDocument.open();
+    iframe.contentDocument.write(html);
+    iframe.contentDocument.close();
+  });
 }
 
 // ═══════════════════════════════════════════════
