@@ -1236,7 +1236,7 @@
       position: absolute;
       left: 0; right: 0;
       text-align: center;
-      font-size: 22px;
+      font-size: 18px;
       padding: 0 10px;
       pointer-events: none;
       z-index: 4;
@@ -4357,17 +4357,24 @@ function openBookModal(entry) {
   mTitle.style.fontFamily = fontFamily;
   mTitle.style.color = fg;
   mTitle.textContent = entry.bookTitle || '';
-  if (comp === 'מכסה הכל')     { mTitle.style.top = '8%';  mTitle.style.bottom = ''; mTitle.style.textAlign = 'center'; mTitle.style.right = ''; }
-  else if (comp === 'חצוי')    { mTitle.style.top = '8%';  mTitle.style.bottom = ''; mTitle.style.textAlign = 'right'; mTitle.style.right = '8%'; }
-  else if (comp === 'אסימטרי') { mTitle.style.top = '8%';  mTitle.style.bottom = ''; mTitle.style.textAlign = 'right'; mTitle.style.right = '8%'; }
-  else                          { mTitle.style.top = 'auto'; mTitle.style.bottom = '48px'; mTitle.style.textAlign = 'center'; mTitle.style.right = ''; }
+  // Reset all positioning before applying composition-specific values
+  mTitle.style.left = '0'; mTitle.style.right = '0'; mTitle.style.fontSize = '';
+  if (comp === 'מכסה הכל')       { mTitle.style.top = '15%'; mTitle.style.bottom = '';     mTitle.style.textAlign = 'center'; }
+  else if (comp === 'טקסט דומיננטי') { mTitle.style.top = '55%'; mTitle.style.bottom = ''; mTitle.style.textAlign = 'center'; mTitle.style.fontSize = '28px'; }
+  else if (comp === 'חצוי')      { mTitle.style.top = '8%';  mTitle.style.bottom = '';     mTitle.style.textAlign = 'right';  mTitle.style.right = '8%'; mTitle.style.left = ''; }
+  else if (comp === 'אסימטרי')   { mTitle.style.top = '8%';  mTitle.style.bottom = '';     mTitle.style.textAlign = 'right';  mTitle.style.right = '8%'; mTitle.style.left = ''; }
+  else                            { mTitle.style.top = 'auto'; mTitle.style.bottom = '30px'; mTitle.style.textAlign = 'center'; }
 
   let mName = face.querySelector('.modal-html-name');
   if (!mName) { mName = document.createElement('div'); mName.className = 'modal-html-name'; face.appendChild(mName); }
   mName.style.color = fg;
   mName.textContent = entry.name || '';
   const titleEl = document.getElementById('book-modal-title');
-  if (titleEl) { titleEl.textContent = entry.bookTitle || ''; titleEl.style.display = entry.bookTitle ? '' : 'none'; }
+  if (titleEl) {
+    titleEl.textContent = entry.bookTitle || '';
+    titleEl.style.display = entry.bookTitle ? '' : 'none';
+    titleEl.style.fontFamily = fontFamily;
+  }
   document.getElementById('book-modal-summary').textContent = entry.summary || '';
   document.getElementById('book-modal-name').textContent    = entry.name    || '';
   document.getElementById('book-modal').classList.add('open');
