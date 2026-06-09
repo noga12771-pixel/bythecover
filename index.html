@@ -2617,6 +2617,7 @@ function getPalImgTint(pal) {
   if (pal.name === 'חמה ועשירה') return '#EAA71B';
   if (pal.name === 'רכה ועדינה')      return '#A855D4';
   if (pal.name === 'נועזת ופלורסנטית') return '#FF0066';
+  if (pal.name === 'וינטג׳ ואדמתית')  return '#F2BF80';
   return null;
 }
 function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont, titleColor, comp, imgTint, bookTitle, nameColor) {
@@ -2841,33 +2842,10 @@ function _syncPreviews() {
   // Big cover for screen 9
   const big = document.getElementById('cover-big');
   if (big) {
+    // SVG renders title and name directly (matches screen 10 print preview)
     big.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 288 432">
       ${buildCoverSVG(288, 432, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor)}
     </svg>`;
-    big.querySelectorAll('text').forEach(t => t.style.display = 'none');
-    const ck = comp ? comp.key : '';
-    const fontFamily = font ? font.family : "'Heebo', sans-serif";
-
-    let cbName = big.querySelector('.cb-html-name');
-    if (!cbName) { cbName = document.createElement('div'); cbName.className = 'cp4-html-name cb-html-name'; big.appendChild(cbName); }
-    cbName.style.fontFamily = "'Arbel', sans-serif";
-    cbName.style.color = fg;
-    cbName.style.fontSize = '19px';
-    cbName.textContent = name;
-
-    let cbTitle = big.querySelector('.cb-html-title');
-    if (!cbTitle) { cbTitle = document.createElement('div'); cbTitle.className = 'cp4-html-title cb-html-title'; big.appendChild(cbTitle); }
-    cbTitle.style.fontFamily = fontFamily;
-    cbTitle.style.color = fg;
-    cbTitle.style.fontSize = '34px';
-    cbTitle.textContent = state.bookTitle || 'כותרת';
-    cbTitle.style.top = ''; cbTitle.style.bottom = ''; cbTitle.style.left = '0'; cbTitle.style.right = '0';
-    cbTitle.style.textAlign = 'center';
-    if (ck === 'טקסט דומיננטי') { cbTitle.style.top = '56%'; cbTitle.style.fontSize = '46px'; }
-    else if (ck === 'מכסה הכל') { cbTitle.style.top = '8%'; }
-    else if (ck === 'חצוי')     { cbTitle.style.top = '8%'; cbTitle.style.textAlign = 'right'; cbTitle.style.right = '8%'; cbTitle.style.left = ''; }
-    else if (ck === 'אסימטרי')  { cbTitle.style.top = '8%'; cbTitle.style.textAlign = 'right'; cbTitle.style.right = '8%'; cbTitle.style.left = ''; }
-    else                         { cbTitle.style.top = 'auto'; cbTitle.style.bottom = '82px'; }
   }
 
   // Screen 9 Three.js texture update
