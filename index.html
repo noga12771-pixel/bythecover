@@ -4333,8 +4333,43 @@ function openBookModal(entry) {
   const face = document.getElementById('book-modal-face');
   face.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${inner}</svg>`;
 
-  // SVG renders title and name directly (matches screen 10 print preview)
+  // HTML overlays for reliable custom-font rendering (same pattern as library cards)
+  face.querySelectorAll('text').forEach(t => (t.style.display = 'none'));
   const fontFamily = entry.typography ? entry.typography.family : "'Heebo', sans-serif";
+  const comp = entry.composition ? entry.composition.key : '';
+  const bookTitleText = entry.bookTitle || '';
+
+  // Canvas-measure font size so title fits without clipping
+  let titleFontSize = Math.round(W * 0.10);
+  if (bookTitleText) {
+    const maxTW = (comp === 'חצוי') ? W * 0.44
+                : (comp === 'אסימטרי') ? W * 0.56
+                : W * 0.88;
+    const _mc = document.createElement('canvas').getContext('2d');
+    _mc.font = `${titleFontSize}px ${fontFamily}`;
+    const mw = _mc.measureText(bookTitleText).width;
+    if (mw > maxTW) titleFontSize = Math.max(8, Math.floor(titleFontSize * maxTW / mw));
+  }
+  if (comp === 'טקסט דומיננטי') titleFontSize = Math.round(W * 0.18);
+
+  let mTitle = face.querySelector('.modal-html-title');
+  if (!mTitle) { mTitle = document.createElement('div'); mTitle.className = 'modal-html-title'; face.appendChild(mTitle); }
+  mTitle.style.fontFamily = fontFamily;
+  mTitle.style.color = fg;
+  mTitle.style.fontSize = titleFontSize + 'px';
+  mTitle.style.whiteSpace = 'nowrap';
+  mTitle.textContent = bookTitleText;
+  mTitle.style.left = '0'; mTitle.style.right = '0'; mTitle.style.textAlign = 'center'; mTitle.style.transform = '';
+  if      (comp === 'מכסה הכל')        { mTitle.style.top = '12%'; mTitle.style.bottom = ''; }
+  else if (comp === 'טקסט דומיננטי')   { mTitle.style.top = '56%'; mTitle.style.bottom = ''; }
+  else if (comp === 'חצוי')            { mTitle.style.top = '9%';  mTitle.style.bottom = ''; mTitle.style.transform = `translateX(${Math.round(W*0.25)}px)`; }
+  else if (comp === 'אסימטרי')         { mTitle.style.top = '11%'; mTitle.style.bottom = ''; mTitle.style.transform = `translateX(${Math.round(W*0.22)}px)`; }
+  else                                  { mTitle.style.top = 'auto'; mTitle.style.bottom = '22%'; }
+
+  let mName = face.querySelector('.modal-html-name');
+  if (!mName) { mName = document.createElement('div'); mName.className = 'modal-html-name'; face.appendChild(mName); }
+  mName.style.color = entry.color?.nameColor || fg;
+  mName.textContent = entry.name || '';
   const titleEl = document.getElementById('book-modal-title');
   if (titleEl) {
     titleEl.textContent = entry.bookTitle || '';
