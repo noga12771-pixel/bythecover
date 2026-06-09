@@ -3605,7 +3605,10 @@ async function triggerReveal() {
     // Show generated text in screen 9 info panel
     const infoTitle   = document.getElementById('s9-info-title');
     const infoSummary = document.getElementById('s9-info-summary');
-    if (infoTitle)   infoTitle.textContent   = title;
+    if (infoTitle) {
+      infoTitle.textContent = title;
+      infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
+    }
     if (infoSummary) infoSummary.textContent = summary;
     updatePreview();
   }
