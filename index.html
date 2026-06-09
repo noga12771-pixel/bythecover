@@ -2640,6 +2640,11 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   if (c === 'חצוי')           { bookTitleY = H * 0.12; bookTitleX = W * 0.75; authorX = W * 0.78; }
   if (c === 'אסימטרי')        { bookTitleY = H * 0.14; bookTitleX = W * 0.72; }
 
+  // Auto-scale title font to prevent overflow (conservative char-width factor = 1.0)
+  { const maxTitleW = (c === 'חצוי' || c === 'אסימטרי') ? W * 0.45 : W * 0.82;
+    const estimatedW = (bookTitle || 'כותרת').length * bookTitleSize;
+    if (estimatedW > maxTitleW) bookTitleSize = Math.max(10, bookTitleSize * maxTitleW / estimatedW); }
+
   // Safe image boundaries — keep image clear of text zones
   const CLEAR = 16;
   const titleTopY   = bookTitleY - bookTitleSize - CLEAR;
