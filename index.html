@@ -4347,28 +4347,8 @@ function openBookModal(entry) {
   const face = document.getElementById('book-modal-face');
   face.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${inner}</svg>`;
 
-  // HTML overlays for correct font rendering
-  face.querySelectorAll('text').forEach(t => (t.style.display = 'none'));
+  // SVG renders title and name directly (matches screen 10 print preview)
   const fontFamily = entry.typography ? entry.typography.family : "'Heebo', sans-serif";
-  const comp = entry.composition ? entry.composition.key : '';
-
-  let mTitle = face.querySelector('.modal-html-title');
-  if (!mTitle) { mTitle = document.createElement('div'); mTitle.className = 'modal-html-title'; face.appendChild(mTitle); }
-  mTitle.style.fontFamily = fontFamily;
-  mTitle.style.color = fg;
-  mTitle.textContent = entry.bookTitle || '';
-  // Reset all positioning before applying composition-specific values
-  mTitle.style.left = '0'; mTitle.style.right = '0'; mTitle.style.fontSize = '';
-  if (comp === 'מכסה הכל')       { mTitle.style.top = '15%'; mTitle.style.bottom = '';     mTitle.style.textAlign = 'center'; }
-  else if (comp === 'טקסט דומיננטי') { mTitle.style.top = '55%'; mTitle.style.bottom = ''; mTitle.style.textAlign = 'center'; mTitle.style.fontSize = '28px'; }
-  else if (comp === 'חצוי')      { mTitle.style.top = '8%';  mTitle.style.bottom = '';     mTitle.style.textAlign = 'right';  mTitle.style.right = '8%'; mTitle.style.left = ''; }
-  else if (comp === 'אסימטרי')   { mTitle.style.top = '8%';  mTitle.style.bottom = '';     mTitle.style.textAlign = 'right';  mTitle.style.right = '8%'; mTitle.style.left = ''; }
-  else                            { mTitle.style.top = 'auto'; mTitle.style.bottom = '30px'; mTitle.style.textAlign = 'center'; }
-
-  let mName = face.querySelector('.modal-html-name');
-  if (!mName) { mName = document.createElement('div'); mName.className = 'modal-html-name'; face.appendChild(mName); }
-  mName.style.color = fg;
-  mName.textContent = entry.name || '';
   const titleEl = document.getElementById('book-modal-title');
   if (titleEl) {
     titleEl.textContent = entry.bookTitle || '';
