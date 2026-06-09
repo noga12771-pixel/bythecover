@@ -3269,7 +3269,9 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       oc2.fillStyle = fg; oc2.globalAlpha = 1.0;
       // Auto-scale font so title fits within available width
       let ts = Math.round(COV_W * 0.10);
-      const maxTW = (ck2 === 'חצוי') ? COV_W * 0.44 : COV_W * 0.88;
+      const maxTW = (ck2 === 'חצוי') ? COV_W * 0.44
+                  : (ck2 === 'אסימטרי') ? COV_W * 0.56
+                  : COV_W * 0.88;
       oc2.font = `bold ${ts}px ${ff}, Heebo, sans-serif`;
       const measuredW = oc2.measureText(title).width;
       if (measuredW > maxTW) ts = Math.max(14, Math.floor(ts * maxTW / measuredW));
@@ -3999,7 +4001,9 @@ function renderLibrary() {
     // Auto-scale font size exactly like buildTextureCanvas: measure, then shrink to fit
     let titleFontSize = Math.round(W * 0.10);
     if (bookTitleText) {
-      const maxTW = (comp === 'חצוי') ? W * 0.44 : (comp === 'טקסט דומיננטי') ? W * 0.88 : W * 0.88;
+      const maxTW = (comp === 'חצוי') ? W * 0.44
+                  : (comp === 'אסימטרי') ? W * 0.56
+                  : W * 0.88;
       const _mc = document.createElement('canvas').getContext('2d');
       _mc.font = `bold ${titleFontSize}px ${fontFamily}`;
       const mw = _mc.measureText(bookTitleText).width;
