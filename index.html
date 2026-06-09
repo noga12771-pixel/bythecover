@@ -3293,7 +3293,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       });
 
       // Load via fetch→data URL to avoid canvas taint on file://
-      const fetchSvg = src => fetch(src)
+      const fetchSvg = src => fetch(encodeURI(src))
         .then(r => r.text())
         .then(text => loadOne('data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(text)))))
         .catch(() => loadOne(src));
