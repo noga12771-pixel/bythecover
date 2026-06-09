@@ -3251,14 +3251,21 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
             'חצוי':         { cx:.24, cy:.46, pw:.44, ph:.84 },
           };
           const p = POS[ck] || POS['מרכזי עם ריק'];
-          const iw = p.pw * COV_W, ih = p.ph * COV_H;
-          const ix = p.cx * COV_W - iw / 2;
-          let iy = p.cy * COV_H - ih / 2;
+          const boxW = p.pw * COV_W, boxH = p.ph * COV_H;
+          const boxX = p.cx * COV_W - boxW / 2;
+          let boxY = p.cy * COV_H - boxH / 2;
           if (ck !== 'מכסה הכל' && ck !== 'חצוי') {
             const imgBottomMax = tY - COV_H * 0.08;
-            if (iy + ih > imgBottomMax) iy = imgBottomMax - ih;
+            if (boxY + boxH > imgBottomMax) boxY = imgBottomMax - boxH;
           }
-          drawTinted(ix, iy, iw, ih, 0.88, 0);
+          // Preserve aspect ratio (like SVG preserveAspectRatio="xMidYMid meet")
+          const imgAr = (loadedImg.naturalWidth > 0 && loadedImg.naturalHeight > 0)
+            ? loadedImg.naturalWidth / loadedImg.naturalHeight : 1;
+          let dw = boxW, dh = boxH;
+          if (boxW / boxH > imgAr) { dw = boxH * imgAr; } else { dh = boxW / imgAr; }
+          const dx = boxX + (boxW - dw) / 2;
+          const dy = boxY + (boxH - dh) / 2;
+          drawTinted(dx, dy, dw, dh, 0.88, 0);
         }
       }
 
