@@ -874,8 +874,8 @@
       flex: none;
       transition: background .15s, color .15s;
     }
-    .alpha-cell:hover { background: #111; color: #fff; }
-    .alpha-cell.sel { background: #111; color: #fff; }
+    .alpha-cell:hover { background: var(--s8-sel-bg, #111); color: var(--s8-sel-fg, #fff); }
+    .alpha-cell.sel { background: var(--s8-sel-bg, #111); color: var(--s8-sel-fg, #fff); }
     .alpha-col-lbl {
       font-family: var(--font);
       font-size: 7px;
@@ -2367,6 +2367,10 @@ function populateImageBooks() {
       strip.classList.add('sel');
       state.color = pal;
       document.getElementById('color-btn').disabled = false;
+      // Set screen 8 hover/sel colors from this palette
+      const r = document.documentElement;
+      r.style.setProperty('--s8-sel-bg', pal.colors[2] || pal.colors[0]);
+      r.style.setProperty('--s8-sel-fg', pal.colors[0]);
       updatePreview();
       _previewPalette(pal);
     };
