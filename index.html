@@ -644,10 +644,12 @@
       width: 100%;
       display: flex;
       cursor: pointer;
-      transition: filter 0.25s ease;
+      transition: flex-grow 0.35s ease, filter 0.25s ease;
       position: relative;
     }
-    .color-strip:hover { filter: brightness(1.12); }
+    #color-strips:not(:has(.color-strip.sel)) .color-strip:hover,
+    #color-strips .color-strip:hover { flex-grow: 2.8; filter: brightness(1.12); }
+    .color-strip.sel { flex-grow: 2.2; }
     .color-strip.sel::after { content: none; width: 0; background: transparent; }
     .strip-swatch {
       flex: 1;
