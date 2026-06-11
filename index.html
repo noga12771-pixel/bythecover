@@ -4571,22 +4571,24 @@ go(1);
 (function(){
   const tip = document.getElementById('fantasy-tooltip');
   if (!tip) return;
-  let visible = false;
+  let lastClicked = null;
   document.querySelectorAll('.fantasy-tip-trigger').forEach(function(icon){
     icon.addEventListener('click', function(e){
       e.stopPropagation();
-      visible = !visible;
-      if (visible) {
+      if (lastClicked === icon && tip.style.display === 'block') {
+        tip.style.display = 'none';
+        lastClicked = null;
+      } else {
         tip.style.display = 'block';
         tip.style.left = (e.clientX + 12) + 'px';
         tip.style.top  = (e.clientY + 12) + 'px';
-      } else {
-        tip.style.display = 'none';
+        lastClicked = icon;
       }
     });
   });
   document.addEventListener('click', function(){
-    if (visible) { visible = false; tip.style.display = 'none'; }
+    tip.style.display = 'none';
+    lastClicked = null;
   });
 })();
 </script>
