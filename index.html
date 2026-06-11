@@ -4583,6 +4583,13 @@ go(1);
         tip.style.left = (e.clientX + 12) + 'px';
         tip.style.top  = (e.clientY + 12) + 'px';
         lastClicked = trigger;
+        requestAnimationFrame(function(){
+          const r = tip.getBoundingClientRect();
+          if (r.right > window.innerWidth - 8)
+            tip.style.left = Math.max(8, e.clientX - r.width - 12) + 'px';
+          if (r.bottom > window.innerHeight - 8)
+            tip.style.top = Math.max(8, e.clientY - r.height - 12) + 'px';
+        });
       }
     } else {
       tip.style.display = 'none';
