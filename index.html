@@ -1454,7 +1454,8 @@
     <div class="intro-icon" style="left:calc(12% - 65px);top:calc(40% - 65px);width:130px;height:130px;transform:rotate(-4deg)"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מנעול בצורת לב.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(57% - 50px);top:calc(18% - 105px);width:100px;height:210px;transform:rotate(3deg)"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/נר.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(67% - 70px);top:calc(50% - 55px);width:140px;height:110px;transform:rotate(-6deg)"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/נעל עקב.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(66% - 67px);top:calc(70% - 97px);width:135px;height:195px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg" alt=""></div>
+    <div class="intro-icon" id="chess-icon" style="left:calc(66% - 67px);top:calc(70% - 97px);width:135px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg" alt=""></div>
+    <div id="chess-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">כלי השחמט לקוח מתוך הכריכה של "המשחק של אנדר" מאת אורסון סקוט קארד</div>
     <div class="intro-icon" style="left:calc(83% - 71px);top:calc(70% - 133px);width:142px;height:266px;transform:rotate(-8deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/טיל.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(96% - 60px);top:calc(63% - 80px);width:120px;height:160px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/צללית פרופיל.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(44% - 69px);top:calc(30% - 83px);width:138px;height:166px;transform:rotate(-5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/רובוט.svg" alt=""></div>
@@ -4483,6 +4484,27 @@ go(1);
 (function(){
   const icon = document.getElementById('eye-icon');
   const tip  = document.getElementById('eye-tooltip');
+  if (!icon || !tip) return;
+  let visible = false;
+  icon.addEventListener('click', function(e){
+    e.stopPropagation();
+    visible = !visible;
+    if (visible) {
+      tip.style.display = 'block';
+      tip.style.left = (e.clientX + 12) + 'px';
+      tip.style.top  = (e.clientY + 12) + 'px';
+    } else {
+      tip.style.display = 'none';
+    }
+  });
+  document.addEventListener('click', function(){
+    if (visible) { visible = false; tip.style.display = 'none'; }
+  });
+})();
+
+(function(){
+  const icon = document.getElementById('chess-icon');
+  const tip  = document.getElementById('chess-tooltip');
   if (!icon || !tip) return;
   let visible = false;
   icon.addEventListener('click', function(e){
