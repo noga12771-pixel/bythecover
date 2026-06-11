@@ -1452,7 +1452,7 @@
     <div class="intro-icon" id="silhouette-icon" style="left:calc(4% - 67px);top:calc(70% - 97px);width:135px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/צללית אדם עומד.svg" alt=""></div>
     <div id="silhouette-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרי מותחן יש שימוש רב בצללים מסתוריים, למשל כמו בכריכה של הספר "המטופלת השקטה" מאת אלכס מיכאלידס</div>
     <div class="intro-icon romance-tip-trigger" style="left:calc(20% - 87px);top:calc(70% - 87px);width:175px;height:175px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/ורד.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(34% - 82px);top:calc(70% - 76px);width:165px;height:152px"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/טבעת.svg" alt=""></div>
+    <div class="intro-icon romance2-tip-trigger" style="left:calc(34% - 82px);top:calc(70% - 76px);width:165px;height:152px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/טבעת.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(12% - 65px);top:calc(40% - 65px);width:130px;height:130px;transform:rotate(-4deg)"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מנעול בצורת לב.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(57% - 50px);top:calc(18% - 105px);width:100px;height:210px;transform:rotate(3deg)"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/נר.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(67% - 70px);top:calc(50% - 55px);width:140px;height:110px;transform:rotate(-6deg)"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/נעל עקב.svg" alt=""></div>
@@ -1469,7 +1469,8 @@
     <div class="intro-icon" style="left:calc(7% - 70px);top:calc(90% - 95px);width:140px;height:190px"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/יד.svg" alt=""></div>
     <div class="intro-icon romance-tip-trigger" style="left:calc(21% - 77px);top:calc(90% - 72px);width:155px;height:145px;transform:rotate(-4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/פרפר.svg" alt=""></div>
     <div id="romance-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי רומנטיקה נוכל למצוא אלמנטים מעולם הטבע והחי</div>
-    <div class="intro-icon" style="left:calc(35% - 82px);top:calc(90% - 87px);width:165px;height:175px"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/צללית זוג רוקד.svg" alt=""></div>
+    <div class="intro-icon romance2-tip-trigger" style="left:calc(35% - 82px);top:calc(90% - 87px);width:165px;height:175px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/צללית זוג רוקד.svg" alt=""></div>
+    <div id="romance2-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי רומנטיקה נוכל למצוא אלמנטים המייצגים מערכות יחסים וזוגיות</div>
     <div class="intro-icon" style="left:calc(49% - 92px);top:calc(90% - 92px);width:185px;height:185px"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/פרי.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(63% - 92px);top:calc(90% - 115px);width:185px;height:230px;transform:rotate(-3deg)"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/להבה.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(77% - 92px);top:calc(90% - 105px);width:185px;height:210px;transform:rotate(4deg)"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/פסל.svg" alt=""></div>
@@ -4634,6 +4635,36 @@ go(1);
   let lastClicked = null;
   document.addEventListener('click', function(e){
     const trigger = e.target.closest('.romance-tip-trigger');
+    if (trigger) {
+      if (lastClicked === trigger && tip.style.display === 'block') {
+        tip.style.display = 'none';
+        lastClicked = null;
+      } else {
+        tip.style.display = 'block';
+        tip.style.left = (e.clientX + 12) + 'px';
+        tip.style.top  = (e.clientY + 12) + 'px';
+        lastClicked = trigger;
+        requestAnimationFrame(function(){
+          const r = tip.getBoundingClientRect();
+          if (r.right > window.innerWidth - 8)
+            tip.style.left = Math.max(8, e.clientX - r.width - 12) + 'px';
+          if (r.bottom > window.innerHeight - 8)
+            tip.style.top = Math.max(8, e.clientY - r.height - 12) + 'px';
+        });
+      }
+    } else {
+      tip.style.display = 'none';
+      lastClicked = null;
+    }
+  }, true);
+})();
+
+(function(){
+  const tip = document.getElementById('romance2-tooltip');
+  if (!tip) return;
+  let lastClicked = null;
+  document.addEventListener('click', function(e){
+    const trigger = e.target.closest('.romance2-tip-trigger');
     if (trigger) {
       if (lastClicked === trigger && tip.style.display === 'block') {
         tip.style.display = 'none';
