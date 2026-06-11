@@ -2136,13 +2136,13 @@ function updateS3Bg() {
   }
   const avg = state.sliders.reduce((a, b) => a + b, 0) / state.sliders.length;
   let r, g, b;
-  if (avg <= 5.5) {
-    const t = (avg - 1) / 4.5;
+  if (avg <= 5) {
+    const t = avg / 5;
     r = Math.round(0x1A + (0xFF - 0x1A) * t);
     g = Math.round(0x1A + (0xFA - 0x1A) * t);
     b = Math.round(0x2E + (0xF1 - 0x2E) * t);
   } else {
-    const t = (avg - 5.5) / 4.5;
+    const t = (avg - 5) / 5;
     r = Math.round(0xFF + (0xC8 - 0xFF) * t);
     g = Math.round(0xFA + (0x86 - 0xFA) * t);
     b = Math.round(0xF1 + (0x0A - 0xF1) * t);
@@ -2177,8 +2177,8 @@ function updateS3Bg() {
     row.innerHTML = `
       <span class="sl-lbl" style="text-align:right">${right}</span>
       <div class="slider-wrap">
-        <input type="range" min="1" max="10" value="5" id="sl${i}">
-        <div class="slider-ticks">${Array.from({length:10},()=>'<span class="slider-tick"></span>').join('')}</div>
+        <input type="range" min="0" max="10" value="5" id="sl${i}">
+        <div class="slider-ticks">${Array.from({length:11},()=>'<span class="slider-tick"></span>').join('')}</div>
       </div>
       <span class="sl-lbl" style="text-align:left">${left}</span>
     `;
@@ -2945,13 +2945,13 @@ function calcScores() {
 
   // Sliders contribute slightly
   state.sliders.forEach((v,i) => {
-    if (v >= 7) { // towards "left" pole
+    if (v >= 7) { // towards "left" pole (70%+ of 0-10)
       if ([0,1,2].includes(i)) sc.logic += 0.5;
       else if ([3].includes(i)) sc.logic += 0.5;
       else if ([4].includes(i)) sc.logic += 0.3;
       else if ([5].includes(i)) sc.intro += 0.5;
       else if ([6].includes(i)) sc.intro += 0.5;
-    } else if (v <= 4) { // towards "right" pole
+    } else if (v <= 3) { // towards "right" pole (30%- of 0-10)
       if ([0,1,2].includes(i)) sc.emotion += 0.5;
       else if ([3].includes(i)) sc.emotion += 0.5;
       else if ([4].includes(i)) sc.emotion += 0.3;
@@ -3665,7 +3665,7 @@ async function triggerReveal() {
 - סדר/כאוס: ${profile.order}
 - קשר/עצמאות: ${profile.connect}
 - ז'אנר: ${state.genre}
-- ערכים (1-10): כיפי↔רציני: ${state.sliders[0]}, אידיאליסטי↔ריאליסטי: ${state.sliders[1]}, נגיש↔יוקרתי: ${state.sliders[2]}, רטרו↔עתידני: ${state.sliders[3]}, אופטימי↔פסימי: ${state.sliders[4]}, אישי↔אוניברסלי: ${state.sliders[5]}, פנימי↔חיצוני: ${state.sliders[6]}
+- ערכים (0-10): כיפי↔רציני: ${state.sliders[0]}, אידיאליסטי↔ריאליסטי: ${state.sliders[1]}, נגיש↔יוקרתי: ${state.sliders[2]}, רטרו↔עתידני: ${state.sliders[3]}, אופטימי↔פסימי: ${state.sliders[4]}, אישי↔אוניברסלי: ${state.sliders[5]}, פנימי↔חיצוני: ${state.sliders[6]}
 
 החזר JSON בדיוק בפורמט הזה (ללא טקסט נוסף):
 {"title":"כותרת הספר","summary":"תקציר של 4-5 שורות"}
