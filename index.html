@@ -45,6 +45,13 @@
       font-style: normal;
     }
 
+    @font-face {
+      font-family: 'HadasBau';
+      src: url('פונטים/hadasbau-regular-fm.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     :root {
       --black: #111111;
       --cream: #FFFAF1;
@@ -1949,7 +1956,8 @@ const FONTS = [
   { key:'Heebo',             family:"'Heebo', Arial, sans-serif",                  sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} },
   { key:'OHSalmanHabaka',    family:"'OHSalmanHabaka', cursive",                   sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
   { key:'Flamingo FM',       family:"'FlamingoBM', cursive",                       sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
-  { key:'Index DL v1 AAA',   family:"'IndexDL', 'Courier New', monospace",         sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} }
+  { key:'Index DL v1 AAA',   family:"'IndexDL', 'Courier New', monospace",         sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} },
+  { key:'Hadas Bau',         family:"'HadasBau', serif",                            sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'} }
 ];
 
 // ═══════════════════════════════════════════════
@@ -4137,6 +4145,7 @@ function printPostcard() {
   @font-face { font-family: 'OHSalmanHabaka'; src: url('פונטים/OHSalmanHabaka1.0-Regular.otf') format('opentype'); }
   @font-face { font-family: 'FlamingoBM';     src: url('פונטים/flamingo-regular-fm.otf') format('opentype'); }
   @font-face { font-family: 'IndexDL';        src: url('פונטים/index-mono-regular-aaa.otf') format('opentype'); }
+  @font-face { font-family: 'HadasBau';       src: url('פונטים/hadasbau-regular-fm.otf') format('opentype'); }
   @page { size: 10cm 15cm; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   .page { position: relative; width: 10cm; height: 15cm; overflow: hidden; page-break-after: always; }
