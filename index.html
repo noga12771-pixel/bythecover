@@ -1431,7 +1431,8 @@
     <div class="intro-icon" style="left:calc(79% - 85px);top:calc(7% - 82px);width:170px;height:165px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/ציפור.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(93% - 70px);top:calc(7% - 77px);width:140px;height:155px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg" alt=""></div>
     <!-- שורה 2 – 6 פריטים, צדדים (y≈27%) -->
-    <div class="intro-icon" style="left:calc(4% - 105px);top:calc(27% - 81px);width:210px;height:162px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""></div>
+    <div class="intro-icon" id="eye-icon" style="left:calc(4% - 105px);top:calc(27% - 81px);width:210px;height:162px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""></div>
+    <div id="eye-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">העין מזוהה עם הכריכות של "1984" של ג'ורג' אורוול</div>
     <div class="intro-icon" style="left:calc(17% - 97px);top:calc(27% - 97px);width:195px;height:195px"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/דרקון.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(26% - 68px);top:calc(24% - 77px);width:136px;height:153px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/יד.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(33% - 155px);top:calc(35% - 155px);width:310px;height:310px;transform:rotate(-6deg)"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
@@ -4478,6 +4479,27 @@ function stopLibParallax() {
 localStorage.removeItem(LIBRARY_KEY);
 
 go(1);
+
+(function(){
+  const icon = document.getElementById('eye-icon');
+  const tip  = document.getElementById('eye-tooltip');
+  if (!icon || !tip) return;
+  let visible = false;
+  icon.addEventListener('click', function(e){
+    e.stopPropagation();
+    visible = !visible;
+    if (visible) {
+      tip.style.display = 'block';
+      tip.style.left = (e.clientX + 12) + 'px';
+      tip.style.top  = (e.clientY + 12) + 'px';
+    } else {
+      tip.style.display = 'none';
+    }
+  });
+  document.addEventListener('click', function(){
+    if (visible) { visible = false; tip.style.display = 'none'; }
+  });
+})();
 </script>
 </body>
 </html>
