@@ -4573,8 +4573,6 @@ go(1);
 
 
 (function(){
-  var ALL_TRIGGERS = '.fantasy-tip-trigger,.robot-tip-trigger,.romance-tip-trigger,.romance2-tip-trigger';
-
   function makeGroupTip(tipId, triggerClass) {
     var tip = document.getElementById(tipId);
     if (!tip) return null;
@@ -4587,6 +4585,16 @@ go(1);
     makeGroupTip('romance-tooltip',  '.romance-tip-trigger'),
     makeGroupTip('romance2-tooltip', '.romance2-tip-trigger')
   ].filter(Boolean);
+
+  function hitTest(x, y, cls) {
+    var els = document.querySelectorAll(cls);
+    for (var i = 0; i < els.length; i++) {
+      var r = els[i].getBoundingClientRect();
+      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom)
+        return els[i];
+    }
+    return null;
+  }
 
   function positionTip(tip, x, y) {
     tip.style.display = 'block';
@@ -4602,19 +4610,20 @@ go(1);
   }
 
   document.addEventListener('click', function(e){
-    var onAnyTrigger = !!e.target.closest(ALL_TRIGGERS);
+    var x = e.clientX, y = e.clientY;
+    var onAny = groups.some(function(g){ return !!hitTest(x, y, g.cls); });
 
     groups.forEach(function(g){
-      var trigger = e.target.closest(g.cls);
+      var trigger = hitTest(x, y, g.cls);
       if (trigger) {
         if (g.last === trigger && g.tip.style.display === 'block') {
           g.tip.style.display = 'none';
           g.last = null;
         } else {
-          positionTip(g.tip, e.clientX, e.clientY);
+          positionTip(g.tip, x, y);
           g.last = trigger;
         }
-      } else if (!onAnyTrigger) {
+      } else if (!onAny) {
         g.tip.style.display = 'none';
         g.last = null;
       }
