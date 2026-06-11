@@ -2022,7 +2022,7 @@ function go(n) {
   state.screen = n;
   updateProgress();
   syncPreviews();
-  if (n === 3) updateS3Bg();
+  if (n === 3) { state.s3Touched = false; updateS3Bg(); }
   if (n === 5) populateImageBooks();
   if (n === 9) { if (!state.bookTitle) triggerReveal(); else syncPreviews(); }
   if (n === 10) { libZoom = 1; libTX = 0; libTY = 0; renderLibrary(); }
@@ -2120,6 +2120,20 @@ function updateProgress() {
 // SCREEN 3 — Slider background
 // ═══════════════════════════════════════════════
 function updateS3Bg() {
+  const s3 = document.getElementById('s3');
+  if (!state.s3Touched) {
+    s3.style.background = '#FFFAF1';
+    s3.style.color = '#231f20';
+    s3.style.setProperty('--s3-fg', '#231f20');
+    s3.querySelectorAll('input[type=range]').forEach(inp => {
+      inp.style.background = `linear-gradient(to bottom,
+        transparent calc(50% - 0.5px),
+        #231f20 calc(50% - 0.5px),
+        #231f20 calc(50% + 0.5px),
+        transparent calc(50% + 0.5px))`;
+    });
+    return;
+  }
   const avg = state.sliders.reduce((a, b) => a + b, 0) / state.sliders.length;
   let r, g, b;
   if (avg <= 5.5) {
@@ -2171,6 +2185,7 @@ function updateS3Bg() {
     `;
     row.querySelector('input').addEventListener('input', function() {
       state.sliders[i] = +this.value;
+      state.s3Touched = true;
       updateS3Bg();
     });
     wrap.appendChild(row);
