@@ -4487,89 +4487,6 @@ localStorage.removeItem(LIBRARY_KEY);
 
 go(1);
 
-(function(){
-  const icon = document.getElementById('eye-icon');
-  const tip  = document.getElementById('eye-tooltip');
-  if (!icon || !tip) return;
-  let visible = false;
-  icon.addEventListener('click', function(e){
-    e.stopPropagation();
-    visible = !visible;
-    if (visible) {
-      tip.style.display = 'block';
-      tip.style.left = (e.clientX + 12) + 'px';
-      tip.style.top  = (e.clientY + 12) + 'px';
-    } else {
-      tip.style.display = 'none';
-    }
-  });
-  document.addEventListener('click', function(){
-    if (visible) { visible = false; tip.style.display = 'none'; }
-  });
-})();
-
-(function(){
-  const icon = document.getElementById('chess-icon');
-  const tip  = document.getElementById('chess-tooltip');
-  if (!icon || !tip) return;
-  let visible = false;
-  icon.addEventListener('click', function(e){
-    e.stopPropagation();
-    visible = !visible;
-    if (visible) {
-      tip.style.display = 'block';
-      tip.style.left = (e.clientX + 12) + 'px';
-      tip.style.top  = (e.clientY + 12) + 'px';
-    } else {
-      tip.style.display = 'none';
-    }
-  });
-  document.addEventListener('click', function(){
-    if (visible) { visible = false; tip.style.display = 'none'; }
-  });
-})();
-
-(function(){
-  const icon = document.getElementById('silhouette-icon');
-  const tip  = document.getElementById('silhouette-tooltip');
-  if (!icon || !tip) return;
-  let visible = false;
-  icon.addEventListener('click', function(e){
-    e.stopPropagation();
-    visible = !visible;
-    if (visible) {
-      tip.style.display = 'block';
-      tip.style.left = (e.clientX + 12) + 'px';
-      tip.style.top  = (e.clientY + 12) + 'px';
-    } else {
-      tip.style.display = 'none';
-    }
-  });
-  document.addEventListener('click', function(){
-    if (visible) { visible = false; tip.style.display = 'none'; }
-  });
-})();
-
-(function(){
-  const icon = document.getElementById('pearl-icon');
-  const tip  = document.getElementById('pearl-tooltip');
-  if (!icon || !tip) return;
-  let visible = false;
-  icon.addEventListener('click', function(e){
-    e.stopPropagation();
-    visible = !visible;
-    if (visible) {
-      tip.style.display = 'block';
-      tip.style.left = (e.clientX + 12) + 'px';
-      tip.style.top  = (e.clientY + 12) + 'px';
-    } else {
-      tip.style.display = 'none';
-    }
-  });
-  document.addEventListener('click', function(){
-    if (visible) { visible = false; tip.style.display = 'none'; }
-  });
-})();
 
 
 (function(){
@@ -4579,11 +4496,22 @@ go(1);
     return { tip: tip, cls: triggerClass, last: null };
   }
 
+  function makeSingleTip(tipId, triggerId) {
+    var tip = document.getElementById(tipId);
+    var el  = document.getElementById(triggerId);
+    if (!tip || !el) return null;
+    return { tip: tip, cls: '#' + triggerId, last: null };
+  }
+
   var groups = [
     makeGroupTip('fantasy-tooltip',  '.fantasy-tip-trigger'),
     makeGroupTip('robot-tooltip',    '.robot-tip-trigger'),
     makeGroupTip('romance-tooltip',  '.romance-tip-trigger'),
-    makeGroupTip('romance2-tooltip', '.romance2-tip-trigger')
+    makeGroupTip('romance2-tooltip', '.romance2-tip-trigger'),
+    makeSingleTip('eye-tooltip',        'eye-icon'),
+    makeSingleTip('chess-tooltip',      'chess-icon'),
+    makeSingleTip('silhouette-tooltip', 'silhouette-icon'),
+    makeSingleTip('pearl-tooltip',      'pearl-icon')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
