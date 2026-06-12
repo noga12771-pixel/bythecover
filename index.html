@@ -1445,7 +1445,8 @@
     <div class="intro-icon" style="left:calc(4% - 102px);top:calc(50% - 96px);width:205px;height:192px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/בית ודרך.svg" alt=""></div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(16% - 65px);top:calc(50% - 112px);width:130px;height:225px;transform:rotate(4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/חרב.svg" alt=""></div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(27% - 90px);top:calc(50% - 90px);width:180px;height:180px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(74% - 105px);top:calc(57% - 105px);width:210px;height:210px;transform:rotate(5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg" alt=""></div>
+    <div class="intro-icon cat-tip-trigger" style="left:calc(74% - 105px);top:calc(57% - 105px);width:210px;height:210px;transform:rotate(5deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="cat-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הדימוי של החתול חוזר על עצמו רבות בכריכות של ספרים, במיוחד בז'אנר של ספרות יפה</div>
     <div class="intro-icon" style="left:calc(84% - 67px);top:calc(50% - 107px);width:135px;height:215px;transform:rotate(-4deg)"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/סכין.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(93% - 82px);top:calc(43% - 77px);width:165px;height:155px;transform:rotate(8deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/חללית.svg" alt=""></div>
     <!-- שורה 4 – צדדים, 8 פריטים (y≈70%) -->
@@ -4504,7 +4505,8 @@ go(1);
     makeGroupTip('eye-tooltip',        '.eye-tip-trigger'),
     makeGroupTip('chess-tooltip',      '.chess-tip-trigger'),
     makeGroupTip('silhouette-tooltip', '.silhouette-tip-trigger'),
-    makeGroupTip('pearl-tooltip',      '.pearl-tip-trigger')
+    makeGroupTip('pearl-tooltip',      '.pearl-tip-trigger'),
+    makeGroupTip('cat-tooltip',        '.cat-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
