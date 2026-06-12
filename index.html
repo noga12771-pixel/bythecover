@@ -3675,7 +3675,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         const textSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${COV_W}" height="${COV_H}">
           <defs><style>${fontFaceRule}</style></defs>
           <text x="${tX}" y="${tY}" font-family="'${_primaryFont}',Heebo,sans-serif" font-size="${ts}" fill="${fg}" opacity="0.9" text-anchor="middle" direction="rtl">${escXml(title)}</text>
-          <text x="${COV_W * 0.5}" y="${COV_H - 14}" font-family="Arbel,sans-serif" font-size="${as}" fill="${fg}" opacity="0.55" text-anchor="middle" direction="rtl">${escXml(name)}</text>
+          <text x="${COV_W * 0.5}" y="${COV_H - 14}" font-family="'Heebo',sans-serif" font-size="${as}" fill="${fg}" opacity="0.55" text-anchor="middle" direction="rtl">${escXml(name)}</text>
         </svg>`;
         const svgUrl = URL.createObjectURL(new Blob([textSvg], {type:'image/svg+xml'}));
         const tImg = new Image();
