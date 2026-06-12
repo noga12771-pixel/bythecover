@@ -1475,7 +1475,8 @@
     <div class="intro-icon romance2-tip-trigger" style="left:calc(35% - 82px);top:calc(90% - 87px);width:165px;height:175px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/צללית זוג רוקד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="romance2-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי רומנטיקה נוכל למצוא אלמנטים המייצגים מערכות יחסים וזוגיות</div>
     <div class="intro-icon" style="left:calc(49% - 92px);top:calc(90% - 92px);width:185px;height:185px"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/פרי.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(63% - 92px);top:calc(90% - 115px);width:185px;height:230px;transform:rotate(-3deg)"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/להבה.svg" alt=""></div>
+    <div class="intro-icon flame-tip-trigger" style="left:calc(63% - 92px);top:calc(90% - 115px);width:185px;height:230px;transform:rotate(-3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/להבה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="flame-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר ספרי הפנטזיה, האש מופיעה כסמל של שינוי וכוח</div>
     <div class="intro-icon statue-tip-trigger" style="left:calc(77% - 92px);top:calc(90% - 105px);width:185px;height:210px;transform:rotate(4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/פסל.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="statue-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב ספרות יפה מאופיינת עם אלמנטים אומנותיים מוכרים בכריכות שלה, כגון ציור ופיסול</div>
     <div class="intro-icon" style="left:calc(93% - 100px);top:calc(90% - 97px);width:200px;height:194px"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/ענף.svg" alt=""></div>
@@ -4512,7 +4513,8 @@ go(1);
     makeGroupTip('cat-tooltip',        '.cat-tip-trigger'),
     makeGroupTip('rocket-tooltip',     '.rocket-tip-trigger'),
     makeGroupTip('profile-tooltip',    '.profile-tip-trigger'),
-    makeGroupTip('statue-tooltip',     '.statue-tip-trigger')
+    makeGroupTip('statue-tooltip',     '.statue-tip-trigger'),
+    makeGroupTip('flame-tooltip',      '.flame-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
