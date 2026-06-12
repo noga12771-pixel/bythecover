@@ -1423,7 +1423,8 @@
 <section class="screen active" id="s1">
   <div class="intro-icons">
     <!-- שורה 1 – רוחב מלא, 7 פריטים (y≈7%) -->
-    <div class="intro-icon" style="left:calc(7% - 92px);top:calc(7% - 90px);width:185px;height:180px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/גולגולת.svg" alt=""></div>
+    <div class="intro-icon skull-tip-trigger" style="left:calc(7% - 92px);top:calc(7% - 90px);width:185px;height:180px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/גולגולת.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="skull-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הגולגולת היא סמל מוכר של מוות וסכנה, היא נוכחת בכריכות מז'אנר מתח ואימה מאז ומתמיד</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(21% - 90px);top:calc(7% - 74px);width:180px;height:148px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/כתר.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(35% - 85px);top:calc(7% - 102px);width:170px;height:205px;transform:rotate(-5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg" alt=""></div>
     <div class="intro-icon romance-tip-trigger" style="left:calc(50% - 84px);top:calc(14% - 96px);width:168px;height:192px;transform:rotate(3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/פרחים קטנים.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
@@ -4518,7 +4519,8 @@ go(1);
     makeGroupTip('statue-tooltip',     '.statue-tip-trigger'),
     makeGroupTip('flame-tooltip',      '.flame-tip-trigger'),
     makeGroupTip('envelope-tooltip',   '.envelope-tip-trigger'),
-    makeGroupTip('bird-tooltip',       '.bird-tip-trigger')
+    makeGroupTip('bird-tooltip',       '.bird-tip-trigger'),
+    makeGroupTip('skull-tooltip',      '.skull-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
