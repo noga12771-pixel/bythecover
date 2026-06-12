@@ -3236,7 +3236,9 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       if (logoImg) {
         const tintColor = imgTint || fg;
         const lw = Math.round(BACK.w * 0.38);
-        const lh_logo = Math.round(lw * (logoImg.height / logoImg.width));
+        const nw = logoImg.naturalWidth || logoImg.width || 400;
+        const nh = logoImg.naturalHeight || logoImg.height || 100;
+        const lh_logo = Math.max(1, Math.round(lw * (nh / nw)));
         const lx = BACK.x + BACK.w - lw - Math.round(BACK.w * 0.08);
         const ly = BACK.y + BACK.h - lh_logo - Math.round(BACK.h * 0.05);
         const lc = document.createElement('canvas');
