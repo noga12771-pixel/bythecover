@@ -614,9 +614,8 @@
     .book-card-img img {
       transition: filter 0.38s ease;
     }
-    .book-card-wrap:hover .book-card-img img,
     .book-card-wrap.sel .book-card-img img {
-      filter: brightness(0) invert(1) sepia(8%) saturate(300%) hue-rotate(10deg) brightness(1.45) contrast(1.08);
+      /* color locked by JS on click */
     }
     .book-sel-ring {
       position: absolute;
@@ -2524,6 +2523,14 @@ function populateImageBooks() {
     { l:'78%', t:'52%', r:-8  },
   ];
 
+  function _randImgFilter() {
+    const hue = Math.floor(Math.random() * 360);
+    const sat = (Math.random() * 9 + 4).toFixed(1);
+    const bri = (Math.random() * 0.25 + 0.7).toFixed(2);
+    const con = (Math.random() * 0.4 + 0.9).toFixed(2);
+    return `invert(1) sepia(1) saturate(${sat}) hue-rotate(${hue}deg) brightness(${bri}) contrast(${con})`;
+  }
+
   images.forEach((img, i) => {
     const pos = POSITIONS[i % POSITIONS.length];
     const wrap = document.createElement('div');
@@ -2535,9 +2542,20 @@ function populateImageBooks() {
     el.className = 'book-card';
     el.innerHTML = `<div class="book-card-img"><img src="${img.svg}" alt="${img.key}"></div><div class="book-color-overlay"></div>`;
     wrap.appendChild(el);
+    const imgEl = el.querySelector('.book-card-img img');
+    wrap.addEventListener('mouseenter', () => {
+      if (!wrap.classList.contains('sel')) imgEl.style.filter = _randImgFilter();
+    });
+    wrap.addEventListener('mouseleave', () => {
+      if (!wrap.classList.contains('sel')) imgEl.style.filter = '';
+    });
     wrap.onclick = () => {
-      document.querySelectorAll('.book-card-wrap').forEach(e => e.classList.remove('sel'));
+      document.querySelectorAll('.book-card-wrap').forEach(e => {
+        e.classList.remove('sel');
+        e.querySelector('.book-card-img img').style.filter = '';
+      });
       wrap.classList.add('sel');
+      imgEl.style.filter = _randImgFilter();
       state.image = img;
       state.imageKey = img.key;
       document.getElementById('img-btn').disabled = false;
