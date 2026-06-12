@@ -1478,7 +1478,8 @@
     <div id="robot-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי מדע בדיוני נוכל למצוא אלמנטים עתידניים יותר מעולם הרובוטיקה, כמו בספר "יומני רובורצח" מאת מרתה וולס</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(78% - 43px);top:calc(40% - 55px);width:85px;height:110px;transform:rotate(-3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/בת ים.svg" alt=""></div>
     <div id="fantasy-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי פנטזיה, בדרך כלל יהיו אלמנטים הקשורים למלוכה, לכישופים וליצורים קסומים</div>
-    <div class="intro-icon" style="left:calc(43% - 60px);top:calc(79% - 65px);width:120px;height:130px;transform:rotate(5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/טלפון.svg" alt=""></div>
+    <div class="intro-icon phone-tip-trigger" style="left:calc(43% - 60px);top:calc(79% - 65px);width:120px;height:130px;transform:rotate(5deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/טלפון.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="phone-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, אלמנטים מחיי היומיום הופכים לסמלים של רגע, זיכרון ומשמעות</div>
     <!-- שורה 5 – רוחב מלא, 7 פריטים (y≈90%) -->
     <div class="intro-icon romance2-tip-trigger" style="left:calc(7% - 70px);top:calc(90% - 95px);width:140px;height:190px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/יד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon romance-tip-trigger" style="left:calc(21% - 77px);top:calc(90% - 72px);width:155px;height:145px;transform:rotate(-4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/פרפר.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
@@ -4536,7 +4537,8 @@ go(1);
     makeGroupTip('astronaut-tooltip',  '.astronaut-tip-trigger'),
     makeGroupTip('spaceship-tooltip',  '.spaceship-tip-trigger'),
     makeGroupTip('planet-tooltip',     '.planet-tip-trigger'),
-    makeGroupTip('children-tooltip',   '.children-tip-trigger')
+    makeGroupTip('children-tooltip',   '.children-tip-trigger'),
+    makeGroupTip('phone-tooltip',      '.phone-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
