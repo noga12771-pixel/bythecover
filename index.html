@@ -999,8 +999,8 @@
     }
     #s9-book-wrap { position: relative; z-index: 2; }
     #s9-big-cover {
-      width: 200px;
-      height: 300px;
+      width: 280px;
+      height: 420px;
       border-radius: 5px 2px 2px 5px;
       overflow: hidden;
       box-shadow: -6px 10px 40px rgba(0,0,0,.6), -18px 22px 64px rgba(0,0,0,.28);
@@ -1010,24 +1010,24 @@
     #cover-preview-5 { width: 100%; height: 100%; }
     .sec-item {
       position: absolute;
-      width: 64px; height: 64px;
+      width: 82px; height: 82px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       z-index: 1;
       transition: transform .15s;
     }
     .sec-item img {
-      width: 88%; height: 88%;
+      width: 90%; height: 90%;
       object-fit: contain;
-      filter: brightness(0) drop-shadow(1px 2px 4px rgba(0,0,0,.25));
-      opacity: 0.55;
+      filter: brightness(0) drop-shadow(1px 2px 4px rgba(0,0,0,.22));
+      opacity: 0.50;
       transition: opacity .15s, filter .15s;
     }
     .sec-item.sel img {
       opacity: 1;
-      filter: brightness(0) drop-shadow(1px 3px 6px rgba(0,0,0,.4));
+      filter: brightness(0) drop-shadow(2px 3px 7px rgba(0,0,0,.4));
     }
-    .sec-item:hover img { opacity: 0.85; }
+    .sec-item:hover img { opacity: 0.78; }
     #s9-optional { font-family: 'Arbel', sans-serif; font-size: 13px; color: var(--black); opacity: 0.4; text-align: center; margin: 0; direction: rtl; }
 
     /* ─── Screen 10: Reveal ─── */
@@ -2973,16 +2973,36 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   // Secondary element overlay
   let secondaryUse = '';
   if (secondaryImg) {
-    const secFilter = fg === '#111111' ? 'brightness(0)' : 'brightness(0) invert(1)';
+    // Position per composition — avoid overlapping title/author zones
     const secPos = {
-      'מרכזי עם ריק':   { sx: W*0.06, sy: H*0.07, sw: W*0.22 },
-      'טקסט דומיננטי': { sx: W*0.06, sy: H*0.07, sw: W*0.20 },
-      'מכסה הכל':      { sx: W*0.72, sy: H*0.68, sw: W*0.22 },
-      'חצוי':          { sx: W*0.56, sy: H*0.50, sw: W*0.30 },
-      'אסימטרי':       { sx: W*0.05, sy: H*0.54, sw: W*0.26 },
+      'מרכזי עם ריק':   { sx: W*0.06, sy: H*0.07, sw: W*0.26 },
+      'טקסט דומיננטי': { sx: W*0.06, sy: H*0.06, sw: W*0.24 },
+      'מכסה הכל':      { sx: W*0.68, sy: H*0.66, sw: W*0.26 },
+      'חצוי':          { sx: W*0.54, sy: H*0.46, sw: W*0.34 },
+      'אסימטרי':       { sx: W*0.04, sy: H*0.50, sw: W*0.30 },
     };
     const sp = secPos[c] || secPos['מרכזי עם ריק'];
-    secondaryUse = `<image href="${secondaryImg}" x="${sp.sx.toFixed(1)}" y="${sp.sy.toFixed(1)}" width="${sp.sw.toFixed(1)}" height="${sp.sw.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.70" style="filter:${secFilter}"/>`;
+    let secFilterAttr = '';
+    let secDefs = '';
+    if (imgTint) {
+      const sfid = `secf${++_bxFid}`;
+      const tr = parseInt(imgTint.slice(1,3),16)/255;
+      const tg = parseInt(imgTint.slice(3,5),16)/255;
+      const tb = parseInt(imgTint.slice(5,7),16)/255;
+      secDefs = `<defs><filter id="${sfid}" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" result="m" values="-0.299 -0.587 -0.114 0 1 -0.299 -0.587 -0.114 0 1 -0.299 -0.587 -0.114 0 1 0 0 0 1 0"/>
+        <feComponentTransfer in="m">
+          <feFuncR type="linear" slope="${tr.toFixed(3)}" intercept="0"/>
+          <feFuncG type="linear" slope="${tg.toFixed(3)}" intercept="0"/>
+          <feFuncB type="linear" slope="${tb.toFixed(3)}" intercept="0"/>
+        </feComponentTransfer>
+      </filter></defs>`;
+      secFilterAttr = `filter="url(#${sfid})"`;
+    } else {
+      const sf = fg === '#111111' ? 'brightness(0)' : 'brightness(0) invert(1)';
+      secFilterAttr = `style="filter:${sf}"`;
+    }
+    secondaryUse = `${secDefs}<image href="${secondaryImg}" x="${sp.sx.toFixed(1)}" y="${sp.sy.toFixed(1)}" width="${sp.sw.toFixed(1)}" height="${sp.sw.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.78" ${secFilterAttr}/>`;
   }
 
   return `
@@ -3077,7 +3097,7 @@ function _syncPreviews() {
   if (big) {
     // SVG renders title and name directly (matches screen 10 print preview)
     big.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 288 432">
-      ${buildCoverSVG(288, 432, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor)}
+      ${buildCoverSVG(288, 432, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null)}
     </svg>`;
   }
 
@@ -3088,7 +3108,7 @@ function _syncPreviews() {
   const pcf = document.getElementById('pc-front');
   if (pcf) {
     pcf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 283 425">
-      ${buildCoverSVG(283, 425, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor)}
+      ${buildCoverSVG(283, 425, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null)}
     </svg>`;
   }
 }
@@ -3942,17 +3962,17 @@ const SEC_GENRE_MAP = {
 };
 let _secItems = [];
 
-// Absolute positions for 8 scattered items around the book
-// [side, topPct, offsetPx, rotateDeg]  side: 'left'|'right', offset from edge
+// 2×2 grid on each side, percentage-based positions
+// { top, left|right (%), rot }
 const _SEC_POSITIONS = [
-  ['left',  10, 14,  -13],
-  ['left',  30,  6,    7],
-  ['left',  52, 18,   -4],
-  ['left',  72,  8,   11],
-  ['right', 13, 16,   10],
-  ['right', 33,  5,   -9],
-  ['right', 55, 20,    5],
-  ['right', 75,  9,  -12],
+  { top: '12%', left:  '4%', rot: -11 },
+  { top: '18%', left: '20%', rot:   6 },
+  { top: '58%', left:  '4%', rot:  -5 },
+  { top: '64%', left: '20%', rot:   9 },
+  { top: '14%', right: '4%', rot:   9 },
+  { top: '20%', right:'20%', rot:  -7 },
+  { top: '60%', right: '4%', rot:   5 },
+  { top: '66%', right:'20%', rot: -10 },
 ];
 
 function buildSecondaryScreen(regenerate) {
@@ -3978,20 +3998,25 @@ function buildSecondaryScreen(regenerate) {
     const p  = pickFrom(primaryLabel,  4);
     const s1 = pickFrom(secLabels[0], 2);
     const s2 = pickFrom(secLabels[1], 2);
-    _secItems = [p[0], s1[0], p[1], s2[0], p[2], s1[1], p[3], s2[1]].filter(Boolean);
+    // Deduplicate by src
+    const seen = new Set();
+    _secItems = [p[0], s1[0], p[1], s2[0], p[2], s1[1], p[3], s2[1]]
+      .filter(Boolean)
+      .filter(item => { if (seen.has(item.src)) return false; seen.add(item.src); return true; });
   }
 
   // Remove old floating items, keep book-wrap
   arena.querySelectorAll('.sec-item').forEach(el => el.remove());
 
   _secItems.forEach((item, i) => {
-    const [side, topPct, offsetPx, rot] = _SEC_POSITIONS[i] || ['left', 10, 10, 0];
+    const pos = _SEC_POSITIONS[i] || { top: '10%', left: '4%', rot: 0 };
     const sel = state.secondaryImage && state.secondaryImage.src === item.src;
     const div = document.createElement('div');
     div.className = 'sec-item' + (sel ? ' sel' : '');
-    div.style.cssText = `top:${topPct}%;${side}:${offsetPx}px;transform:rotate(${rot}deg)`;
+    const side = pos.right !== undefined ? `right:${pos.right}` : `left:${pos.left}`;
+    div.style.cssText = `top:${pos.top};${side};transform:rotate(${pos.rot}deg)`;
     div.onclick = () => selectSecondary(item.src, item.label);
-    div.innerHTML = `<img src="${item.src}" alt="" style="transform:rotate(${-rot}deg)">`;
+    div.innerHTML = `<img src="${item.src}" alt="" style="transform:rotate(${-pos.rot}deg)">`;
     arena.appendChild(div);
   });
 
@@ -4426,7 +4451,7 @@ function printPostcard() {
   const summary = state.summary || document.getElementById('summary-text')?.textContent || '';
 
   const W = 283, H = 425;
-  const frontSVG = buildCoverSVG(W, H, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor);
+  const frontSVG = buildCoverSVG(W, H, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null);
 
   buildBackCoverDataUrl(backDataUrl => {
     const baseHref = document.location.href.replace(/[^/]*$/, '');
@@ -4540,9 +4565,10 @@ function saveToLibrary() {
     composition: state.composition,
     typography:  state.typography,
     name:        state.name || '',
-    bookTitle:   state.bookTitle || '',
-    summary:     state.summary || '',
-    id:          Date.now()
+    bookTitle:      state.bookTitle || '',
+    summary:        state.summary || '',
+    secondaryImage: state.secondaryImage || null,
+    id:             Date.now()
   });
   if (lib.length > 60) lib.shift();
   try { localStorage.setItem(LIBRARY_KEY, JSON.stringify(lib)); } catch {}
@@ -4569,7 +4595,7 @@ function renderLibrary() {
     const imgSvg = entry.image?.svg          || null;
     const inner  = buildCoverSVG(W, H, bg, accent, imgSvg, entry.name,
                                  entry.typography, fg, entry.composition,
-                                 getPalImgTint(entry.color), entry.bookTitle || '', entry.color?.nameColor);
+                                 getPalImgTint(entry.color), entry.bookTitle || '', entry.color?.nameColor, entry.secondaryImage?.src ?? null);
     const spineCol = entry.color?.colors?.[1];
     const spineGrad = spineCol
       ? `linear-gradient(to right, color-mix(in srgb,${spineCol} 50%,#000) 0%, ${spineCol} 45%, color-mix(in srgb,${spineCol} 70%,#000) 100%)`
@@ -4681,7 +4707,7 @@ function openBookModal(entry) {
   const imgSvg = entry.image?.svg         || null;
   const inner  = buildCoverSVG(W, H, bg, accent, imgSvg, entry.name,
                                entry.typography, fg, entry.composition,
-                               getPalImgTint(entry.color), entry.bookTitle || '', entry.color?.nameColor);
+                               getPalImgTint(entry.color), entry.bookTitle || '', entry.color?.nameColor, entry.secondaryImage?.src ?? null);
   const spineCol = entry.color?.colors?.[1];
   const spineGrad = spineCol
     ? `linear-gradient(to right, color-mix(in srgb,${spineCol} 50%,#000) 0%, ${spineCol} 45%, color-mix(in srgb,${spineCol} 70%,#000) 100%)`
