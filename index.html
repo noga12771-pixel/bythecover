@@ -1455,7 +1455,8 @@
     <div id="cat-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הדימוי של החתול חוזר על עצמו רבות בכריכות של ספרים, במיוחד בז'אנר של ספרות יפה</div>
     <div class="intro-icon knife-tip-trigger" style="left:calc(84% - 67px);top:calc(50% - 107px);width:135px;height:215px;transform:rotate(-4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/סכין.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="knife-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה אנחנו נראה בכריכות אלמנטים רבים מחיי היום-יום שלנו שמקבלים נקודת מבט חדשה בהקשר של מותחנים</div>
-    <div class="intro-icon" style="left:calc(93% - 82px);top:calc(43% - 77px);width:165px;height:155px;transform:rotate(8deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/חללית.svg" alt=""></div>
+    <div class="intro-icon spaceship-tip-trigger" style="left:calc(93% - 82px);top:calc(43% - 77px);width:165px;height:155px;transform:rotate(8deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/חללית.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="spaceship-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר מדע בדיוני, נראה שימוש רב באלמנטים שקשורים לחלל בעיצוב הכריכות</div>
     <!-- שורה 4 – צדדים, 8 פריטים (y≈70%) -->
     <div class="intro-icon silhouette-tip-trigger" style="left:calc(4% - 67px);top:calc(70% - 97px);width:135px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/צללית אדם עומד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="silhouette-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרי מותחן יש שימוש רב בצללים מסתוריים, למשל כמו בכריכה של הספר "המטופלת השקטה" מאת אלכס מיכאלידס</div>
@@ -4530,7 +4531,8 @@ go(1);
     makeGroupTip('house-tooltip',      '.house-tip-trigger'),
     makeGroupTip('knife-tooltip',      '.knife-tip-trigger'),
     makeGroupTip('candle-tooltip',     '.candle-tip-trigger'),
-    makeGroupTip('astronaut-tooltip',  '.astronaut-tip-trigger')
+    makeGroupTip('astronaut-tooltip',  '.astronaut-tip-trigger'),
+    makeGroupTip('spaceship-tooltip',  '.spaceship-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
