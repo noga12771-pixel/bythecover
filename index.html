@@ -2204,6 +2204,8 @@ function go(n) {
   if (n === 10) {
     if (!state.bookTitle) triggerReveal();
     else { syncPreviews(); setTimeout(() => { if (window._s9UpdateTexture) window._s9UpdateTexture(); }, 80); }
+    const infoTitle = document.getElementById('s9-info-title');
+    if (infoTitle && state.bookTitle) infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
   }
   if (n === 11) { libZoom = 1; libTX = 0; libTY = 0; renderLibrary(); }
   window.scrollTo(0,0);
