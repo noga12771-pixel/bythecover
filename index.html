@@ -1432,7 +1432,8 @@
     <div id="pearl-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב, סיפורת יפה מאופיינת עם אלמנטים של יצירות אומנות מוכרות, למשל כמו בכריכה של הספר "נערה עם עגיל הפנינה" מאת טרייסי שבלייה</div>
     <div class="intro-icon bird-tip-trigger" style="left:calc(79% - 85px);top:calc(7% - 82px);width:170px;height:165px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/ציפור.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="bird-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הציפור השחורה, ובמיוחד העורב, היא סמל קלאסי של אימה ומוות בספרות</div>
-    <div class="intro-icon" style="left:calc(93% - 70px);top:calc(7% - 77px);width:140px;height:155px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg" alt=""></div>
+    <div class="intro-icon astronaut-tip-trigger" style="left:calc(93% - 70px);top:calc(7% - 77px);width:140px;height:155px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="astronaut-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר מדע בדיוני, נראה שימוש רב באלמנטים שקשורים לחלל בעיצוב הכריכות</div>
     <!-- שורה 2 – 6 פריטים, צדדים (y≈27%) -->
     <div class="intro-icon eye-tip-trigger" style="left:calc(4% - 105px);top:calc(27% - 81px);width:210px;height:162px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="eye-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">העין מזוהה עם כריכת הספר "1984" מאת ג'ורג' אורוול</div>
@@ -4528,7 +4529,8 @@ go(1);
     makeGroupTip('womanback-tooltip',  '.womanback-tip-trigger'),
     makeGroupTip('house-tooltip',      '.house-tip-trigger'),
     makeGroupTip('knife-tooltip',      '.knife-tip-trigger'),
-    makeGroupTip('candle-tooltip',     '.candle-tip-trigger')
+    makeGroupTip('candle-tooltip',     '.candle-tip-trigger'),
+    makeGroupTip('astronaut-tooltip',  '.astronaut-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
