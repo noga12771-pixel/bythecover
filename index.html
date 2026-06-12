@@ -1951,6 +1951,15 @@ const SLIDERS_F = [
   ['ספונטנית','מתכננת'],
   ['מוחצנת','מופנמת']
 ];
+const SLIDERS_MIX = [
+  ['כיפי/ת','רציני/ת'],
+  ['אידיאליסטי/ת','ריאליסטי/ת'],
+  ['נגיש/ה','יוקרתי/ת'],
+  ['עתידני/ת','רטרו'],
+  ['אופטימי/ת','פסימי/ת'],
+  ['ספונטני/ת','מתכנן/ת'],
+  ['מוחצן/ת','מופנם/ת']
+];
 
 const PALETTES = [
   { name:'כהה וקרה',   colors:['#1D2326','#611427','#DDDCC5','#6A6A61'], textColor:'#DDDCC5', score:{A:'S',B:'P',C:'order',D:'indep'} },
@@ -3833,7 +3842,7 @@ function selectGender(v) {
   const el = document.getElementById('s3-question');
   if (el) el.textContent = q[v] || q['אחר'];
   const labels = document.querySelectorAll('#sliders-wrap .sl-lbl');
-  const src = (v === 'נקבה') ? SLIDERS_F : SLIDERS;
+  const src = (v === 'נקבה') ? SLIDERS_F : (v === 'אחר') ? SLIDERS_MIX : SLIDERS;
   src.forEach(([right, left], i) => {
     if (labels[i * 2])     labels[i * 2].textContent     = right;
     if (labels[i * 2 + 1]) labels[i * 2 + 1].textContent = left;
