@@ -4641,6 +4641,9 @@ function buildBackCoverDataUrl(callback) {
 }
 
 function printPostcard() {
+  _fetchFontAsDataUrl('Arbel').then(_doPrintPostcard);
+}
+function _doPrintPostcard(arbelDataUrl) {
   const bg    = state.color ? state.color.colors[0] : '#111111';
   const accent= state.color ? state.color.colors[2] : null;
   const fg    = state.color ? state.color.textColor : '#111111';
@@ -4669,7 +4672,7 @@ function printPostcard() {
 <base href="${baseHref}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Amatic+SC:wght@700&family=Caveat:wght@400;700&family=Share+Tech+Mono&display=swap">
 <style>
-  @font-face { font-family: 'Arbel';          src: url('ArbelG-Regular.otf') format('opentype'); }
+  @font-face { font-family: 'Arbel'; src: url('${arbelDataUrl || 'ArbelG-Regular.otf'}') format('opentype'); }
   @font-face { font-family: 'Masada';         src: url('Masada-BoldItalic.otf') format('opentype'); font-weight:bold;font-style:italic; }
   @font-face { font-family: 'OHSalmanHabaka'; src: url('פונטים/OHSalmanHabaka1.0-Regular.otf') format('opentype'); }
   @font-face { font-family: 'FlamingoBM';     src: url('פונטים/flamingo-regular-fm.otf') format('opentype'); }
