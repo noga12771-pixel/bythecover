@@ -1933,7 +1933,8 @@ const PALETTES = [
   { name:'נועזת ופלורסנטית', colors:['#CCFF00','#FF6600','#FF0066','#00FFCC'], textColor:'#FF0066', score:{A:'R',B:'E',C:'chaos',D:'indep'} },
   { name:'צבעונית ועליזה',   colors:['#D96A7E','#3A8C5D','#6B98BF','#F2E291'], textColor:'#F2E291', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
   { name:'וינטג׳ ואדמתית',  colors:['#778C61','#F2BF80','#733434','#F2B3B3'], textColor:'#733434', score:{A:'S',B:'E',C:'order',D:'connect'} },
-  { name:'קיצית ושמחה',    colors:['#FAE8A0','#F07850','#C03535','#5BCCE0'], textColor:'#C03535', score:{A:'R',B:'E',C:'chaos',D:'connect'} }
+  { name:'קיצית ושמחה',    colors:['#FAE8A0','#F07850','#C03535','#5BCCE0'], textColor:'#C03535', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+  { name:'פסטלית ורגועה',  colors:['#DFD9E3','#89ABD9','#84C1D9','#C0B8DD'], textColor:'#89ABD9', score:{A:'R',B:'P',C:'order',D:'connect'} }
 ];
 
 const CATEGORIES = [
@@ -2720,6 +2721,7 @@ function getPalImgTint(pal) {
   if (pal.name === 'וינטג׳ ואדמתית')  return '#F2BF80';
   if (pal.name === 'צבעונית ועליזה')  return '#F2E291';
   if (pal.name === 'קיצית ושמחה')    return '#C03535';
+  if (pal.name === 'פסטלית ורגועה')  return '#C0B8DD';
   return null;
 }
 function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont, titleColor, comp, imgTint, bookTitle, nameColor) {
