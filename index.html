@@ -991,8 +991,7 @@
       position: relative;
       flex: 1;
       width: 100%;
-      max-width: 500px;
-      min-height: 360px;
+      min-height: 460px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -3962,17 +3961,18 @@ const SEC_GENRE_MAP = {
 };
 let _secItems = [];
 
-// 2×2 grid on each side, percentage-based positions
-// { top, left|right (%), rot }
+// 2×2 grid on each side — positioned in vw units to stay clear of centered book
+// col1 = far from book, col2 = closer to book but still outside it
+// { top (%), horiz: CSS string, rot }
 const _SEC_POSITIONS = [
-  { top: '12%', left:  '4%', rot: -11 },
-  { top: '18%', left: '20%', rot:   6 },
-  { top: '58%', left:  '4%', rot:  -5 },
-  { top: '64%', left: '20%', rot:   9 },
-  { top: '14%', right: '4%', rot:   9 },
-  { top: '20%', right:'20%', rot:  -7 },
-  { top: '60%', right: '4%', rot:   5 },
-  { top: '66%', right:'20%', rot: -10 },
+  { top: '10%', horiz: 'left:3vw',  rot: -11 },
+  { top: '16%', horiz: 'left:14vw', rot:   6 },
+  { top: '57%', horiz: 'left:3vw',  rot:  -5 },
+  { top: '63%', horiz: 'left:14vw', rot:   9 },
+  { top: '12%', horiz: 'right:3vw', rot:   9 },
+  { top: '18%', horiz: 'right:14vw',rot:  -7 },
+  { top: '59%', horiz: 'right:3vw', rot:   5 },
+  { top: '65%', horiz: 'right:14vw',rot: -10 },
 ];
 
 function buildSecondaryScreen(regenerate) {
@@ -3987,34 +3987,36 @@ function buildSecondaryScreen(regenerate) {
     const primaryLabel = state.genre;
     const selectedSvg = state.image ? state.image.svg : '';
 
-    function pickFrom(label, n) {
+    // Prefer primary genre + profile genres, then fill from all categories
+    const preferred = [primaryLabel, ...secLabels];
+    const allImages = [];
+    [...preferred, ...CATEGORIES.map(c => c.label)].forEach(label => {
       const cat = CATEGORIES.find(c => c.label === label);
-      if (!cat) return [];
-      return cat.images.filter(img => img.svg !== selectedSvg)
-        .slice().sort(() => Math.random() - 0.5)
-        .slice(0, n).map(img => ({ src: img.svg, label }));
-    }
-
-    const p  = pickFrom(primaryLabel,  4);
-    const s1 = pickFrom(secLabels[0], 2);
-    const s2 = pickFrom(secLabels[1], 2);
-    // Deduplicate by src
+      if (!cat) return;
+      cat.images.filter(img => img.svg !== selectedSvg)
+        .forEach(img => allImages.push({ src: img.svg, label: cat.label }));
+    });
+    // Deduplicate, keep order (preferred genres first)
     const seen = new Set();
-    _secItems = [p[0], s1[0], p[1], s2[0], p[2], s1[1], p[3], s2[1]]
-      .filter(Boolean)
-      .filter(item => { if (seen.has(item.src)) return false; seen.add(item.src); return true; });
+    const pool = allImages.filter(item => {
+      if (seen.has(item.src)) return false;
+      seen.add(item.src);
+      return true;
+    });
+    // Shuffle within each preferred group
+    pool.sort(() => Math.random() - 0.5);
+    _secItems = pool.slice(0, 8);
   }
 
   // Remove old floating items, keep book-wrap
   arena.querySelectorAll('.sec-item').forEach(el => el.remove());
 
   _secItems.forEach((item, i) => {
-    const pos = _SEC_POSITIONS[i] || { top: '10%', left: '4%', rot: 0 };
+    const pos = _SEC_POSITIONS[i] || { top: '10%', horiz: 'left:3vw', rot: 0 };
     const sel = state.secondaryImage && state.secondaryImage.src === item.src;
     const div = document.createElement('div');
     div.className = 'sec-item' + (sel ? ' sel' : '');
-    const side = pos.right !== undefined ? `right:${pos.right}` : `left:${pos.left}`;
-    div.style.cssText = `top:${pos.top};${side};transform:rotate(${pos.rot}deg)`;
+    div.style.cssText = `top:${pos.top};${pos.horiz};transform:rotate(${pos.rot}deg)`;
     div.onclick = () => selectSecondary(item.src, item.label);
     div.innerHTML = `<img src="${item.src}" alt="" style="transform:rotate(${-pos.rot}deg)">`;
     arena.appendChild(div);
