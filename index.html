@@ -1461,7 +1461,8 @@
     <div class="intro-icon romance-tip-trigger" style="left:calc(20% - 87px);top:calc(70% - 87px);width:175px;height:175px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/ורד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon romance2-tip-trigger" style="left:calc(34% - 82px);top:calc(70% - 76px);width:165px;height:152px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/טבעת.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon romance2-tip-trigger" style="left:calc(12% - 65px);top:calc(40% - 65px);width:130px;height:130px;transform:rotate(-4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מנעול בצורת לב.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div class="intro-icon" style="left:calc(57% - 50px);top:calc(18% - 105px);width:100px;height:210px;transform:rotate(3deg)"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/נר.svg" alt=""></div>
+    <div class="intro-icon candle-tip-trigger" style="left:calc(57% - 50px);top:calc(18% - 105px);width:100px;height:210px;transform:rotate(3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/נר.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="candle-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה אנחנו נראה בכריכות אלמנטים רבים מחיי היום-יום שלנו שמקבלים נקודת מבט חדשה בהקשר של מותחנים</div>
     <div class="intro-icon" style="left:calc(67% - 70px);top:calc(50% - 55px);width:140px;height:110px;transform:rotate(-6deg)"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/נעל עקב.svg" alt=""></div>
     <div class="intro-icon chess-tip-trigger" style="left:calc(66% - 67px);top:calc(70% - 97px);width:135px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="chess-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">כלי השחמט לקוח מתוך הכריכה של "המשחק של אנדר" מאת אורסון סקוט קארד</div>
@@ -4526,7 +4527,8 @@ go(1);
     makeGroupTip('skull-tooltip',      '.skull-tip-trigger'),
     makeGroupTip('womanback-tooltip',  '.womanback-tip-trigger'),
     makeGroupTip('house-tooltip',      '.house-tip-trigger'),
-    makeGroupTip('knife-tooltip',      '.knife-tip-trigger')
+    makeGroupTip('knife-tooltip',      '.knife-tip-trigger'),
+    makeGroupTip('candle-tooltip',     '.candle-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
