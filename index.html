@@ -984,9 +984,40 @@
       transition: all 0.3s ease;
     }
 
-    /* ─── Screen 9: Reveal ─── */
-    #s9 { background: #FFFAF1; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
-    #s9 .q { color: var(--black); opacity: 1; margin-bottom: 20px; font-family: 'Masada', serif; font-style: italic; font-size: 32px; }
+    /* ─── Screen 9: Secondary Element ─── */
+    #s9 { background: #FFFAF1; gap: 0; justify-content: flex-start; padding: 30px 0 100px; }
+    #s9 .q { color: var(--black); opacity: 1; font-family: 'Masada', serif; font-style: italic; font-size: 28px; margin-bottom: 6px; text-align: center; }
+    #s9-subtitle { font-family: 'Arbel', sans-serif; font-size: 13px; color: var(--black); opacity: 0.45; text-align: center; margin: 0 0 22px; direction: rtl; }
+    #s9-sec-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 0 20px;
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .sec-item {
+      position: relative;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      display: flex; align-items: center; justify-content: center;
+      aspect-ratio: 1;
+      transition: border-color .15s, background .15s;
+    }
+    .sec-item img { width: 72%; height: 72%; object-fit: contain; filter: invert(1); }
+    .sec-item.sel { border-color: var(--black); background: rgba(0,0,0,0.07); }
+    .sec-item:hover:not(.sel) { background: rgba(0,0,0,0.04); }
+    .sec-genre-tag {
+      font-family: 'Arbel', sans-serif; font-size: 9px; opacity: 0.35;
+      text-align: center; direction: rtl; margin-top: 2px; line-height: 1.2;
+    }
+
+    /* ─── Screen 10: Reveal ─── */
+    #s10 { background: #FFFAF1; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
+    #s10 .q { color: var(--black); opacity: 1; margin-bottom: 20px; font-family: 'Masada', serif; font-style: italic; font-size: 32px; }
     #s9-scene {
       flex: none;
       width: 100%;
@@ -1104,7 +1135,7 @@
     }
     #summary-text.show { opacity: 1; }
     .loading-dots { opacity: .35; letter-spacing: 4px; font-size: 11px; }
-    #s9 .btn { margin-top: 0; }
+    #s10 .btn { margin-top: 0; }
     #s9-info-panel {
       display: flex;
       flex-direction: column;
@@ -1134,8 +1165,8 @@
       min-height: 4em;
     }
 
-    /* ─── Screen 10: Library ─── */
-    #s10 { padding: 0 !important; display: block !important; overflow: hidden; }
+    /* ─── Screen 11: Library ─── */
+    #s11 { padding: 0 !important; display: block !important; overflow: hidden; }
     #lib-bg-logo { display: none; }
     #lib-bg-logo img {
       width: 95%;
@@ -1144,7 +1175,7 @@
       filter: grayscale(1);
       user-select: none;
     }
-    #s10 > .q {
+    #s11 > .q {
       position: absolute; top: 28px; left: 50%; transform: translateX(-50%);
       z-index: 10; pointer-events: none; margin: 0; font-size: 32px;
       white-space: nowrap;
@@ -1672,9 +1703,21 @@
 </section>
 
 <!-- ══════════════════════════════════════════════
-     SCREEN 9 — Reveal
+     SCREEN 9 — Secondary Element
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s9">
+  <p class="q">רוצה להוסיף עוד משהו?</p>
+  <p id="s9-subtitle">בחר/י אלמנט נוסף לכריכה — אופציונלי</p>
+  <div id="s9-sec-grid"></div>
+  <button class="btn" onclick="go(8)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+  <button class="btn" onclick="state.secondaryImage=null;go(10)" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%)">ללא אלמנט נוסף</button>
+  <button class="btn" id="sec-next-btn" onclick="go(10)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 10 — Reveal
+══════════════════════════════════════════════ -->
+<section class="screen" id="s10">
   <p class="q">לפי הכריכה שלך</p>
   <div id="s9-scene">
     <canvas id="s9-three-canvas"></canvas>
@@ -1687,15 +1730,15 @@
     <p id="s9-info-title"></p>
     <p id="s9-info-summary"></p>
   </div>
-  <button class="btn" onclick="go(8)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
+  <button class="btn" onclick="go(9)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
   <button class="btn" onclick="printPostcard()" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%)">שלח להדפסה</button>
-  <button class="btn" onclick="go(10)" style="position:fixed;bottom:20px;left:20px">לספרייה</button>
+  <button class="btn" onclick="go(11)" style="position:fixed;bottom:20px;left:20px">לספרייה</button>
 </section>
 
 <!-- ══════════════════════════════════════════════
-     SCREEN 10 — Postcard
+     SCREEN 11 — Library
 ══════════════════════════════════════════════ -->
-<section class="screen" id="s10">
+<section class="screen" id="s11">
   <p class="q">הספרייה</p>
   <div id="lib-bg-logo">
     <img src="logo%20new.svg" alt="">
@@ -1705,7 +1748,7 @@
       <div id="library-grid"></div>
     </div>
   </div>
-  <button class="btn" onclick="go(9)" style="position:fixed;bottom:20px;right:20px;z-index:20">לעמוד הקודם</button>
+  <button class="btn" onclick="go(10)" style="position:fixed;bottom:20px;right:20px;z-index:20">לעמוד הקודם</button>
   <button class="btn" onclick="resetAndGoHome()" style="position:fixed;bottom:20px;left:20px;z-index:20">לעמוד הבית</button>
 </section>
 
@@ -1924,6 +1967,7 @@ const state = {
   composition: null,
   typography: null,
   gender: 'אחר',
+  secondaryImage: null,
   summary: '',
   bookTitle: '',
   apiKey: '',
@@ -2095,6 +2139,8 @@ function resetAndGoHome() {
   state.imageKey = null;
   state.composition = null; state.compositionLocked = false;
   state.typography = null;
+  state.secondaryImage = null;
+  _secItems = [];
   state.summary = '';
   state.bookTitle = '';
   state.scores = { emotion:0, logic:0, intro:0, extro:0, order:0, chaos:0, connect:0, indep:0 };
@@ -2120,7 +2166,7 @@ function resetAndGoHome() {
 }
 
 function go(n) {
-  if (state.screen === 10 && n !== 10) stopLibParallax();
+  if (state.screen === 11 && n !== 11) stopLibParallax();
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s'+n).classList.add('active');
   state.screen = n;
@@ -2128,14 +2174,15 @@ function go(n) {
   syncPreviews();
   if (n === 3) { state.s3Touched = false; updateS3Bg(); }
   if (n === 5) populateImageBooks();
-  if (n === 9) { if (!state.bookTitle) triggerReveal(); else syncPreviews(); }
-  if (n === 10) { libZoom = 1; libTX = 0; libTY = 0; renderLibrary(); }
+  if (n === 9) { _secItems = []; buildSecondaryScreen(true); }
+  if (n === 10) { if (!state.bookTitle) triggerReveal(); else syncPreviews(); }
+  if (n === 11) { libZoom = 1; libTX = 0; libTY = 0; renderLibrary(); }
   window.scrollTo(0,0);
 }
 
 function updateProgress() {
   const prog = document.getElementById('progress');
-  prog.style.display = (state.screen === 1 || state.screen === 9) ? 'none' : 'block';
+  prog.style.display = (state.screen === 1 || state.screen === 10) ? 'none' : 'block';
   prog.style.color = 'var(--black)';
   prog.style.textShadow = 'none';
   prog.textContent = state.screen + ' / 10';
@@ -3000,7 +3047,7 @@ function _syncPreviews() {
   }
 
   // Screen 9 Three.js texture update
-  if (window._s9UpdateTexture && state.screen === 9) window._s9UpdateTexture();
+  if (window._s9UpdateTexture && state.screen === 10) window._s9UpdateTexture();
 
   // Postcard front
   const pcf = document.getElementById('pc-front');
@@ -3701,7 +3748,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
 })();
 
 // ═══════════════════════════════════════════════
-// SCREEN 9 — Reveal
+// SCREEN 10 — Reveal
 // ═══════════════════════════════════════════════
 async function proceedToReveal() {
   // Check if we have API key
@@ -3847,6 +3894,66 @@ function selectGender(v) {
     if (labels[i * 2])     labels[i * 2].textContent     = right;
     if (labels[i * 2 + 1]) labels[i * 2 + 1].textContent = left;
   });
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN 9 — Secondary Element
+// ═══════════════════════════════════════════════
+const SEC_GENRE_MAP = {
+  'רגשי_מופנם':  ['ספרות יפה', 'פנטזיה'],
+  'רגשי_מוחצן':  ['רומנטיקה', 'מדע בדיוני'],
+  'שכלי_מופנם':  ['מתח ואימה', 'מדע בדיוני'],
+  'שכלי_מוחצן':  ['פנטזיה', 'ספרות יפה']
+};
+let _secItems = [];
+
+function buildSecondaryScreen(regenerate) {
+  const grid = document.getElementById('s9-sec-grid');
+  if (!grid) return;
+
+  if (regenerate || _secItems.length === 0) {
+    const sc = calcScores();
+    const emo = sc.emotion >= sc.logic ? 'רגשי' : 'שכלי';
+    const soc = sc.intro > sc.extro   ? 'מופנם' : 'מוחצן';
+    const secLabels = SEC_GENRE_MAP[`${emo}_${soc}`] || ['ספרות יפה', 'פנטזיה'];
+    const primaryLabel = state.genre;
+    const selectedSvg = state.image ? state.image.svg : '';
+
+    function pickFrom(label, n) {
+      const cat = CATEGORIES.find(c => c.label === label);
+      if (!cat) return [];
+      return cat.images.filter(img => img.svg !== selectedSvg)
+        .slice().sort(() => Math.random() - 0.5)
+        .slice(0, n).map(img => ({ src: img.svg, label }));
+    }
+
+    const p = pickFrom(primaryLabel, 4);
+    const s1 = pickFrom(secLabels[0], 2);
+    const s2 = pickFrom(secLabels[1], 2);
+    _secItems = [p[0], s1[0], p[1], s2[0], p[2], s1[1], p[3], s2[1]].filter(Boolean);
+  }
+
+  const rotations = [-7, 4, -3, 6, 5, -5, 3, -4];
+  grid.innerHTML = _secItems.map((item, i) => {
+    const sel = state.secondaryImage && state.secondaryImage.src === item.src ? ' sel' : '';
+    const esc = s => s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<div class="sec-item${sel}" onclick="selectSecondary('${esc(item.src)}','${esc(item.label)}')" style="transform:rotate(${rotations[i]||0}deg)">
+      <img src="${item.src}" alt="">
+    </div>`;
+  }).join('');
+
+  const btn = document.getElementById('sec-next-btn');
+  if (btn) btn.disabled = !state.secondaryImage;
+
+  const sub = document.getElementById('s9-subtitle');
+  if (sub) sub.textContent = resolveGender('בחר/י אלמנט נוסף לכריכה — אופציונלי');
+}
+
+function selectSecondary(src, label) {
+  state.secondaryImage = (state.secondaryImage && state.secondaryImage.src === src)
+    ? null
+    : { src, label };
+  buildSecondaryScreen(); // re-render without re-shuffling
 }
 
 function demoGenerate(p) {
@@ -4170,7 +4277,7 @@ function demoGenerate(p) {
 }
 
 // ═══════════════════════════════════════════════
-// SCREEN 10 — Postcard
+// SCREEN 11 — Library
 // ═══════════════════════════════════════════════
 
 function buildBackCoverDataUrl(callback) {
