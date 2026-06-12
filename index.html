@@ -1429,7 +1429,8 @@
     <div class="intro-icon romance-tip-trigger" style="left:calc(50% - 84px);top:calc(14% - 96px);width:168px;height:192px;transform:rotate(3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/פרחים קטנים.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon pearl-tip-trigger" style="left:calc(65% - 52px);top:calc(7% - 55px);width:105px;height:155px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/נערה עם עגיל הפנינה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="pearl-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב, סיפורת יפה מאופיינת עם אלמנטים של יצירות אומנות מוכרות, למשל כמו בכריכה של הספר "נערה עם עגיל הפנינה" מאת טרייסי שבלייה</div>
-    <div class="intro-icon" style="left:calc(79% - 85px);top:calc(7% - 82px);width:170px;height:165px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/ציפור.svg" alt=""></div>
+    <div class="intro-icon bird-tip-trigger" style="left:calc(79% - 85px);top:calc(7% - 82px);width:170px;height:165px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/ציפור.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="bird-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הציפור השחורה, ובמיוחד העורב, היא סמל קלאסי של אימה ומוות בספרות</div>
     <div class="intro-icon" style="left:calc(93% - 70px);top:calc(7% - 77px);width:140px;height:155px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg" alt=""></div>
     <!-- שורה 2 – 6 פריטים, צדדים (y≈27%) -->
     <div class="intro-icon eye-tip-trigger" style="left:calc(4% - 105px);top:calc(27% - 81px);width:210px;height:162px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
@@ -1437,7 +1438,8 @@
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(17% - 97px);top:calc(27% - 97px);width:195px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/דרקון.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon no-tooltip" style="left:calc(26% - 68px);top:calc(24% - 77px);width:136px;height:153px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/יד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(34% - 130px);top:calc(37% - 130px);width:260px;height:260px;transform:rotate(-6deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(66% - 60px);top:calc(40% - 60px);width:120px;height:120px;transform:rotate(6deg)"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מעטפה.svg" alt=""></div>
+    <div class="intro-icon envelope-tip-trigger" style="left:calc(66% - 60px);top:calc(40% - 60px);width:120px;height:120px;transform:rotate(6deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מעטפה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="envelope-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב, מכתבים ומעטפות מסמלים את ז'אנר הרומנטיקה</div>
     <div class="intro-icon" style="left:calc(72% - 82px);top:calc(30% - 82px);width:165px;height:165px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(83% - 65px);top:calc(27% - 92px);width:130px;height:185px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/צללית גב אישה.svg" alt=""></div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(96% - 82px);top:calc(27% - 105px);width:165px;height:210px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/טירה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
@@ -4514,7 +4516,9 @@ go(1);
     makeGroupTip('rocket-tooltip',     '.rocket-tip-trigger'),
     makeGroupTip('profile-tooltip',    '.profile-tip-trigger'),
     makeGroupTip('statue-tooltip',     '.statue-tip-trigger'),
-    makeGroupTip('flame-tooltip',      '.flame-tip-trigger')
+    makeGroupTip('flame-tooltip',      '.flame-tip-trigger'),
+    makeGroupTip('envelope-tooltip',   '.envelope-tip-trigger'),
+    makeGroupTip('bird-tooltip',       '.bird-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
