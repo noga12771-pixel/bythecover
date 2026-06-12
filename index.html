@@ -1446,7 +1446,8 @@
     <div id="womanback-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה, לרוב יהיה שימוש בצלליות של דמויות שאנו מביטים בהם מהגב מרחוק</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(96% - 82px);top:calc(27% - 105px);width:165px;height:210px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/טירה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <!-- שורה 3 – קצוות + מרכז, 6 פריטים (y≈50%) -->
-    <div class="intro-icon" style="left:calc(4% - 102px);top:calc(50% - 96px);width:205px;height:192px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/בית ודרך.svg" alt=""></div>
+    <div class="intro-icon house-tip-trigger" style="left:calc(4% - 102px);top:calc(50% - 96px);width:205px;height:192px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/בית ודרך.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="house-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי המתח והאימה, הבית המבודד מסמל סכנה שמחכה: מקום שנראה בטוח אבל אינו כזה</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(16% - 65px);top:calc(50% - 112px);width:130px;height:225px;transform:rotate(4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/חרב.svg" alt=""></div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(27% - 90px);top:calc(50% - 90px);width:180px;height:180px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg" alt=""></div>
     <div class="intro-icon cat-tip-trigger" style="left:calc(74% - 105px);top:calc(57% - 105px);width:210px;height:210px;transform:rotate(5deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
@@ -4522,7 +4523,8 @@ go(1);
     makeGroupTip('envelope-tooltip',   '.envelope-tip-trigger'),
     makeGroupTip('bird-tooltip',       '.bird-tip-trigger'),
     makeGroupTip('skull-tooltip',      '.skull-tip-trigger'),
-    makeGroupTip('womanback-tooltip',  '.womanback-tip-trigger')
+    makeGroupTip('womanback-tooltip',  '.womanback-tip-trigger'),
+    makeGroupTip('house-tooltip',      '.house-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
