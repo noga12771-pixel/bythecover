@@ -2929,7 +2929,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
       const py = safeTop + cy * safeH - sz / 2;
       const cx2 = px + sz/2, cy2 = py + sz/2;
       // Replace every 3rd instance (idx 2,5,8) with secondary image when available
-      const href = (secondaryImg && idx % 3 === 2) ? secondaryImg : imgSvg;
+      const href = (secondaryImg && (idx === 0 || idx === 4 || idx === 8)) ? secondaryImg : imgSvg;
       imgs += `<image href="${href}" x="${px.toFixed(1)}" y="${py.toFixed(1)}" width="${sz.toFixed(1)}" height="${sz.toFixed(1)}" preserveAspectRatio="xMidYMid meet" transform="rotate(${rot2.toFixed(1)},${cx2.toFixed(1)},${cy2.toFixed(1)})" opacity="${op2}" ${filterAttrStr} clip-path="url(#${clipId})"/>`;
     });
     imgUse = `${tintDefs2}
@@ -3499,7 +3499,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
             const ix2 = cx * COV_W - iw2 / 2;
             const iy2 = rawY - ih2 / 2;
             // Replace every 3rd instance with secondary image (matches SVG version)
-            if (secImg && idx % 3 === 2) {
+            if (secImg && (idx === 0 || idx === 4 || idx === 8)) {
               const tc = document.createElement('canvas');
               tc.width = Math.max(1, Math.ceil(iw2)); tc.height = tc.width;
               const tc2 = tc.getContext('2d');
@@ -3571,7 +3571,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       }
 
       // title + author
-      const ff = font ? font.family.replace(/['"]/g, '') : 'Heebo';
+      const ff = font ? font.family : "'Heebo', Arial, sans-serif";
       const as = Math.round(COV_W * 0.065);
       oc2.direction = 'rtl'; oc2.textAlign = 'center';
       oc2.fillStyle = fg; oc2.globalAlpha = 0.9;
@@ -3580,16 +3580,16 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       const maxTW = (ck2 === 'חצוי') ? COV_W * 0.40
                   : (ck2 === 'אסימטרי') ? COV_W * 0.52
                   : COV_W * 0.80;
-      oc2.font = `${ts}px ${ff}, Heebo, sans-serif`;
+      oc2.font = `${ts}px ${ff}`;
       let measuredW = oc2.measureText(title).width;
       if (measuredW > maxTW) {
         ts = Math.max(14, Math.floor(ts * maxTW / measuredW));
-        oc2.font = `${ts}px ${ff}, Heebo, sans-serif`;
+        oc2.font = `${ts}px ${ff}`;
         measuredW = oc2.measureText(title).width;
         // Second safety pass in case font metrics differ from measurement
         if (measuredW > maxTW) {
           ts = Math.max(14, Math.floor(ts * maxTW / measuredW));
-          oc2.font = `${ts}px ${ff}, Heebo, sans-serif`;
+          oc2.font = `${ts}px ${ff}`;
         }
       }
       oc2.fillText(title, tX, tY);
