@@ -3207,19 +3207,25 @@ async function _fetchFontAsDataUrl(family) {
       let rules; try { rules = [...sheet.cssRules]; } catch { continue; }
       for (const rule of rules) {
         if (rule.type !== CSSRule.FONT_FACE_RULE) continue;
-        const ruleFamily = rule.style.fontFamily.replace(/['"]/g, '').trim();
+        const ruleFamily = (rule.style.getPropertyValue('font-family') || rule.style.fontFamily || '').replace(/['"]/g, '').trim();
         if (ruleFamily.toLowerCase() !== family.toLowerCase()) continue;
         const src = rule.style.getPropertyValue('src');
-        const m = src.match(/url\(['"]?([^'")\s]+)['"]?\)/);
-        if (!m) continue;
-        const resp = await fetch(m[1]);
+        console.log('[font] found @font-face for', family, 'src length:', src.length, 'start:', src.substring(0, 80));
+        const m = src.match(/url\(["']?([^"')]+)["']?\)/);
+        if (!m) { console.warn('[font] no url() match in src for', family); continue; }
+        const fontUrl = m[1];
+        console.log('[font] fetching:', fontUrl.substring(0, 100));
+        const resp = await fetch(fontUrl);
+        console.log('[font] fetch status:', resp.status, 'for', family);
         const blob = await resp.blob();
         const dataUrl = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+        console.log('[font] embedded OK, dataUrl length:', dataUrl.length, 'family:', family);
         _fontDataUrlCache[family] = dataUrl;
         return dataUrl;
       }
     }
-  } catch(e) {}
+    console.warn('[font] @font-face not found for:', family);
+  } catch(e) { console.error('[font] error for', family, e); }
   _fontDataUrlCache[family] = null;
   return null;
 }
