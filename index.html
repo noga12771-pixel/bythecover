@@ -1459,7 +1459,8 @@
     <div class="intro-icon" style="left:calc(67% - 70px);top:calc(50% - 55px);width:140px;height:110px;transform:rotate(-6deg)"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/נעל עקב.svg" alt=""></div>
     <div class="intro-icon chess-tip-trigger" style="left:calc(66% - 67px);top:calc(70% - 97px);width:135px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="chess-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">כלי השחמט לקוח מתוך הכריכה של "המשחק של אנדר" מאת אורסון סקוט קארד</div>
-    <div class="intro-icon" style="left:calc(83% - 71px);top:calc(70% - 133px);width:142px;height:266px;transform:rotate(-8deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/טיל.svg" alt=""></div>
+    <div class="intro-icon rocket-tip-trigger" style="left:calc(83% - 71px);top:calc(70% - 133px);width:142px;height:266px;transform:rotate(-8deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/טיל.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="rocket-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי מדע בדיוני נוכל למצוא אלמנטים שקשורים לחלל, כמו בספר "מדריך הטרמפיסט לגלקסיה" מאת דאגלס אדמס</div>
     <div class="intro-icon" style="left:calc(96% - 60px);top:calc(63% - 80px);width:120px;height:160px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/צללית פרופיל.svg" alt=""></div>
     <div class="intro-icon robot-tip-trigger" style="left:calc(44% - 69px);top:calc(30% - 83px);width:138px;height:166px;transform:rotate(-5deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/רובוט.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="robot-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי מדע בדיוני נוכל למצוא אלמנטים עתידניים יותר מעולם הרובוטיקה, כמו בספר "יומני רובורצח" מאת מרתה וולס</div>
@@ -4506,7 +4507,8 @@ go(1);
     makeGroupTip('chess-tooltip',      '.chess-tip-trigger'),
     makeGroupTip('silhouette-tooltip', '.silhouette-tip-trigger'),
     makeGroupTip('pearl-tooltip',      '.pearl-tip-trigger'),
-    makeGroupTip('cat-tooltip',        '.cat-tip-trigger')
+    makeGroupTip('cat-tooltip',        '.cat-tip-trigger'),
+    makeGroupTip('rocket-tooltip',     '.rocket-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
