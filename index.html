@@ -855,24 +855,26 @@
     }
     .s7-lbl-btn {
       flex: 1;
-      max-width: 140px;
-      background: transparent;
-      border: 2px solid rgba(17,17,17,0.25);
+      max-width: 130px;
+      background: var(--tab-color, #ccc);
+      border: none;
       border-radius: 0;
-      padding: 10px 10px;
+      /* arrow pointing left: flat right, pointed left tip */
+      clip-path: polygon(16px 0%, 100% 0%, 100% 100%, 16px 100%, 0% 50%);
+      padding: 11px 12px 11px 22px;
       font-family: 'Arbel', sans-serif;
       font-size: 12px;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       cursor: pointer;
-      opacity: 0.6;
-      transition: opacity .2s, border-color .2s, background .2s;
+      opacity: 0.55;
+      transition: opacity .22s, transform .22s;
       text-align: center;
-      color: var(--black);
+      color: #111;
       white-space: pre-line;
-      line-height: 1.4;
+      line-height: 1.35;
     }
-    .s7-lbl-btn:hover { opacity: 1; border-color: var(--black); }
-    .s7-lbl-btn.sel { opacity: 1; background: var(--black); color: var(--cream); border-color: var(--black); }
+    .s7-lbl-btn:hover { opacity: 0.88; transform: translateX(-6px); }
+    .s7-lbl-btn.sel   { opacity: 1;    transform: translateX(-10px); box-shadow: -3px 2px 8px rgba(0,0,0,0.18); }
 
     /* ─── Screen 8: Typography (alphabet grid) ─── */
     #s8 {
@@ -2724,9 +2726,11 @@ function _buildS7Shelf() {
   const selKey = state.composition.key;
   const btnList = [];
 
-  COMPOSITIONS.forEach((comp) => {
+  const TAB_COLORS = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF922B'];
+  COMPOSITIONS.forEach((comp, ci) => {
     const btn = document.createElement('button');
     btn.className = 's7-lbl-btn' + (comp.key === selKey ? ' sel' : '');
+    btn.style.setProperty('--tab-color', TAB_COLORS[ci % TAB_COLORS.length]);
     btn.textContent = comp.label;
     btnList.push(btn);
 
