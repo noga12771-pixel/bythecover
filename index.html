@@ -852,6 +852,7 @@
       width: 100%;
       padding: 0 20px;
       margin-bottom: 8px;
+      direction: ltr;
     }
     .s7-lbl-btn {
       flex: 1;
@@ -859,22 +860,31 @@
       background: var(--tab-color, #ccc);
       border: none;
       border-radius: 0;
-      /* arrow pointing left: flat right, pointed left tip */
       clip-path: polygon(16px 0%, 100% 0%, 100% 100%, 16px 100%, 0% 50%);
-      padding: 11px 12px 11px 22px;
+      margin-right: -14px;
+      padding: 11px 10px 11px 22px;
       font-family: 'Arbel', sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing: 0.5px;
       cursor: pointer;
-      opacity: 0.55;
-      transition: opacity .22s, transform .22s;
+      opacity: 0.72;
+      transition: opacity .2s, transform .2s, background .15s;
       text-align: center;
       color: #111;
       white-space: pre-line;
       line-height: 1.35;
+      box-shadow: 3px 0 6px rgba(0,0,0,0.18);
+      position: relative;
+      z-index: 1;
     }
-    .s7-lbl-btn:hover { opacity: 0.88; transform: translateX(-6px); }
-    .s7-lbl-btn.sel   { opacity: 1;    transform: translateX(-10px); box-shadow: -3px 2px 8px rgba(0,0,0,0.18); }
+    .s7-lbl-btn:hover { opacity: 1; z-index: 2; }
+    .s7-lbl-btn.sel {
+      opacity: 1;
+      background: #111 !important;
+      color: #FFFAF1;
+      z-index: 3;
+      box-shadow: 3px 0 10px rgba(0,0,0,0.32);
+    }
 
     /* ─── Screen 8: Typography (alphabet grid) ─── */
     #s8 {
