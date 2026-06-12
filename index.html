@@ -1426,7 +1426,8 @@
     <div class="intro-icon skull-tip-trigger" style="left:calc(7% - 92px);top:calc(7% - 90px);width:185px;height:180px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/גולגולת.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="skull-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הגולגולת היא סמל מוכר של מוות וסכנה, היא נוכחת בכריכות מז'אנר מתח ואימה מאז ומתמיד</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(21% - 90px);top:calc(7% - 74px);width:180px;height:148px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/כתר.svg" alt=""></div>
-    <div class="intro-icon" style="left:calc(35% - 85px);top:calc(7% - 102px);width:170px;height:205px;transform:rotate(-5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg" alt=""></div>
+    <div class="intro-icon children-tip-trigger" style="left:calc(35% - 85px);top:calc(7% - 102px);width:170px;height:205px;transform:rotate(-5deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="children-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, דמויות ילדים מייצגות את העבר שאי אפשר לחזור אליו</div>
     <div class="intro-icon romance-tip-trigger" style="left:calc(50% - 84px);top:calc(14% - 96px);width:168px;height:192px;transform:rotate(3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/פרחים קטנים.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon pearl-tip-trigger" style="left:calc(65% - 52px);top:calc(7% - 55px);width:105px;height:155px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/נערה עם עגיל הפנינה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="pearl-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב, סיפורת יפה מאופיינת עם אלמנטים של יצירות אומנות מוכרות, למשל כמו בכריכה של הספר "נערה עם עגיל הפנינה" מאת טרייסי שבלייה</div>
@@ -4534,7 +4535,8 @@ go(1);
     makeGroupTip('candle-tooltip',     '.candle-tip-trigger'),
     makeGroupTip('astronaut-tooltip',  '.astronaut-tip-trigger'),
     makeGroupTip('spaceship-tooltip',  '.spaceship-tip-trigger'),
-    makeGroupTip('planet-tooltip',     '.planet-tip-trigger')
+    makeGroupTip('planet-tooltip',     '.planet-tip-trigger'),
+    makeGroupTip('children-tooltip',   '.children-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
