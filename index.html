@@ -125,6 +125,15 @@
       direction: ltr;
     }
 
+    /* ─── Gender selector ─── */
+    .gender-select-wrap { margin-top: 22px; text-align: center; }
+    .gender-select-wrap .gender-title { font-family: 'Masada', serif; font-size: 15px; color: #111; margin-bottom: 10px; }
+    .gender-opts { display: flex; flex-direction: row; gap: 28px; justify-content: center; align-items: center; direction: rtl; }
+    .gender-opt { display: flex; align-items: center; gap: 7px; cursor: pointer; font-family: 'Arbel', sans-serif; font-size: 15px; color: #111; user-select: none; }
+    .gender-opt input[type="radio"] { display: none; }
+    .gender-box { width: 16px; height: 16px; border: 2px solid #111; display: inline-block; flex-shrink: 0; background: transparent; transition: background .15s; }
+    .gender-opt input[type="radio"]:checked ~ .gender-box { background: #111; }
+
     /* ─── Buttons ─── */
     .btn {
       background: var(--black);
@@ -1510,6 +1519,14 @@
   <input id="name-input" type="text" placeholder="שלום! קוראים לי..." autocomplete="off"
     oninput="state.name=this.value; updatePreview(); document.getElementById('name-bg-text').textContent=this.value;"
     onkeydown="if(event.key==='Enter'&&state.name.trim())go(3)">
+  <div class="gender-select-wrap">
+    <p class="gender-title">לשון פנייה</p>
+    <div class="gender-opts">
+      <label class="gender-opt"><input type="radio" name="gender" value="זכר" onchange="selectGender('זכר')"><span class="gender-box"></span>זכר</label>
+      <label class="gender-opt"><input type="radio" name="gender" value="נקבה" onchange="selectGender('נקבה')"><span class="gender-box"></span>נקבה</label>
+      <label class="gender-opt"><input type="radio" name="gender" value="אחר" onchange="selectGender('אחר')"><span class="gender-box"></span>אחר</label>
+    </div>
+  </div>
   <button class="btn" onclick="go(1)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
   <button class="btn" id="name-btn" onclick="go(3)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
   <script>
@@ -1523,7 +1540,7 @@
      SCREEN 3 — Sliders
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s3">
-  <p class="q">איך היית מתאר/ת את עצמך?</p>
+  <p class="q" id="s3-question">איך היית מתאר/ת את עצמך?</p>
   <div class="sliders-wrap" id="sliders-wrap"></div>
   <button class="btn" onclick="go(2)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
   <button class="btn" onclick="go(4)" style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
@@ -1906,6 +1923,7 @@ const state = {
   imageKey: null,
   composition: null,
   typography: null,
+  gender: null,
   summary: '',
   bookTitle: '',
   apiKey: '',
@@ -3711,12 +3729,13 @@ async function triggerReveal() {
 
   function _applyGenerated(title, summary) {
     state.bookTitle = title;
-    state.summary   = summary;
-    summaryEl.textContent = summary;
+    const resolvedSummary = resolveGender(summary);
+    state.summary   = resolvedSummary;
+    summaryEl.textContent = resolvedSummary;
     summaryEl.classList.add('show');
     const pcSum  = document.getElementById('pc-back-summary');
     const pcName = document.getElementById('pc-back-name');
-    if (pcSum)  pcSum.textContent  = summary;
+    if (pcSum)  pcSum.textContent  = resolvedSummary;
     if (pcName) pcName.textContent = state.name || '';
     // Show generated text in screen 9 info panel
     const infoTitle   = document.getElementById('s9-info-title');
@@ -3738,6 +3757,7 @@ async function triggerReveal() {
   try {
     const prompt = `אתה כותב תוכן לכריכת ספר אישי עבור ${state.name}.
 פרופיל המשתמש:
+- לשון פנייה: ${state.gender === 'זכר' ? 'זכר (כתוב בלשון זכר)' : state.gender === 'נקבה' ? 'נקבה (כתוב בלשון נקבה)' : 'ניטרלי (אפשר לשלב)'}
 - רגש/שכל: ${profile.emotion}
 - פנים/חוץ: ${profile.social}
 - סדר/כאוס: ${profile.order}
@@ -3781,6 +3801,23 @@ async function triggerReveal() {
   }
 }
 
+
+function resolveGender(text) {
+  const g = state.gender;
+  if (!g || g === 'אחר') return text;
+  const male = g === 'זכר';
+  return text
+    .replace(/שלו\/לה/g, male ? 'שלו' : 'שלה')
+    .replace(/([א-ת]+)\/([א-ת])(?![א-ת])/g, (_, base, suf) => male ? base : base + suf)
+    .replace(/([א-ת]+)\/([א-ת]{2,})/g, (_, m, f) => male ? m : f);
+}
+
+function selectGender(v) {
+  state.gender = v;
+  const q = { 'זכר': 'איך היית מתאר את עצמך?', 'נקבה': 'איך היית מתארת את עצמך?', 'אחר': 'איך היית מתאר/ת את עצמך?' };
+  const el = document.getElementById('s3-question');
+  if (el) el.textContent = q[v] || q['אחר'];
+}
 
 function demoGenerate(p) {
   const name  = state.name  || 'את/ה';
