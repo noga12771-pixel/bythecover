@@ -1442,7 +1442,8 @@
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(34% - 130px);top:calc(37% - 130px);width:260px;height:260px;transform:rotate(-6deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
     <div class="intro-icon envelope-tip-trigger" style="left:calc(66% - 60px);top:calc(40% - 60px);width:120px;height:120px;transform:rotate(6deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מעטפה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="envelope-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב, מכתבים ומעטפות מסמלים את ז'אנר הרומנטיקה</div>
-    <div class="intro-icon" style="left:calc(72% - 82px);top:calc(30% - 82px);width:165px;height:165px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""></div>
+    <div class="intro-icon planet-tip-trigger" style="left:calc(72% - 82px);top:calc(30% - 82px);width:165px;height:165px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
+    <div id="planet-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר מדע בדיוני, נראה שימוש רב באלמנטים שקשורים לחלל בעיצוב הכריכות</div>
     <div class="intro-icon womanback-tip-trigger" style="left:calc(83% - 65px);top:calc(27% - 92px);width:130px;height:185px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/צללית גב אישה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="womanback-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה, לרוב יהיה שימוש בצלליות של דמויות שאנו מביטים בהם מהגב מרחוק</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(96% - 82px);top:calc(27% - 105px);width:165px;height:210px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/טירה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
@@ -4532,7 +4533,8 @@ go(1);
     makeGroupTip('knife-tooltip',      '.knife-tip-trigger'),
     makeGroupTip('candle-tooltip',     '.candle-tip-trigger'),
     makeGroupTip('astronaut-tooltip',  '.astronaut-tip-trigger'),
-    makeGroupTip('spaceship-tooltip',  '.spaceship-tip-trigger')
+    makeGroupTip('spaceship-tooltip',  '.spaceship-tip-trigger'),
+    makeGroupTip('planet-tooltip',     '.planet-tip-trigger')
   ].filter(Boolean);
 
   function hitTest(x, y, cls) {
