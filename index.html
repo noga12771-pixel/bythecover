@@ -3753,7 +3753,7 @@ async function triggerReveal() {
       infoTitle.textContent = title;
       infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
     }
-    if (infoSummary) infoSummary.textContent = summary;
+    if (infoSummary) infoSummary.textContent = resolveGender(summary);
     updatePreview();
   }
 
