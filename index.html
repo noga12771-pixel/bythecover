@@ -1923,7 +1923,7 @@ const state = {
   imageKey: null,
   composition: null,
   typography: null,
-  gender: null,
+  gender: 'אחר',
   summary: '',
   bookTitle: '',
   apiKey: '',
@@ -2103,6 +2103,10 @@ function resetAndGoHome() {
   if (fontBtn) fontBtn.disabled = true;
   document.querySelectorAll('#sliders-wrap input[type=range]').forEach((r,i) => { r.value = 5; state.sliders[i] = 5; });
   updateS3Bg();
+  // reset gender
+  state.gender = 'אחר';
+  document.querySelectorAll('input[name="gender"]').forEach(r => { r.checked = r.value === 'אחר'; });
+  selectGender('אחר');
   go(1);
 }
 
