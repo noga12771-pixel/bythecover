@@ -1435,7 +1435,7 @@
     <div class="intro-icon eye-tip-trigger" style="left:calc(4% - 105px);top:calc(27% - 81px);width:210px;height:162px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div id="eye-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">העין מזוהה עם כריכת הספר "1984" מאת ג'ורג' אורוול</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(17% - 97px);top:calc(27% - 97px);width:195px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/דרקון.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div class="intro-icon" style="left:calc(26% - 68px);top:calc(24% - 77px);width:136px;height:153px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/יד.svg" alt=""></div>
+    <div class="intro-icon no-tooltip" style="left:calc(26% - 68px);top:calc(24% - 77px);width:136px;height:153px"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/יד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(34% - 130px);top:calc(37% - 130px);width:260px;height:260px;transform:rotate(-6deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(66% - 60px);top:calc(40% - 60px);width:120px;height:120px;transform:rotate(6deg)"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מעטפה.svg" alt=""></div>
     <div class="intro-icon" style="left:calc(72% - 82px);top:calc(30% - 82px);width:165px;height:165px"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""></div>
@@ -4532,6 +4532,10 @@ go(1);
 
   document.addEventListener('click', function(e){
     var x = e.clientX, y = e.clientY;
+    if (hitTest(x, y, '.no-tooltip')) {
+      groups.forEach(function(g){ g.tip.style.display = 'none'; g.last = null; });
+      return;
+    }
     var onAny = groups.some(function(g){ return !!hitTest(x, y, g.cls); });
 
     groups.forEach(function(g){
