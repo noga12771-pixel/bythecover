@@ -3819,9 +3819,11 @@ function resolveGender(text) {
   const g = state.gender;
   if (!g || g === 'אחר') return text;
   const male = g === 'זכר';
+  const sofitToRegular = {'ם':'מ','ן':'נ','ף':'פ','ך':'כ','ץ':'צ'};
+  const desofit = s => s.replace(/[םןףךץ]$/, c => sofitToRegular[c] || c);
   return text
     .replace(/שלו\/לה/g, male ? 'שלו' : 'שלה')
-    .replace(/([א-ת]+)\/([א-ת])(?![א-ת])/g, (_, base, suf) => male ? base : base + suf)
+    .replace(/([א-ת]+)\/([א-ת])(?![א-ת])/g, (_, base, suf) => male ? base : desofit(base) + suf)
     .replace(/([א-ת]+)\/([א-ת]{2,})/g, (_, m, f) => male ? m : f);
 }
 
