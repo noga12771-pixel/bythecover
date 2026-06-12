@@ -3197,6 +3197,34 @@ function calcScores() {
 }
 
 // ═══════════════════════════════════════════════
+// Font-as-DataURL helper (for reliable canvas font embedding)
+// ═══════════════════════════════════════════════
+const _fontDataUrlCache = {};
+async function _fetchFontAsDataUrl(family) {
+  if (family in _fontDataUrlCache) return _fontDataUrlCache[family];
+  try {
+    for (const sheet of document.styleSheets) {
+      let rules; try { rules = [...sheet.cssRules]; } catch { continue; }
+      for (const rule of rules) {
+        if (rule.type !== CSSRule.FONT_FACE_RULE) continue;
+        const ruleFamily = rule.style.fontFamily.replace(/['"]/g, '').trim();
+        if (ruleFamily.toLowerCase() !== family.toLowerCase()) continue;
+        const src = rule.style.getPropertyValue('src');
+        const m = src.match(/url\(['"]?([^'")\s]+)['"]?\)/);
+        if (!m) continue;
+        const resp = await fetch(m[1]);
+        const blob = await resp.blob();
+        const dataUrl = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+        _fontDataUrlCache[family] = dataUrl;
+        return dataUrl;
+      }
+    }
+  } catch(e) {}
+  _fontDataUrlCache[family] = null;
+  return null;
+}
+
+// ═══════════════════════════════════════════════
 // SCREEN 9 — Three.js 3D book
 // ═══════════════════════════════════════════════
 (function initS9Three() {
@@ -3579,52 +3607,47 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         }
       }
 
-      // title + author — extract primary font name with double quotes for canvas compatibility
+      // title + author — render via SVG with embedded font (guarantees correct font regardless of canvas limitations)
       const _primaryFont = font ? font.family.split(',')[0].replace(/['"]/g, '').trim() : 'Heebo';
-      const ff = `"${_primaryFont}", Heebo, Arial, sans-serif`;
       const as = Math.round(COV_W * 0.065);
-      oc2.direction = 'rtl'; oc2.textAlign = 'center';
-      oc2.fillStyle = fg; oc2.globalAlpha = 0.9;
-      // Warm up: force canvas to resolve the font before measurement/draw
-      oc2.font = `1px ${ff}`;
-      oc2.fillStyle = 'rgba(0,0,0,0)';
-      oc2.fillText(' ', -9999, -9999);
-      oc2.fillStyle = fg;
-      // Auto-scale font so title fits within available width (with safety margin to prevent clipping)
-      let ts = Math.round(COV_W * 0.10);
-      const maxTW = (ck2 === 'חצוי') ? COV_W * 0.40
-                  : (ck2 === 'אסימטרי') ? COV_W * 0.52
-                  : COV_W * 0.80;
-      oc2.font = `${ts}px ${ff}`;
-      let measuredW = oc2.measureText(title).width;
-      if (measuredW > maxTW) {
-        ts = Math.max(14, Math.floor(ts * maxTW / measuredW));
-        oc2.font = `${ts}px ${ff}`;
-        measuredW = oc2.measureText(title).width;
-        // Second safety pass in case font metrics differ from measurement
-        if (measuredW > maxTW) {
-          ts = Math.max(14, Math.floor(ts * maxTW / measuredW));
-          oc2.font = `${ts}px ${ff}`;
-        }
-      }
-      oc2.fillText(title, tX, tY);
-      oc2.globalAlpha = 0.55;
-      oc2.font = `${as}px Arbel, sans-serif`;
-      oc2.fillText(name, COV_W * 0.5, COV_H - 14);
+      const ts = Math.round(COV_W * 0.10);
+      const maxTW = (ck2 === 'חצוי') ? COV_W * 0.40 : (ck2 === 'אסימטרי') ? COV_W * 0.52 : COV_W * 0.80;
+      const escXml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-      // squish into FRONT slot (GPU un-squishes back to correct proportions)
+      // squish into FRONT slot first (text SVG drawn on top)
       ctx.save();
       ctx.beginPath(); ctx.rect(FRONT.x, FRONT.y, FRONT.w, FRONT.h); ctx.clip();
       ctx.drawImage(oc, FRONT.x, FRONT.y, FRONT.w, FRONT.h);
       ctx.restore();
-      callback(canvas);
+
+      // Fetch font as data URL so SVG blob can embed it (works even for custom/local fonts)
+      _fetchFontAsDataUrl(_primaryFont).then(fontDataUrl => {
+        const fontFaceRule = fontDataUrl
+          ? `@font-face{font-family:'${_primaryFont}';src:url('${fontDataUrl}');font-weight:normal;}`
+          : '';
+        const textSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${COV_W}" height="${COV_H}">
+          <defs><style>${fontFaceRule}</style></defs>
+          <text x="${tX}" y="${tY}" font-family="'${_primaryFont}',Heebo,sans-serif" font-size="${ts}" fill="${fg}" opacity="0.9" text-anchor="middle" direction="rtl" textLength="${maxTW}" lengthAdjust="spacingAndGlyphs">${escXml(title)}</text>
+          <text x="${COV_W * 0.5}" y="${COV_H - 14}" font-family="Arbel,sans-serif" font-size="${as}" fill="${fg}" opacity="0.55" text-anchor="middle" direction="rtl">${escXml(name)}</text>
+        </svg>`;
+        const svgUrl = URL.createObjectURL(new Blob([textSvg], {type:'image/svg+xml'}));
+        const tImg = new Image();
+        tImg.onload = () => {
+          // Draw text SVG on top of the already-squished front cover
+          ctx.save();
+          ctx.beginPath(); ctx.rect(FRONT.x, FRONT.y, FRONT.w, FRONT.h); ctx.clip();
+          // Scale SVG (COV_W×COV_H) into the front slot (FRONT.w×FRONT.h)
+          ctx.drawImage(tImg, FRONT.x, FRONT.y, FRONT.w, FRONT.h);
+          ctx.restore();
+          URL.revokeObjectURL(svgUrl);
+          callback(canvas);
+        };
+        tImg.onerror = () => { URL.revokeObjectURL(svgUrl); callback(canvas); };
+        tImg.src = svgUrl;
+      });
     }
 
-    const _ff = font ? font.family.replace(/['"]/g, '').split(',')[0].trim() : 'Heebo';
-    document.fonts.ready
-      .then(() => document.fonts.load(`32px "${_ff}"`).catch(() => {}))
-      .then(() => new Promise(r => setTimeout(r, 150)))
-      .then(() => {
+    {
       const loadOne = src => new Promise(res => {
         const img = new Image();
         img.onload = () => res(img);
@@ -3655,7 +3678,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
              logoImg || null,
              secImg && !isTainted(secImg) ? secImg : null);
       });
-    });
+    }
   }
 
   function parseOBJ(text) {
