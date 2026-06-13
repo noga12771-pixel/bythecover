@@ -2977,12 +2977,15 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
       const imgFilter2 = fg === '#111111' ? 'brightness(0)' : 'brightness(0) invert(1)';
       filterAttrStr = `style="filter:${imgFilter2}"`;
     }
+    const SEC_POS = new Set([0, 4, 8, 10]);
     let imgs = '';
     for (let row = 0; row < ROWS; row++) {
       for (let col = 0; col < COLS; col++) {
+        const idx = row * COLS + col;
+        const href = (secondaryImg && SEC_POS.has(idx)) ? secondaryImg : imgSvg;
         const px = col * cellW + (cellW - imgSz) / 2;
         const py = gridTop + row * cellH + (cellH - imgSz) / 2;
-        imgs += `<image href="${imgSvg}" x="${px.toFixed(1)}" y="${py.toFixed(1)}" width="${imgSz.toFixed(1)}" height="${imgSz.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.78" ${filterAttrStr} clip-path="url(#${clipId})"/>`;
+        imgs += `<image href="${href}" x="${px.toFixed(1)}" y="${py.toFixed(1)}" width="${imgSz.toFixed(1)}" height="${imgSz.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.78" ${filterAttrStr} clip-path="url(#${clipId})"/>`;
       }
     }
     imgUse = `${tintDefs2}
@@ -3600,15 +3603,18 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
           const COLS = 3, ROWS = 4;
           const gridTop = COV_H * 0.03;
           const titleSz = _calcTitleFontSize(COV_W, ck, title);
-          const gridBottom = (COV_H - 40) - titleSz - 12;
+          const gridBottom = COV_H * 0.75 - titleSz - 12;
           const cellW = COV_W / COLS;
           const cellH = (gridBottom - gridTop) / ROWS;
           const imgSz = Math.min(cellW, cellH) * 0.76;
+          const SEC_POS = new Set([0, 4, 8, 10]);
           for (let row = 0; row < ROWS; row++) {
             for (let col = 0; col < COLS; col++) {
+              const idx = row * COLS + col;
               const ix2 = col * cellW + (cellW - imgSz) / 2;
               const iy2 = gridTop + row * cellH + (cellH - imgSz) / 2;
-              drawTinted(ix2, iy2, imgSz, imgSz, 0.78, 0);
+              if (secImg && SEC_POS.has(idx)) drawSecTinted(ix2, iy2, imgSz, imgSz, 0.78, 0);
+              else drawTinted(ix2, iy2, imgSz, imgSz, 0.78, 0);
             }
           }
         } else {
