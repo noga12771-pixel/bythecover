@@ -4833,7 +4833,7 @@ function renderLibrary() {
     face.style.position = 'relative';
     face.querySelectorAll('text').forEach(t => (t.style.display = 'none'));
 
-    const fontFamily = entry.typography ? entry.typography.family : "'Heebo', sans-serif";
+    const fontFamily = entry.typography ? entry.typography.family : "'Arbel', sans-serif";
     const comp = entry.composition ? entry.composition.key : '';
     const bookTitleText = entry.bookTitle || '';
 
@@ -4941,7 +4941,7 @@ function openBookModal(entry) {
 
   // HTML overlays for reliable custom-font rendering (same pattern as library cards)
   face.querySelectorAll('text').forEach(t => (t.style.display = 'none'));
-  const fontFamily = entry.typography ? entry.typography.family : "'Heebo', sans-serif";
+  const fontFamily = entry.typography ? entry.typography.family : "'Arbel', sans-serif";
   const comp = entry.composition ? entry.composition.key : '';
   const bookTitleText = entry.bookTitle || '';
 
