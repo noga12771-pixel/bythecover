@@ -3022,7 +3022,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
 
   // Author name — always small and fixed at bottom, always in Arbel
   const authorEl = authorName ? `<text
-    x="${authorX}" y="${H - 8}"
+    x="${authorX}" y="${H - 8 - Math.round(W * 0.065 * 0.5)}"
     style="font-family:'Arbel', sans-serif"
     font-size="${W * 0.065}"
     fill="${nameColor || titleColor}" text-anchor="middle" opacity="0.55"
