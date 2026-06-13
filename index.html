@@ -4923,18 +4923,7 @@ function openBookModal(entry) {
   const comp = entry.composition ? entry.composition.key : '';
   const bookTitleText = entry.bookTitle || '';
 
-  // Canvas-measure font size so title fits without clipping
-  let titleFontSize = Math.round(W * 0.10);
-  if (bookTitleText) {
-    const maxTW = (comp === 'חצוי') ? W * 0.44
-                : (comp === 'אסימטרי') ? W * 0.56
-                : W * 0.88;
-    const _mc = document.createElement('canvas').getContext('2d');
-    _mc.font = `${titleFontSize}px ${fontFamily}`;
-    const mw = _mc.measureText(bookTitleText).width;
-    if (mw > maxTW) titleFontSize = Math.max(8, Math.floor(titleFontSize * maxTW / mw));
-  }
-  if (comp === 'טקסט דומיננטי') titleFontSize = Math.round(W * 0.18);
+  const titleFontSize = Math.round(_calcTitleFontSize(W, comp, bookTitleText));
 
   let mTitle = face.querySelector('.modal-html-title');
   if (!mTitle) { mTitle = document.createElement('div'); mTitle.className = 'modal-html-title'; face.appendChild(mTitle); }
