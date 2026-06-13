@@ -3050,9 +3050,9 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
 
     if (c === 'מרכזי עם ריק' || c === 'מכסה הכל') {
       // Large background watermark, behind primary — bigger, lower, accent color
-      const sw2 = W * (c === 'מכסה הכל' ? 1.05 : 0.90);
+      const sw2 = Math.max(W, H) * 1.1;
       const sx2 = (W - sw2) / 2;
-      const sy2 = H * 0.30;
+      const sy2 = (H - sw2) / 2;
       // Use accent color for variety; rebuild filter with accent tint
       const altTint = accentColor || secTint;
       const ar2 = parseInt(altTint.slice(1,3),16)/255;
