@@ -3551,15 +3551,16 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
 
       // Background secondary for מרכזי עם ריק / מכסה הכל — draw BEFORE primary
       if (secImg && (comp?.key === 'מרכזי עם ריק' || comp?.key === 'מכסה הכל')) {
-        const sw2 = COV_W * (comp.key === 'מכסה הכל' ? 0.96 : 0.68);
-        const sx2 = (COV_W - sw2) / 2, sy2 = (COV_H - sw2) / 2 - COV_H * 0.05;
+        const sw2 = Math.max(COV_W, COV_H) * 1.1;
+        const sx2 = (COV_W - sw2) / 2, sy2 = (COV_H - sw2) / 2;
+        const altTint = accentColor || fg;
         const tc = document.createElement('canvas');
         tc.width = Math.max(1, Math.ceil(sw2)); tc.height = tc.width;
         const tc2 = tc.getContext('2d');
         tc2.drawImage(secImg, 0, 0, sw2, sw2);
         tc2.globalCompositeOperation = 'source-atop';
-        tc2.fillStyle = fg; tc2.fillRect(0, 0, sw2, sw2);
-        oc2.save(); oc2.globalAlpha = 0.13;
+        tc2.fillStyle = altTint; tc2.fillRect(0, 0, sw2, sw2);
+        oc2.save(); oc2.globalAlpha = 0.18;
         oc2.drawImage(tc, sx2, sy2, sw2, sw2);
         oc2.restore();
       }
