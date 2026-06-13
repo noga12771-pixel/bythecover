@@ -2844,7 +2844,7 @@ function miniCover(w, h, comp, i) {
       grid.classList.remove('grid-hovered');
       if (!state.typography) {
         const titleDiv = document.querySelector('.cp4-html-title');
-        if (titleDiv) titleDiv.style.fontFamily = "'Heebo', sans-serif";
+        if (titleDiv) titleDiv.style.fontFamily = "'Arbel', sans-serif";
       }
     });
 
@@ -2894,7 +2894,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
 
   // Text positions — computed first so image can be clamped around them
   const authorName = titleText || '';
-  const fontStr = titleFont ? titleFont.family : "'Heebo', sans-serif";
+  const fontStr = titleFont ? titleFont.family : "'Arbel', sans-serif";
 
   let bookTitleY = H - 22, bookTitleSize = W * 0.1;
   let bookTitleX = W * 0.5, bookTitleAnchor = 'middle';
@@ -3145,7 +3145,7 @@ function _syncPreviews() {
         titleDiv.className = 'cp4-html-title';
         el.appendChild(titleDiv);
       }
-      titleDiv.style.fontFamily = font ? font.family : "'Heebo', sans-serif";
+      titleDiv.style.fontFamily = font ? font.family : "'Arbel', sans-serif";
       titleDiv.style.color = fg;
       titleDiv.textContent = 'כותרת';
       // Position title to match composition
@@ -3687,7 +3687,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       }
 
       // title + author — render via SVG with embedded font (guarantees correct font regardless of canvas limitations)
-      const _primaryFont = font ? font.family.split(',')[0].replace(/['"]/g, '').trim() : 'Heebo';
+      const _primaryFont = font ? font.family.split(',')[0].replace(/['"]/g, '').trim() : 'Arbel';
       const as = Math.round(COV_W * 0.065);
       const maxTW = (ck2 === 'חצוי') ? COV_W * 0.40 : (ck2 === 'אסימטרי') ? COV_W * 0.52 : COV_W * 0.80;
       // Auto-scale font size to match buildCoverSVG exactly (conservative factor 1.0 per char)
