@@ -1051,14 +1051,18 @@
       box-shadow: 4px 16px 32px rgba(0,0,0,0.28);
       z-index: 10;
     }
-    .sec-item img {
+    .sec-item .img-sil {
+      display: block;
       width: 62%; height: 62%;
-      object-fit: contain;
-      filter: var(--img-f, brightness(0) opacity(0.55));
-      transition: filter .18s;
+      -webkit-mask: var(--sil-src) center / contain no-repeat;
+      mask: var(--sil-src) center / contain no-repeat;
+      background: var(--sil-color, #1a1a1a);
+      opacity: 0.65;
+      transition: opacity .18s;
+      flex-shrink: 0;
     }
-    .sec-item.sel img { filter: var(--img-f-sel, brightness(0) opacity(0.90)); }
-    .sec-item:hover img { filter: var(--img-f-hov, brightness(0) opacity(0.78)); }
+    .sec-item.sel .img-sil { opacity: 0.92; }
+    .sec-item:hover .img-sil { opacity: 0.82; }
     #s9-optional { font-family: 'Arbel', sans-serif; font-size: 13px; color: var(--black); opacity: 0.4; text-align: center; margin: 0; direction: rtl; }
 
     /* ─── Screen 10: Reveal ─── */
@@ -4210,26 +4214,24 @@ function buildSecondaryScreen(regenerate) {
   arena.querySelectorAll('.sec-item').forEach(el => el.remove());
 
   const palColors = state.color ? state.color.colors : ['#FF9EC4','#FFD166','#5CE8B0','#59B7F5'];
-  console.log('[SEC] palColors:', palColors, 'state.color:', state.color);
   _secItems.forEach((item, i) => {
     const pos = _SEC_POSITIONS[i] || { top: '10%', horiz: 'left:3vw', rot: 0 };
     const sel = state.secondaryImage && state.secondaryImage.src === item.src;
     // Each side (4 cards) cycles through all 4 palette colors
     const noteColor = palColors[i % 4] || '#FFD166';
     const isDark = _isColorDark(noteColor);
-    const fN = isDark ? 'brightness(0) invert(1) opacity(0.70)' : 'brightness(0) opacity(0.55)';
-    const fS = isDark ? 'brightness(0) invert(1) opacity(0.92)' : 'brightness(0) opacity(0.90)';
-    const fH = isDark ? 'brightness(0) invert(1) opacity(0.82)' : 'brightness(0) opacity(0.78)';
+    const silColor = isDark
+      ? '#FFFAF1'
+      : (palColors.find(c => _isColorDark(c) && c !== noteColor) || '#1a1a1a');
     const div = document.createElement('div');
     div.className = 'sec-item' + (sel ? ' sel' : '');
     div.style.cssText = `top:${pos.top};${pos.horiz};--rot:${pos.rot}deg;background:${noteColor}`;
-    div.style.setProperty('--img-f', fN);
-    div.style.setProperty('--img-f-sel', fS);
-    div.style.setProperty('--img-f-hov', fH);
+    div.style.setProperty('--sil-color', silColor);
+    div.style.setProperty('--sil-src', `url('${encodeURI(item.src)}')`);
     div.onclick = () => selectSecondary(item.src, item.label);
     div.onmouseenter = () => { if (!state.secondaryImage) _previewCoverSecondary(item.src); };
     div.onmouseleave = () => { if (!state.secondaryImage) _previewCoverSecondary(null); };
-    div.innerHTML = `<img src="${item.src}" alt="">`;
+    div.innerHTML = `<span class="img-sil"></span>`;
     arena.appendChild(div);
   });
 
