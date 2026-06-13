@@ -2458,7 +2458,7 @@ function scatterGenreImages(col) {
   let attempts = 0;
   do {
     const shuffled = allImgs.slice().sort(() => Math.random() - 0.5);
-    imgs = shuffled.slice(0, 5);
+    imgs = shuffled.slice(0, 6);
     attempts++;
   } while (attempts < 20 && imgs.filter(img => !prevShown.includes(img)).length < 3);
   col._prevShown = imgs;
