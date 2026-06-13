@@ -4719,7 +4719,7 @@ function _doPrintPostcard(arbelDataUrl, masadaDataUrl) {
     font-size: ${Math.round(_calcTitleFontSize(W, ck, state.bookTitle || ''))}px;
     color: ${fg}; text-align: center; direction: rtl;
     font-family: ${font ? font.family : "'Masada', serif"};
-    padding: 0 8px; line-height: 1.2; pointer-events: none;
+    padding: 0 4px; line-height: 1; white-space: nowrap; pointer-events: none;
   }
   .html-author {
     position: absolute; left: 0; right: 0; bottom: 8px;
