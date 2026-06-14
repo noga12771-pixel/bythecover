@@ -2255,43 +2255,24 @@ function resetAndGoHome() {
 }
 
 function go(n) {
-  const ov = document.getElementById('page-turn-overlay');
-  const dir = n > (state.screen || 1) ? 1 : -1;
-
-  // Slide overlay IN from the appropriate side
-  ov.style.transition = 'none';
-  ov.style.transform = dir > 0 ? 'translateX(110%)' : 'translateX(-110%)';
-  ov.offsetHeight; // force reflow
-  ov.style.transition = 'transform 0.28s cubic-bezier(.76,0,.24,1)';
-  ov.style.transform = 'translateX(0)';
-
-  setTimeout(() => {
-    // Switch screens while hidden behind overlay
-    if (state.screen === 11 && n !== 11) stopLibParallax();
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('s'+n).classList.add('active');
-    state.screen = n;
-    updateProgress();
-    syncPreviews();
-    if (n === 3) { state.s3Touched = false; updateS3Bg(); }
-    if (n === 5) populateImageBooks();
-    if (n === 7) _s7Animate = true;
-    if (n === 9) { _secItems = []; buildSecondaryScreen(true); }
-    if (n === 10) {
-      if (!state.bookTitle) triggerReveal();
-      else { syncPreviews(); setTimeout(() => { if (window._s9UpdateTexture) window._s9UpdateTexture(); }, 80); }
-      const infoTitle = document.getElementById('s9-info-title');
-      if (infoTitle && state.bookTitle) infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
-    }
-    if (n === 11) { libZoom = 1; libTX = 0; libTY = 0; renderLibrary(); }
-    window.scrollTo(0, 0);
-
-    // Slide overlay OUT to reveal new screen
-    requestAnimationFrame(() => {
-      ov.style.transition = 'transform 0.28s cubic-bezier(.76,0,.24,1)';
-      ov.style.transform = dir > 0 ? 'translateX(-110%)' : 'translateX(110%)';
-    });
-  }, 295);
+  if (state.screen === 11 && n !== 11) stopLibParallax();
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  state.screen = n;
+  updateProgress();
+  syncPreviews();
+  if (n === 3) { state.s3Touched = false; updateS3Bg(); }
+  if (n === 5) populateImageBooks();
+  if (n === 7) _s7Animate = true;
+  if (n === 9) { _secItems = []; buildSecondaryScreen(true); }
+  if (n === 10) {
+    if (!state.bookTitle) triggerReveal();
+    else { syncPreviews(); setTimeout(() => { if (window._s9UpdateTexture) window._s9UpdateTexture(); }, 80); }
+    const infoTitle = document.getElementById('s9-info-title');
+    if (infoTitle && state.bookTitle) infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
+  }
+  if (n === 11) { libZoom = 1; libTX = 0; libTY = 0; renderLibrary(); }
+  window.scrollTo(0,0);
 }
 
 function updateProgress() {
