@@ -106,21 +106,7 @@
     }
     .screen.active { display: flex; }
 
-    #page-turn-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      pointer-events: none;
-      background: linear-gradient(to right,
-        rgba(0,0,0,0.08) 0%,
-        #FFFAF1 4%,
-        #F5EFE4 50%,
-        #FFFAF1 96%,
-        rgba(0,0,0,0.12) 100%
-      );
-      transform: translateX(110%);
-      will-change: transform;
-    }
+
 
     /* ─── Progress ─── */
     #progress {
@@ -5116,6 +5102,6 @@ selectGender('אחר');
   }, true);
 })();
 </script>
-<div id="page-turn-overlay"></div>
+
 </body>
 </html>
