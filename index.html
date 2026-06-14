@@ -2239,6 +2239,7 @@ function go(n) {
   syncPreviews();
   if (n === 3) { state.s3Touched = false; updateS3Bg(); }
   if (n === 5) populateImageBooks();
+  if (n === 7) _s7Animate = true;
   if (n === 9) { _secItems = []; buildSecondaryScreen(true); }
   if (n === 10) {
     if (!state.bookTitle) triggerReveal();
@@ -2761,7 +2762,8 @@ function _buildS7Shelf() {
     btn.className = 's7-lbl-btn' + (comp.key === selKey ? ' sel' : '');
     const tabCol = tabColors[ci % tabColors.length];
     btn.style.setProperty('--tab-color', tabCol);
-    btn.style.setProperty('--tab-delay', `${ci * 0.08}s`);
+    if (_s7Animate) btn.style.setProperty('--tab-delay', `${ci * 0.08}s`);
+    else btn.style.setProperty('animation', 'none');
     btn.style.color = _isColorDark(tabCol) ? '#FFFAF1' : '#111';
     btn.textContent = comp.label;
     btnList.push(btn);
@@ -2785,6 +2787,7 @@ function _buildS7Shelf() {
 
     labelsRow.appendChild(btn);
   });
+  _s7Animate = false;
 }
 
 function miniCover(w, h, comp, i) {
@@ -3150,7 +3153,6 @@ function _syncPreviews() {
       el.style.cssText = 'width:160px;height:240px;position:relative;overflow:hidden;box-shadow:3px 3px 18px rgba(0,0,0,.22)';
     }
     const secImg2 = (id === 'cover-preview-5') ? (state.secondaryImage?.src ?? null) : null;
-    el.classList.remove('cover-anim'); void el.offsetWidth; el.classList.add('cover-anim');
     el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 160 240">
       <defs><style>.ff{font-family:'Heebo',sans-serif}</style></defs>
       ${buildCoverSVG(160, 240, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), undefined, state.color?.nameColor, secImg2)}
@@ -4178,6 +4180,7 @@ const SEC_GENRE_MAP = {
   'שכלי_מוחצן':  ['פנטזיה', 'ספרות יפה']
 };
 let _secItems = [];
+let _s7Animate = false;
 
 // 2×2 grid on each side — positioned in vw units to stay clear of centered book
 // col1 = far from book, col2 = closer to book but still outside it
