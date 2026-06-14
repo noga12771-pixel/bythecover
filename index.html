@@ -2743,11 +2743,13 @@ function _buildS7Shelf() {
   const selKey = state.composition.key;
   const btnList = [];
 
-  const TAB_COLORS = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF922B'];
+  const tabColors = state.color ? state.color.colors : ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF'];
   COMPOSITIONS.forEach((comp, ci) => {
     const btn = document.createElement('button');
     btn.className = 's7-lbl-btn' + (comp.key === selKey ? ' sel' : '');
-    btn.style.setProperty('--tab-color', TAB_COLORS[ci % TAB_COLORS.length]);
+    const tabCol = tabColors[ci % tabColors.length];
+    btn.style.setProperty('--tab-color', tabCol);
+    btn.style.color = _isColorDark(tabCol) ? '#FFFAF1' : '#111';
     btn.textContent = comp.label;
     btnList.push(btn);
 
