@@ -869,12 +869,12 @@
       font-size: 10px;
       cursor: pointer;
       opacity: 0.85;
-      transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .15s, color .15s, box-shadow .2s;
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .15s, color .15s, filter .2s;
       text-align: center;
       color: #111;
       white-space: pre-line;
       line-height: 1.3;
-      box-shadow: -3px 3px 10px rgba(0,0,0,0.22);
+      filter: drop-shadow(-2px 4px 6px rgba(0,0,0,0.28));
       transform: translateX(22px);
     }
     .s7-lbl-btn:hover {
@@ -882,14 +882,14 @@
       background: #111 !important;
       color: #FFFAF1 !important;
       opacity: 1;
-      box-shadow: -5px 4px 16px rgba(0,0,0,0.35);
+      filter: drop-shadow(-3px 6px 10px rgba(0,0,0,0.40));
     }
     .s7-lbl-btn.sel {
       background: #111 !important;
       color: #FFFAF1 !important;
       opacity: 1;
       transform: translateX(-24px) !important;
-      box-shadow: -5px 4px 16px rgba(0,0,0,0.35);
+      filter: drop-shadow(-3px 6px 10px rgba(0,0,0,0.40));
     }
 
     /* ─── Screen 8: Typography (alphabet grid) ─── */
