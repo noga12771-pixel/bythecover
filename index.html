@@ -1030,6 +1030,12 @@
     }
     #s9-big-cover svg { width: 100%; height: 100%; display: block; }
     #cover-preview-5 { width: 100%; height: 100%; }
+    @keyframes noteIn {
+      from { opacity: 0; translate: 0 32px; scale: 0.82; }
+    }
+    @keyframes coverFade {
+      from { opacity: 0.35; }
+    }
     .sec-item {
       position: absolute;
       width: clamp(110px, 12vw, 190px); height: clamp(130px, 14vw, 220px);
@@ -1040,7 +1046,9 @@
       box-shadow: 2px 5px 16px rgba(0,0,0,0.22);
       transform: rotate(var(--rot, 0deg));
       transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s;
+      animation: noteIn 0.5s cubic-bezier(.34,1.56,.64,1) var(--note-delay, 0s) both;
     }
+    .cover-anim { animation: coverFade 0.3s ease; }
     .sec-item:hover {
       transform: rotate(var(--rot, 0deg)) translateY(-18px) scale(1.07);
       box-shadow: 4px 16px 32px rgba(0,0,0,0.28);
@@ -3137,6 +3145,7 @@ function _syncPreviews() {
       el.style.cssText = 'width:160px;height:240px;position:relative;overflow:hidden;box-shadow:3px 3px 18px rgba(0,0,0,.22)';
     }
     const secImg2 = (id === 'cover-preview-5') ? (state.secondaryImage?.src ?? null) : null;
+    el.classList.remove('cover-anim'); void el.offsetWidth; el.classList.add('cover-anim');
     el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 160 240">
       <defs><style>.ff{font-family:'Heebo',sans-serif}</style></defs>
       ${buildCoverSVG(160, 240, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), undefined, state.color?.nameColor, secImg2)}
@@ -4230,6 +4239,7 @@ function buildSecondaryScreen(regenerate) {
     div.style.cssText = `top:${pos.top};${pos.horiz};--rot:${pos.rot}deg;background:${noteColor}`;
     div.style.setProperty('--sil-color', silColor);
     div.style.setProperty('--sil-src', `url('${encodeURI(item.src)}')`);
+    div.style.setProperty('--note-delay', `${i * 0.07}s`);
     div.onclick = () => selectSecondary(item.src, item.label);
     div.onmouseenter = () => { if (!state.secondaryImage) _previewCoverSecondary(item.src); };
     div.onmouseleave = () => { if (!state.secondaryImage) _previewCoverSecondary(null); };
