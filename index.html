@@ -4244,7 +4244,8 @@ function buildSecondaryScreen(regenerate) {
     div.style.cssText = `top:${pos.top};${pos.horiz};--rot:${pos.rot}deg;background:${noteColor}`;
     div.style.setProperty('--sil-color', silColor);
     div.style.setProperty('--sil-src', `url('${encodeURI(item.src)}')`);
-    div.style.setProperty('--note-delay', `${i * 0.07}s`);
+    if (regenerate) div.style.setProperty('--note-delay', `${i * 0.07}s`);
+    else div.style.setProperty('animation', 'none');
     div.onclick = () => selectSecondary(item.src, item.label);
     div.onmouseenter = () => { if (!state.secondaryImage) _previewCoverSecondary(item.src); };
     div.onmouseleave = () => { if (!state.secondaryImage) _previewCoverSecondary(null); };
