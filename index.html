@@ -696,6 +696,19 @@
       flex-direction: column;
       z-index: 0;
     }
+    @keyframes rippleOut {
+      to { transform: translate(-50%,-50%) scale(5); opacity: 0; }
+    }
+    .ripple {
+      position: absolute;
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      pointer-events: none;
+      transform: translate(-50%,-50%) scale(0);
+      animation: rippleOut 0.55s ease-out forwards;
+      z-index: 10;
+    }
     .color-strip {
       flex: 1;
       width: 100%;
@@ -703,6 +716,7 @@
       cursor: pointer;
       transition: flex-grow 0.35s ease, filter 0.25s ease;
       position: relative;
+      overflow: hidden;
     }
     #color-strips:not(:has(.color-strip.sel)) .color-strip:hover,
     #color-strips .color-strip:hover { flex-grow: 2.8; filter: brightness(1.12); }
@@ -2635,9 +2649,16 @@ function populateImageBooks() {
       sw.style.flex = flexes[i] + ' 0 0';
       strip.appendChild(sw);
     });
-    strip.onclick = () => {
+    strip.onclick = (e) => {
       document.querySelectorAll('.color-strip').forEach(e => e.classList.remove('sel'));
       strip.classList.add('sel');
+      const rect = strip.getBoundingClientRect();
+      const rpl = document.createElement('span');
+      rpl.className = 'ripple';
+      rpl.style.left = (e.clientX - rect.left) + 'px';
+      rpl.style.top  = (e.clientY - rect.top)  + 'px';
+      strip.appendChild(rpl);
+      setTimeout(() => rpl.remove(), 600);
       state.color = pal;
       document.getElementById('color-btn').disabled = false;
       // Set screen 8 hover/sel colors from this palette
