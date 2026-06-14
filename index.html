@@ -103,10 +103,14 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      animation: fadeUp .6s ease both;
     }
     .screen.active { display: flex; }
 
-
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
     /* ─── Progress ─── */
     #progress {
@@ -5102,6 +5106,5 @@ selectGender('אחר');
   }, true);
 })();
 </script>
-
 </body>
 </html>
