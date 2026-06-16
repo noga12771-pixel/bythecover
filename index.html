@@ -1828,7 +1828,7 @@
       <div id="library-grid"></div>
     </div>
   </div>
-  <button class="btn" onclick="go(10)" style="position:fixed;bottom:20px;right:20px;z-index:20">לעמוד הקודם</button>
+  <button id="lib-prev-btn" class="btn" onclick="go(10)" style="position:fixed;bottom:20px;right:20px;z-index:20">לעמוד הקודם</button>
   <button class="btn" onclick="resetAndGoHome()" style="position:fixed;bottom:20px;left:20px;z-index:20">לעמוד הבית</button>
 </section>
 
@@ -2246,6 +2246,7 @@ function resetAndGoHome() {
 }
 
 function go(n) {
+  const prevScreen = state.screen;
   if (state.screen === 11 && n !== 11) stopLibParallax();
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s'+n).classList.add('active');
@@ -2262,7 +2263,13 @@ function go(n) {
     const infoTitle = document.getElementById('s9-info-title');
     if (infoTitle && state.bookTitle) infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
   }
-  if (n === 11) { libZoom = 1; libTX = 0; libTY = 0; renderLibrary(); }
+  if (n === 11) {
+    libZoom = 1; libTX = 0; libTY = 0;
+    const fromHome = prevScreen === 1 || prevScreen === null || prevScreen === undefined;
+    const prevBtn = document.getElementById('lib-prev-btn');
+    if (prevBtn) prevBtn.style.display = fromHome ? 'none' : '';
+    renderLibrary(fromHome);
+  }
   window.scrollTo(0,0);
 }
 
@@ -4835,8 +4842,8 @@ let libZoom = 1, libTX = 0, libTY = 0;
 let libTargetX = 0, libTargetY = 0;
 let libRafId = null;
 
-function renderLibrary() {
-  saveToLibrary();
+function renderLibrary(skipSave) {
+  if (!skipSave) saveToLibrary();
   const allCovers = JSON.parse(localStorage.getItem(LIBRARY_KEY) || '[]');
   const covers = allCovers.slice(-30);
   const lib = [DEFAULT_COVER, ...covers];
