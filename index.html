@@ -467,6 +467,7 @@
       margin: 28px 40px 56px;
       text-align: center;
       font-family: 'Rapida', serif;
+      color: #fff200;
     }
 
     /* ─── Screens 5-8: Two-column with preview ─── */
@@ -2312,7 +2313,7 @@ let _twTimer = null;
 function typewriteQ(n) {
   const screen = document.getElementById('s' + n);
   if (!screen) return;
-  const el = screen.querySelector('.q');
+  const el = screen.querySelector('.q, .genre-question');
   if (!el) return;
   const full = el.dataset.twFull || el.textContent;
   el.dataset.twFull = full;
