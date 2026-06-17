@@ -1651,14 +1651,24 @@
       const unit = name + '  ';
       el.textContent = Array(600).fill(unit).join('');
     }
+    let s2MouseX = 0, s2MouseY = 0;
     document.getElementById('s2').addEventListener('mousemove', function(e) {
-      const el = document.getElementById('name-bg-text');
-      if (!el || !el.textContent.trim()) return;
       const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
-      const dx = (e.clientX - cx) / cx * 8;
-      const dy = (e.clientY - cy) / cy * 4;
-      el.style.transform = `translate(${dx}px, ${dy}px)`;
+      s2MouseX = (e.clientX - cx) / cx;
+      s2MouseY = (e.clientY - cy) / cy;
     });
+    (function s2Animate() {
+      const el = document.getElementById('name-bg-text');
+      if (el && el.textContent.trim()) {
+        const t = Date.now() / 1000;
+        const autoX = Math.sin(t * 0.4) * 18 + Math.sin(t * 0.17) * 10;
+        const autoY = Math.cos(t * 0.3) * 10 + Math.cos(t * 0.22) * 6;
+        const dx = autoX + s2MouseX * 30;
+        const dy = autoY + s2MouseY * 16;
+        el.style.transform = `translate(${dx}px, ${dy}px)`;
+      }
+      requestAnimationFrame(s2Animate);
+    })();
   </script>
 </section>
 
