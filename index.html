@@ -587,13 +587,6 @@
       letter-spacing: 5px;
     }
     #s5 .book-card-img img { filter: brightness(0); opacity: 0.88; }
-    @keyframes bookSlideIn {
-      from { opacity: 0; transform: rotate(var(--rot)) translateY(-90px); }
-      to   { opacity: 1; transform: rotate(var(--rot)) translateY(0); }
-    }
-    .book-card-wrap.book-enter {
-      animation: bookSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
     @keyframes bookFloat {
       0%,100% { transform: translateY(0px) rotate(0deg); }
       35%     { transform: translateY(var(--bf-y,-9px)) rotate(var(--bf-a,1.2deg)); }
@@ -2731,44 +2724,49 @@ function populateImageBooks() {
     wrap.style.left = pos.l;
     wrap.style.top  = pos.t;
     wrap.style.setProperty('--rot', pos.r + 'deg');
+    wrap.style.setProperty('--bf-dur',   (3.2 + Math.random() * 2.4).toFixed(2) + 's');
+    wrap.style.setProperty('--bf-phase', (-(Math.random() * 3.5)).toFixed(2) + 's');
+    wrap.style.setProperty('--bf-y',     -(7 + Math.random() * 8).toFixed(1) + 'px');
+    wrap.style.setProperty('--bf-a',     ((Math.random() > 0.5 ? 1 : -1) * (0.6 + Math.random() * 1.4)).toFixed(2) + 'deg');
     const el = document.createElement('div');
     el.className = 'book-card';
     el.innerHTML = `<div class="book-card-img"><img src="${img.svg}" alt="${img.key}"></div><div class="book-color-overlay"></div>`;
     wrap.appendChild(el);
     const imgEl = el.querySelector('.book-card-img img');
+
     wrap.addEventListener('mouseenter', () => {
+      const cur = getComputedStyle(wrap).transform;
+      wrap.style.animation = 'none';
+      wrap.style.transform = cur;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        wrap.style.transition = 'transform 0.38s cubic-bezier(0.4,0,0.2,1), filter 0.38s';
+        wrap.style.transform = `rotate(${pos.r}deg) translateY(-60px)`;
+        wrap.style.filter = 'drop-shadow(0 12px 18px rgba(0,0,0,0.35))';
+        wrap.style.zIndex = '10';
+      }));
       if (!wrap.classList.contains('sel')) imgEl.style.filter = _randImgFilter();
     });
     wrap.addEventListener('mouseleave', () => {
-      if (!wrap.classList.contains('sel')) imgEl.style.filter = '';
+      if (wrap.classList.contains('sel')) return;
+      imgEl.style.filter = '';
+      wrap.style.filter = '';
+      wrap.style.zIndex = '';
+      wrap.style.transform = `rotate(${pos.r}deg) translateY(0px)`;
+      setTimeout(() => {
+        wrap.style.animation = '';
+        wrap.style.transform = '';
+        wrap.style.transition = '';
+      }, 380);
     });
     wrap.onclick = () => {
-      document.querySelectorAll('.book-card-wrap').forEach(e => {
-        e.classList.remove('sel');
-        e.querySelector('.book-card-img img').style.filter = '';
-      });
-      wrap.classList.add('sel');
-      imgEl.style.filter = _randImgFilter();
       state.image = img;
       state.imageKey = img.key;
-      document.getElementById('img-btn').disabled = false;
       updatePreview();
+      go(6);
     };
-    wrap.style.opacity = '0';
     shelf.appendChild(wrap);
-    const delay = 80 + i * 90;
-    setTimeout(() => {
-      wrap.style.opacity = '';
-      wrap.classList.add('book-enter');
-      const card = wrap.querySelector('.book-card');
-      if (card) {
-        card.style.setProperty('--bf-dur',   (3.2 + Math.random() * 2.2).toFixed(2) + 's');
-        card.style.setProperty('--bf-delay', (-(Math.random() * 3.5)).toFixed(2) + 's');
-        card.style.setProperty('--bf-y',     -(7 + Math.random() * 8).toFixed(1) + 'px');
-        card.style.setProperty('--bf-a',     ((Math.random() > 0.5 ? 1 : -1) * (0.6 + Math.random() * 1.4)).toFixed(2) + 'deg');
-        setTimeout(() => card.classList.add('floating'), 600);
-      }
-    }, delay);
+    const staggerDelay = i * 80;
+    setTimeout(() => wrap.classList.add('book-float'), staggerDelay);
   });
 }
 
