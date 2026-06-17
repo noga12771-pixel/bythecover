@@ -193,7 +193,7 @@
     }
 
     /* ─── Screen 2: Name ─── */
-    .q { font-size: 24px; font-weight: 300; letter-spacing: 4px; margin-bottom: 48px; text-align: center; font-family: 'Rapida', serif; }
+    .q { font-size: 24px; font-weight: 300; letter-spacing: 4px; margin-bottom: 48px; text-align: center; font-family: 'Rapida', serif; color: #fff200; }
     #s2 .q { font-size: 32px; color: #fff200; }
     #name-bg-text {
       position: absolute;
@@ -2355,6 +2355,8 @@ function updateS3Bg() {
         transparent calc(50% + 0.5px))`;
     });
     s3.querySelectorAll('.slider-tick').forEach(t => { t.style.background = '#d1d3d4'; });
+    const s3q0 = document.getElementById('s3-question');
+    if (s3q0) s3q0.style.color = '#fff200';
     s3.querySelectorAll('.btn').forEach(btn => {
       btn.style.background = '';
       btn.style.color = '';
@@ -2391,6 +2393,9 @@ function updateS3Bg() {
   });
   // Update tick marks directly
   s3.querySelectorAll('.slider-tick').forEach(t => { t.style.background = fgColor; });
+  // Update question title: yellow on dark, black on light
+  const s3q = document.getElementById('s3-question');
+  if (s3q) s3q.style.color = fgColor === '#111111' ? '#111111' : '#fff200';
   // Update buttons: on light background add black outline so they don't vanish
   s3.querySelectorAll('.btn').forEach(btn => {
     if (fgColor === '#111111') {
