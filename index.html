@@ -1128,18 +1128,28 @@
     /* ─── Screen 10: Reveal ─── */
     #s10 { background: #111111; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
     #s10 .q { color: var(--black); opacity: 1; margin-bottom: 20px; font-family: 'Rapida', serif; font-style: italic; font-size: 32px; }
-    #s9-scene {
-      flex: none;
+    #s10-layout {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      height: 52vh;
-      max-height: 440px;
-      min-height: 260px;
-      display: flex; align-items: center; justify-content: center;
+      flex: 1;
+      gap: 0;
+      min-height: 0;
+    }
+    #s9-scene {
+      flex: 0 0 60%;
+      height: 70vh;
+      max-height: 600px;
+      min-height: 320px;
+      display: flex; align-items: center; justify-content: flex-end;
       cursor: grab;
       user-select: none;
       opacity: 0;
       transition: opacity 1s ease;
       position: relative;
+      order: 2;
     }
     #s9-scene.show { opacity: 1; }
     #s9-scene:active { cursor: grabbing; }
@@ -1249,14 +1259,15 @@
     #s9-info-panel {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
-      width: 100%;
+      flex: 0 0 40%;
       max-width: 380px;
-      margin-top: 28px;
-      padding: 0 20px;
+      margin-top: 0;
+      padding: 0 40px;
       direction: rtl;
-      text-align: center;
+      text-align: right;
+      order: 1;
     }
     #s9-info-title {
       font-family: 'Arbel', sans-serif;
@@ -1883,16 +1894,18 @@
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s10">
   <p class="q">לפי הכריכה שלך</p>
-  <div id="s9-scene">
-    <canvas id="s9-three-canvas"></canvas>
-    <!-- hidden cover-big used for texture generation only -->
-    <div id="cover-big" style="position:absolute;left:-9999px;top:-9999px;width:288px;height:432px;overflow:hidden;"></div>
-    <!-- kept for summary text on back cover -->
-    <div id="summary-text" style="display:none"><span class="loading-dots">טוען...</span></div>
-  </div>
-  <div id="s9-info-panel">
-    <p id="s9-info-title"></p>
-    <p id="s9-info-summary"></p>
+  <div id="s10-layout">
+    <div id="s9-scene">
+      <canvas id="s9-three-canvas"></canvas>
+      <!-- hidden cover-big used for texture generation only -->
+      <div id="cover-big" style="position:absolute;left:-9999px;top:-9999px;width:288px;height:432px;overflow:hidden;"></div>
+      <!-- kept for summary text on back cover -->
+      <div id="summary-text" style="display:none"><span class="loading-dots">טוען...</span></div>
+    </div>
+    <div id="s9-info-panel">
+      <p id="s9-info-title"></p>
+      <p id="s9-info-summary"></p>
+    </div>
   </div>
   <button class="btn" onclick="go(9)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
   <button class="btn" onclick="printPostcard()" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%)">שלח להדפסה</button>
@@ -4067,7 +4080,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
     console.log('S9: initRenderer', W, 'x', H);
 
     threeScene = new THREE.Scene();
-    threeScene.background = new THREE.Color(0xFFFAF1);
+    threeScene.background = new THREE.Color(0x111111);
 
     threeCamera = new THREE.PerspectiveCamera(28, W / H, 0.1, 100);
     threeCamera.position.set(0, 0.1, 5);
