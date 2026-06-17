@@ -633,16 +633,7 @@
       border-radius: 0 3px 3px 0;
       box-shadow: 3px 0 8px rgba(0,0,0,0.4);
     }
-    .book-card-wrap.sel {
-      transform: rotate(var(--rot)) translateY(-60px);
-      filter: drop-shadow(0 12px 18px rgba(0,0,0,0.35));
-      z-index: 5;
-    }
-    .book-card-wrap:hover {
-      transform: rotate(var(--rot)) translateY(-60px);
-      filter: drop-shadow(0 12px 18px rgba(0,0,0,0.35));
-      z-index: 10;
-    }
+    /* hover + sel handled via JS to avoid animation conflict */
     .book-card {
       width: 160px;
       height: 240px;
