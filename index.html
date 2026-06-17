@@ -2392,6 +2392,7 @@ if (n === 5) populateImageBooks();
 
 let _twTimer = null;
 function typewriteQ(n) {
+  if (n === 10) return;
   const screen = document.getElementById('s' + n);
   if (!screen) return;
   const el = screen.querySelector('.q, .genre-question');
