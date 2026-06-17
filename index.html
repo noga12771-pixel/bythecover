@@ -1128,8 +1128,16 @@
     /* ─── Screen 10: Reveal ─── */
     #s10 { background: #111111; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
     #s10 .q { color: #fff200; opacity: 1; margin-bottom: 20px; font-family: 'Rapida', serif; font-style: italic; font-size: 32px; }
-    @keyframes s10TypeCursor { 0%,100% { border-color: #fff200; } 50% { border-color: transparent; } }
-    #s10-title-typed { display: inline-block; white-space: nowrap; border-right: 2px solid #fff200; padding-right: 4px; animation: s10TypeCursor 0.8s step-end infinite; }
+    @keyframes s10TypeReveal { from { width: 0; } to { width: 100%; } }
+    @keyframes s10Cursor { 0%,100% { border-color: #fff200; } 50% { border-color: transparent; } }
+    #s10-title-typed {
+      display: inline-block; white-space: nowrap; overflow: hidden; direction: rtl;
+      width: 0;
+      animation: s10TypeReveal 1.2s steps(15, end) forwards, s10Cursor 0.7s step-end infinite;
+      border-right: 2px solid #fff200;
+      padding-right: 4px;
+      vertical-align: bottom;
+    }
     #s10-layout {
       display: flex;
       flex-direction: row;
@@ -1895,7 +1903,7 @@
      SCREEN 10 — Reveal
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s10">
-  <p class="q"><span id="s10-title-typed"></span></p>
+  <p class="q"><span id="s10-title-typed">לפי הכריכה שלך</span></p>
   <div id="s10-layout">
     <div id="s9-scene">
       <canvas id="s9-three-canvas"></canvas>
