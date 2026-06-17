@@ -2384,34 +2384,34 @@ function updateProgress() {
 function updateS3Bg() {
   const s3 = document.getElementById('s3');
   if (!state.s3Touched) {
-    s3.style.background = '#FFFAF1';
-    s3.style.color = '#231f20';
-    s3.style.setProperty('--s3-fg', '#231f20');
+    s3.style.background = '#111111';
+    s3.style.color = '#d1d3d4';
+    s3.style.setProperty('--s3-fg', '#d1d3d4');
     s3.querySelectorAll('input[type=range]').forEach(inp => {
       inp.style.background = `linear-gradient(to bottom,
         transparent calc(50% - 0.5px),
-        #231f20 calc(50% - 0.5px),
-        #231f20 calc(50% + 0.5px),
+        #d1d3d4 calc(50% - 0.5px),
+        #d1d3d4 calc(50% + 0.5px),
         transparent calc(50% + 0.5px))`;
     });
     return;
   }
   const avg = state.sliders.reduce((a, b) => a + b, 0) / state.sliders.length;
   let r, g, b;
+  // Left extreme (#d1d3d4) → center (#111111) → right extreme (#fff200)
   if (avg <= 5) {
-    const t = avg / 5;
-    r = Math.round(0x1A + (0xFF - 0x1A) * t);
-    g = Math.round(0x1A + (0xFA - 0x1A) * t);
-    b = Math.round(0x2E + (0xF1 - 0x2E) * t);
+    const t = avg / 5; // 0=gray, 1=black
+    r = Math.round(0xd1 + (0x11 - 0xd1) * t);
+    g = Math.round(0xd3 + (0x11 - 0xd3) * t);
+    b = Math.round(0xd4 + (0x11 - 0xd4) * t);
   } else {
-    const t = (avg - 5) / 5;
-    r = Math.round(0xFF + (0xC8 - 0xFF) * t);
-    g = Math.round(0xFA + (0x86 - 0xFA) * t);
-    b = Math.round(0xF1 + (0x0A - 0xF1) * t);
+    const t = (avg - 5) / 5; // 0=black, 1=yellow
+    r = Math.round(0x11 + (0xff - 0x11) * t);
+    g = Math.round(0x11 + (0xf2 - 0x11) * t);
+    b = Math.round(0x11 + (0x00 - 0x11) * t);
   }
-  // Luminance-based contrast: always pick cream or dark for maximum readability
   const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-  const fgColor = lum > 140 ? '#231f20' : '#FFFAF1';
+  const fgColor = lum > 140 ? '#111111' : '#d1d3d4';
   s3.style.background = `rgb(${r},${g},${b})`;
   s3.style.color = fgColor;
   s3.style.setProperty('--s3-fg', fgColor);
