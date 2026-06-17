@@ -1128,8 +1128,7 @@
     /* ─── Screen 10: Reveal ─── */
     #s10 { background: #111111; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
     #s10 .q { color: #fff200; opacity: 1; margin-bottom: 20px; font-family: 'Rapida', serif; font-style: italic; font-size: 32px; }
-    @keyframes s10FadeIn { from { opacity: 0; } to { opacity: 1; } }
-    #s10-title-typed { animation: s10FadeIn 1s ease forwards; }
+    #s10-title-typed { opacity: 1; }
     #s10-layout {
       display: flex;
       flex-direction: row;
@@ -1895,7 +1894,7 @@
      SCREEN 10 — Reveal
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s10">
-  <p class="q"><span id="s10-title-typed">לפי הכריכה שלך</span></p>
+  <p class="q"><span id="s10-title-typed"></span></p>
   <div id="s10-layout">
     <div id="s9-scene">
       <canvas id="s9-three-canvas"></canvas>
