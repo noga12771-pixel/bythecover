@@ -201,6 +201,7 @@
     }
 
     /* ─── Screen 2: Name ─── */
+    #s2 { padding-bottom: 140px; }
     .q { font-size: 24px; font-weight: 300; letter-spacing: 4px; margin-bottom: 48px; text-align: center; font-family: 'Rapida', serif; color: #fff200; }
     #s2 .q { font-size: 32px; color: #fff200; }
     #name-bg-text {
@@ -1686,8 +1687,10 @@
       <label class="gender-opt"><input type="radio" name="gender" value="אחר" onchange="selectGender('אחר')" checked><span class="gender-box"></span>אחר</label>
     </div>
   </div>
-  <button class="btn" onclick="go(1)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
-  <button class="btn" id="name-btn" onclick="go(3)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
+  <div style="position:fixed;bottom:6%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:10">
+    <button class="btn" onclick="go(1)">לעמוד הקודם</button>
+    <button class="btn" id="name-btn" onclick="go(3)" disabled>לעמוד הבא</button>
+  </div>
   <script>
     document.getElementById('name-input').addEventListener('input', function() {
       document.getElementById('name-btn').disabled = !this.value.trim();
