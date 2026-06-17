@@ -2354,6 +2354,7 @@ function updateS3Bg() {
         #d1d3d4 calc(50% + 0.5px),
         transparent calc(50% + 0.5px))`;
     });
+    s3.querySelectorAll('.slider-tick').forEach(t => { t.style.background = '#d1d3d4'; });
     s3.querySelectorAll('.btn').forEach(btn => {
       btn.style.background = '';
       btn.style.color = '';
@@ -2388,6 +2389,8 @@ function updateS3Bg() {
       ${fgColor} calc(50% + 0.5px),
       transparent calc(50% + 0.5px))`;
   });
+  // Update tick marks directly
+  s3.querySelectorAll('.slider-tick').forEach(t => { t.style.background = fgColor; });
   // Update buttons: on light background add black outline so they don't vanish
   s3.querySelectorAll('.btn').forEach(btn => {
     if (fgColor === '#111111') {
