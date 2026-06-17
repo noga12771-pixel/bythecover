@@ -2304,7 +2304,30 @@ function go(n) {
     if (prevBtn) prevBtn.style.display = fromHome ? 'none' : '';
     renderLibrary(fromHome);
   }
+  typewriteQ(n);
   window.scrollTo(0,0);
+}
+
+let _twTimer = null;
+function typewriteQ(n) {
+  const screen = document.getElementById('s' + n);
+  if (!screen) return;
+  const el = screen.querySelector('.q');
+  if (!el) return;
+  const full = el.dataset.twFull || el.textContent;
+  el.dataset.twFull = full;
+  el.textContent = '';
+  if (_twTimer) { clearTimeout(_twTimer); _twTimer = null; }
+  let i = 0;
+  const speed = 38;
+  function tick() {
+    if (i <= full.length) {
+      el.textContent = full.slice(0, i);
+      i++;
+      _twTimer = setTimeout(tick, speed);
+    }
+  }
+  tick();
 }
 
 function updateProgress() {
