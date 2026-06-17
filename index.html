@@ -594,6 +594,14 @@
     .book-card-wrap.book-enter {
       animation: bookSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
+    @keyframes bookFloat {
+      0%,100% { transform: translateY(0px) rotate(0deg); }
+      35%     { transform: translateY(var(--bf-y,-9px)) rotate(var(--bf-a,1.2deg)); }
+      65%     { transform: translateY(calc(var(--bf-y,-9px)*0.5)) rotate(calc(var(--bf-a,1.2deg)*-0.7)); }
+    }
+    .book-card.floating {
+      animation: bookFloat var(--bf-dur,3.8s) var(--bf-delay,0s) ease-in-out infinite;
+    }
     .books-shelf {
       position: relative;
       width: 100%;
@@ -2761,6 +2769,14 @@ function populateImageBooks() {
     setTimeout(() => {
       wrap.style.opacity = '';
       wrap.classList.add('book-enter');
+      const card = wrap.querySelector('.book-card');
+      if (card) {
+        card.style.setProperty('--bf-dur',   (3.2 + Math.random() * 2.2).toFixed(2) + 's');
+        card.style.setProperty('--bf-delay', (-(Math.random() * 3.5)).toFixed(2) + 's');
+        card.style.setProperty('--bf-y',     -(7 + Math.random() * 8).toFixed(1) + 'px');
+        card.style.setProperty('--bf-a',     ((Math.random() > 0.5 ? 1 : -1) * (0.6 + Math.random() * 1.4)).toFixed(2) + 'deg');
+        setTimeout(() => card.classList.add('floating'), 600);
+      }
     }, delay);
   });
 }
