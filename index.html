@@ -333,7 +333,7 @@
     #custom-cursor {
       position: fixed;
       top: 0; left: 0;
-      width: 9px; height: 9px;
+      width: 27px; height: 27px;
       background: #fff200;
       pointer-events: none;
       z-index: 999999;
@@ -5091,7 +5091,7 @@ selectGender('אחר');
 // ═══════════════════════════════════════════════
 (function() {
   const cur = document.getElementById('custom-cursor');
-  const CLICKABLE = 'a, button, label, .btn, .book-card-wrap, .lib-book, .book-card, .s7-lbl-btn, .s4-col-item, .color-swatch, .comp-btn, [onclick], summary, select, input[type="checkbox"], input[type="radio"], input[type="range"]';
+  const CLICKABLE = 'a, button, label, .btn, .book-card-wrap, .lib-book, .book-card, .s7-lbl-btn, .s4-col-item, .color-swatch, .comp-btn, .intro-icon, [onclick], summary, select, input[type="checkbox"], input[type="radio"], input[type="range"]';
 
   document.addEventListener('mousemove', function(e) {
     cur.style.left = e.clientX + 'px';
