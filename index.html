@@ -214,10 +214,14 @@
       z-index: 0;
       user-select: none;
       overflow: hidden;
-      word-break: break-all;
+    }
+    .s2-row {
+      display: block;
+      white-space: nowrap;
+      overflow: visible;
       line-height: 1.9;
       letter-spacing: 0.15em;
-      transition: transform 0.5s ease-out;
+      will-change: transform;
     }
     #name-input {
       background: transparent;
@@ -2308,7 +2312,7 @@ function resetAndGoHome() {
   const nameInput = document.getElementById('name-input');
   if (nameInput) nameInput.value = '';
   const nameBgText = document.getElementById('name-bg-text');
-  if (nameBgText) nameBgText.textContent = '';
+  if (nameBgText) nameBgText.innerHTML = '';
   const nameBtn = document.getElementById('name-btn'); if (nameBtn) nameBtn.disabled = true;
   document.querySelectorAll('.genre-col').forEach(c => c.classList.remove('sel'));
   const genreBtn = document.getElementById('genre-btn'); if (genreBtn) genreBtn.disabled = true;
