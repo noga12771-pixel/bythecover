@@ -1686,9 +1686,22 @@
     function fillNameBg(name) {
       const el = document.getElementById('name-bg-text');
       if (!el) return;
-      if (!name || !name.trim()) { el.textContent = ''; return; }
-      const unit = name + '  ';
-      el.textContent = Array(600).fill(unit).join('');
+      if (!name || !name.trim()) { el.innerHTML = ''; return; }
+      const unit = name + '   ';
+      const repeat = Array(90).fill(unit).join('');
+      el.innerHTML = '';
+      const rowH = 13 * 1.9;
+      const rowCount = Math.ceil((window.innerHeight + 200) / rowH) + 6;
+      for (let i = 0; i < rowCount; i++) {
+        const row = document.createElement('div');
+        row.className = 's2-row';
+        row.textContent = repeat;
+        row.dataset.phase = (Math.random() * Math.PI * 2).toFixed(3);
+        row.dataset.speed = (0.5 + Math.random() * 1.1).toFixed(3);
+        row.dataset.amp   = (14 + Math.random() * 28).toFixed(1);
+        row.dataset.dir   = Math.random() > 0.5 ? '1' : '-1';
+        el.appendChild(row);
+      }
     }
     let s2MouseX = 0, s2MouseY = 0;
     document.getElementById('s2').addEventListener('mousemove', function(e) {
@@ -1698,13 +1711,18 @@
     });
     (function s2Animate() {
       const el = document.getElementById('name-bg-text');
-      if (el && el.textContent.trim()) {
+      if (el && el.children.length) {
         const t = Date.now() / 1000;
-        const autoX = Math.sin(t * 0.4) * 18 + Math.sin(t * 0.17) * 10;
-        const autoY = Math.cos(t * 0.3) * 10 + Math.cos(t * 0.22) * 6;
-        const dx = autoX + s2MouseX * 30;
-        const dy = autoY + s2MouseY * 16;
-        el.style.transform = `translate(${dx}px, ${dy}px)`;
+        const autoY = Math.cos(t * 0.28) * 12 + Math.cos(t * 0.19) * 6;
+        el.style.transform = `translateY(${autoY + s2MouseY * 18}px)`;
+        Array.from(el.children).forEach(function(row) {
+          const phase = parseFloat(row.dataset.phase);
+          const speed = parseFloat(row.dataset.speed);
+          const amp   = parseFloat(row.dataset.amp);
+          const dir   = parseFloat(row.dataset.dir);
+          const x = Math.sin(t * speed * 0.38 + phase) * amp * dir + s2MouseX * 32;
+          row.style.transform = `translateX(${x}px)`;
+        });
       }
       requestAnimationFrame(s2Animate);
     })();
