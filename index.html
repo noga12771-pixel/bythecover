@@ -358,12 +358,12 @@
     }
     /* Screen 3 — white cursor injected by JS */
 
-    @keyframes colRise {
-      from { opacity: 0; transform: translateX(110vw); }
-      to   { opacity: 1; transform: translateX(0); }
+    @keyframes colReveal {
+      from { clip-path: inset(0 0 0 100%); }
+      to   { clip-path: inset(0 0 0 0%); }
     }
     .genre-col.col-enter {
-      animation: colRise 0.9s cubic-bezier(0.16,1,0.3,1) both;
+      animation: colReveal 0.75s cubic-bezier(0.4,0,0.2,1) both;
     }
     /* ─── Screen 4: Genre Columns ─── */
     #s4 {
