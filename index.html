@@ -197,18 +197,19 @@
     #s2 .q { font-size: 32px; color: #fff200; }
     #name-bg-text {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 35vw;
-      font-family: 'Rapida', serif;
+      inset: -60px;
+      font-size: 13px;
+      font-family: 'Arbel', sans-serif;
       color: #d1d3d4;
-      opacity: 0.08;
-      transition: transform 0.4s ease-out;
-      white-space: nowrap;
+      opacity: 0.18;
       pointer-events: none;
       z-index: 0;
       user-select: none;
+      overflow: hidden;
+      word-break: break-all;
+      line-height: 1.9;
+      letter-spacing: 0.15em;
+      transition: transform 0.5s ease-out;
     }
     #name-input {
       background: transparent;
@@ -1627,7 +1628,7 @@
   <div id="name-bg-text"></div>
   <p class="q">מה שמך?</p>
   <input id="name-input" type="text" placeholder="שלום! קוראים לי..." autocomplete="off"
-    oninput="state.name=this.value; updatePreview(); document.getElementById('name-bg-text').textContent=this.value;"
+    oninput="state.name=this.value; updatePreview(); fillNameBg(this.value);"
     onkeydown="if(event.key==='Enter'&&state.name.trim())go(3)">
   <div class="gender-select-wrap">
     <p class="gender-title">לשון פנייה</p>
@@ -1643,13 +1644,20 @@
     document.getElementById('name-input').addEventListener('input', function() {
       document.getElementById('name-btn').disabled = !this.value.trim();
     });
+    function fillNameBg(name) {
+      const el = document.getElementById('name-bg-text');
+      if (!el) return;
+      if (!name || !name.trim()) { el.textContent = ''; return; }
+      const unit = name + '  ';
+      el.textContent = Array(600).fill(unit).join('');
+    }
     document.getElementById('s2').addEventListener('mousemove', function(e) {
       const el = document.getElementById('name-bg-text');
       if (!el || !el.textContent.trim()) return;
       const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
-      const dx = (e.clientX - cx) / cx * 12;
-      const dy = (e.clientY - cy) / cy * 6;
-      el.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+      const dx = (e.clientX - cx) / cx * 8;
+      const dy = (e.clientY - cy) / cy * 4;
+      el.style.transform = `translate(${dx}px, ${dy}px)`;
     });
   </script>
 </section>
@@ -5126,6 +5134,8 @@ selectGender('אחר');
 </script>
 </body>
 </html>
+
+
 
 
 
