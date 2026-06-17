@@ -1128,16 +1128,8 @@
     /* ─── Screen 10: Reveal ─── */
     #s10 { background: #111111; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
     #s10 .q { color: #fff200; opacity: 1; margin-bottom: 20px; font-family: 'Rapida', serif; font-style: italic; font-size: 32px; }
-    @keyframes s10TypeReveal { from { width: 0; } to { width: 100%; } }
-    @keyframes s10Cursor { 0%,100% { border-color: #fff200; } 50% { border-color: transparent; } }
-    #s10-title-typed {
-      display: inline-block; white-space: nowrap; overflow: hidden; direction: rtl;
-      width: 0;
-      animation: s10TypeReveal 1.2s steps(15, end) forwards, s10Cursor 0.7s step-end infinite;
-      border-right: 2px solid #fff200;
-      padding-right: 4px;
-      vertical-align: bottom;
-    }
+    @keyframes s10FadeIn { from { opacity: 0; } to { opacity: 1; } }
+    #s10-title-typed { animation: s10FadeIn 1s ease forwards; }
     #s10-layout {
       display: flex;
       flex-direction: row;
