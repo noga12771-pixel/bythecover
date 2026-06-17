@@ -3071,6 +3071,7 @@ function compHTML(size, pos, svgId, fg) {
 let _bxFid = 0;
 function getPalImgTint(pal) {
   if (!pal) return null;
+  if (pal.imgTint) return pal.imgTint;
   if (pal.name === 'נייטרלית ומינימלית') return '#9A9288';
   if (pal.name === 'כהה וקרה')  return '#A0203A';
   if (pal.name === 'חמה ועשירה') return '#EAA71B';
@@ -4961,7 +4962,7 @@ const DEFAULT_COVER = {
   name: 'נוגה נחמן',
   bookTitle: ' ',
   summary: 'עבודה זו מתנגדת לאמירה הידועה: "אל תשפוט ספר לפי הכריכה שלו" – זאת מכיוון שהאופן בו אנו שופטים לפי הכריכה משפיע על עולם התוכן שנצרוך ונקרא.\nהממשק מזמין אותנו לחוות ולגלות שהכריכה לא מספרת לנו רק על תוכן הספר, אלא גם על מי שאנחנו.',
-  color: { name:'שחורה', colors:['#111111','#1a1a1a','#222222','#333333'], textColor:'#ffffff' },
+  color: { name:'צהובה', colors:['#fff200','#e6d900','#ccbb00','#b3a200'], textColor:'#111111', imgTint:'#111111' },
   image: { key:'לוגו', svg:'%D7%9C%D7%A4%D7%99%20%D7%94%D7%9B%D7%A8%D7%99%D7%9B%D7%94%20%D7%9C%D7%95%D7%92%D7%95%20%D7%97%D7%93%D7%A9%202%20%D7%91%D7%A6%D7%94%D7%95%D7%91.svg' },
   composition: { key:'__logo_centered__' },
   typography: { key:'Frank Ruhl Libre', family:"'Frank Ruhl Libre', Georgia, serif" }
