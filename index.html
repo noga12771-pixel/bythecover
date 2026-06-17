@@ -1127,7 +1127,9 @@
 
     /* ─── Screen 10: Reveal ─── */
     #s10 { background: #111111; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
-    #s10 .q { color: var(--black); opacity: 1; margin-bottom: 20px; font-family: 'Rapida', serif; font-style: italic; font-size: 32px; }
+    #s10 .q { color: #fff200; opacity: 1; margin-bottom: 20px; font-family: 'Rapida', serif; font-style: italic; font-size: 32px; }
+    @keyframes s10TypeCursor { 0%,100% { border-color: #fff200; } 50% { border-color: transparent; } }
+    #s10-title-typed { display: inline-block; overflow: hidden; white-space: nowrap; border-left: 2px solid #fff200; animation: s10TypeCursor 0.8s step-end infinite; }
     #s10-layout {
       display: flex;
       flex-direction: row;
@@ -1143,13 +1145,13 @@
       height: 70vh;
       max-height: 600px;
       min-height: 320px;
-      display: flex; align-items: center; justify-content: flex-end;
+      display: flex; align-items: center; justify-content: flex-start;
       cursor: grab;
       user-select: none;
       opacity: 0;
       transition: opacity 1s ease;
       position: relative;
-      order: 2;
+      order: 1;
     }
     #s9-scene.show { opacity: 1; }
     #s9-scene:active { cursor: grabbing; }
@@ -1267,7 +1269,7 @@
       padding: 0 40px;
       direction: rtl;
       text-align: right;
-      order: 1;
+      order: 2;
     }
     #s9-info-title {
       font-family: 'Arbel', sans-serif;
@@ -1893,7 +1895,7 @@
      SCREEN 10 — Reveal
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s10">
-  <p class="q">לפי הכריכה שלך</p>
+  <p class="q"><span id="s10-title-typed"></span></p>
   <div id="s10-layout">
     <div id="s9-scene">
       <canvas id="s9-three-canvas"></canvas>
@@ -2376,6 +2378,7 @@ if (n === 5) populateImageBooks();
     else { syncPreviews(); setTimeout(() => { if (window._s9UpdateTexture) window._s9UpdateTexture(); }, 80); }
     const infoTitle = document.getElementById('s9-info-title');
     if (infoTitle && state.bookTitle) infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
+    _typeS10Title();
   }
   if (n === 11) {
     libZoom = 1; libTX = 0; libTY = 0;
@@ -4218,6 +4221,22 @@ function skipApi() {
   state.apiKey = 'DEMO';
   document.getElementById('api-modal').classList.remove('show');
   go(9);
+}
+
+function _typeS10Title() {
+  const el = document.getElementById('s10-title-typed');
+  if (!el) return;
+  const text = 'לפי הכריכה שלך';
+  el.textContent = '';
+  let i = 0;
+  function typeNext() {
+    if (i <= text.length) {
+      el.textContent = text.slice(0, i);
+      i++;
+      setTimeout(typeNext, 80);
+    }
+  }
+  typeNext();
 }
 
 async function triggerReveal() {
