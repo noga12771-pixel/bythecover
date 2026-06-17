@@ -1789,9 +1789,8 @@
      SCREEN 5 — Color
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s5">
-  <div class="books-shelf" id="books-shelf">
-    <p class="q">איזה דימוי הכי מושך אותך?</p>
-  </div>
+  <p class="q" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;margin:0">איזה דימוי הכי מושך אותך?</p>
+  <div class="books-shelf" id="books-shelf"></div>
   <div id="cover-preview" style="display:none"></div>
   <button class="btn" onclick="go(4)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
   <button class="btn" id="img-btn" onclick="go(6)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
@@ -2601,14 +2600,14 @@ function populateImageBooks() {
 
   // 8 positions in a 4+4 grid — spread to avoid overlaps
   const POSITIONS = [
-    { l:'2%',  t:'5%',  r:-18 },
-    { l:'25%', t:'3%',  r: 12 },
-    { l:'52%', t:'6%',  r:-8  },
-    { l:'76%', t:'4%',  r:-6  },
-    { l:'2%',  t:'57%', r: 16 },
-    { l:'25%', t:'59%', r:-13 },
-    { l:'52%', t:'56%', r: 9  },
-    { l:'76%', t:'58%', r:-7  },
+    { l:'7%',  t:'6%',  r:-14 },
+    { l:'28%', t:'4%',  r: 11 },
+    { l:'52%', t:'7%',  r:-8  },
+    { l:'73%', t:'5%',  r:-5  },
+    { l:'7%',  t:'55%', r: 13 },
+    { l:'28%', t:'57%', r:-12 },
+    { l:'52%', t:'54%', r: 8  },
+    { l:'73%', t:'56%', r:-6  },
   ];
 
   function _randImgFilter() {
