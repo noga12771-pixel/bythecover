@@ -202,8 +202,9 @@
       transform: translate(-50%, -50%);
       font-size: 35vw;
       font-family: 'Rapida', serif;
-      color: #FFFAF1;
-      opacity: 0.06;
+      color: #d1d3d4;
+      opacity: 0.08;
+      transition: transform 0.4s ease-out;
       white-space: nowrap;
       pointer-events: none;
       z-index: 0;
@@ -1641,6 +1642,14 @@
   <script>
     document.getElementById('name-input').addEventListener('input', function() {
       document.getElementById('name-btn').disabled = !this.value.trim();
+    });
+    document.getElementById('s2').addEventListener('mousemove', function(e) {
+      const el = document.getElementById('name-bg-text');
+      if (!el || !el.textContent.trim()) return;
+      const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+      const dx = (e.clientX - cx) / cx * 12;
+      const dy = (e.clientY - cy) / cy * 6;
+      el.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
     });
   </script>
 </section>
@@ -5117,6 +5126,8 @@ selectGender('אחר');
 </script>
 </body>
 </html>
+
+
 
 
 
