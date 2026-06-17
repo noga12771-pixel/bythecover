@@ -127,12 +127,12 @@
 
     /* ─── Gender selector ─── */
     .gender-select-wrap { position: absolute; bottom: 120px; left: 0; right: 0; text-align: center; }
-    .gender-select-wrap .gender-title { font-family: 'Rapida', serif; font-size: 15px; color: #111; margin-bottom: 10px; }
+    .gender-select-wrap .gender-title { font-family: 'Rapida', serif; font-size: 15px; color: #FFFAF1; margin-bottom: 10px; }
     .gender-opts { display: flex; flex-direction: row; gap: 28px; justify-content: center; align-items: center; direction: rtl; }
-    .gender-opt { display: flex; align-items: center; gap: 7px; cursor: pointer; font-family: 'Arbel', sans-serif; font-size: 15px; color: #111; user-select: none; }
+    .gender-opt { display: flex; align-items: center; gap: 7px; cursor: pointer; font-family: 'Arbel', sans-serif; font-size: 15px; color: #FFFAF1; user-select: none; }
     .gender-opt input[type="radio"] { display: none; }
-    .gender-box { width: 16px; height: 16px; border: 2px solid #111; display: inline-block; flex-shrink: 0; background: transparent; transition: background .15s; }
-    .gender-opt input[type="radio"]:checked ~ .gender-box { background: #111; }
+    .gender-box { width: 16px; height: 16px; border: 2px solid #FFFAF1; display: inline-block; flex-shrink: 0; background: transparent; transition: background .15s; }
+    .gender-opt input[type="radio"]:checked ~ .gender-box { background: #FFFAF1; }
 
     /* ─── Buttons ─── */
     .btn {
@@ -179,6 +179,7 @@
       pointer-events: all;
       object-fit: contain;
       opacity: 1;
+      filter: invert(1);
       filter: brightness(0);
       transition: filter 0.3s ease, opacity 0.3s ease;
       transform: scale(0.95);
@@ -202,7 +203,7 @@
       transform: translate(-50%, -50%);
       font-size: 35vw;
       font-family: 'Rapida', serif;
-      color: #111;
+      color: #FFFAF1;
       opacity: 0.06;
       white-space: nowrap;
       pointer-events: none;
@@ -398,7 +399,7 @@
     }
     .genre-col:hover, .genre-col.sel { flex: 3.5; }
     .genre-col-name {
-      color: #FFFAF1;
+      color: #111111;
       font-size: 33.75px;
       letter-spacing: 4px;
       white-space: nowrap;
@@ -503,7 +504,7 @@
     #cp-bg {
       position: absolute;
       inset: 0;
-      background: #FFFAF1;
+      background: #111111;
       transition: background .5s;
     }
     #cp-accent {
@@ -572,7 +573,7 @@
       position: absolute;
       left: 100%; top: 2px; bottom: 2px;
       width: 18px;
-      background: linear-gradient(to right, #080808 0%, #242424 55%, #111 100%);
+      background: linear-gradient(to right, #080808 0%, #242424 55%, #FFFAF1 100%);
       border-radius: 0 3px 3px 0;
       box-shadow: 3px 0 8px rgba(0,0,0,0.4);
     }
@@ -589,7 +590,7 @@
     .book-card {
       width: 160px;
       height: 240px;
-      background: #111;
+      background: #FFFAF1;
       border-radius: 4px 2px 2px 4px;
       border-left: 6px solid rgba(220,210,190,0.2);
       border-top: 1px solid rgba(255,250,241,0.18);
@@ -684,7 +685,7 @@
       overflow: hidden;
       justify-content: center;
       align-items: center;
-      background: #111;
+      background: #FFFAF1;
     }
     #color-strips {
       position: absolute;
@@ -732,8 +733,8 @@
       z-index: 3;
       font-size: 32px;
       font-family: 'Rapida', serif;
-      color: #FFFAF1;
-      background: #111;
+      color: #111111;
+      background: #FFFAF1;
       padding: 18px 32px;
       margin: 0;
       text-align: center;
@@ -765,7 +766,7 @@
       position: absolute;
       left: 100%; top: 2px; bottom: 2px;
       width: 18px;
-      background: var(--spine-bg, linear-gradient(to right, #0d0d0d 0%, #2a2a2a 60%, #111 100%));
+      background: var(--spine-bg, linear-gradient(to right, #0d0d0d 0%, #2a2a2a 60%, #FFFAF1 100%));
       border-radius: 0 3px 3px 0;
       box-shadow: 5px 0 14px rgba(0,0,0,.65), 2px 0 5px rgba(0,0,0,.45);
       transition: background 0.3s ease;
@@ -839,7 +840,7 @@
     .img-card:hover .img-lbl, .img-card.sel .img-lbl { color: var(--cream); opacity: .65; }
 
     /* ─── Screen 7: Composition shelf ─── */
-    #s7 { background: #FFFAF1; justify-content: space-between; align-items: center; padding-bottom: 80px; }
+    #s7 { background: #111111; justify-content: space-between; align-items: center; padding-bottom: 80px; }
     #s7 .q { font-size: 32px; }
     #s7-shelf {
       display: flex;
@@ -886,7 +887,7 @@
       opacity: 0.85;
       transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .15s, color .15s, filter .2s;
       text-align: center;
-      color: #111;
+      color: #FFFAF1;
       white-space: pre-line;
       line-height: 1.3;
       filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.45));
@@ -894,14 +895,14 @@
     }
     .s7-lbl-btn:hover {
       transform: translateX(-24px);
-      background: #111 !important;
-      color: #FFFAF1 !important;
+      background: #FFFAF1 !important;
+      color: #111111 !important;
       opacity: 1;
       filter: drop-shadow(-3px 6px 10px rgba(0,0,0,0.40));
     }
     .s7-lbl-btn.sel {
-      background: #111 !important;
-      color: #FFFAF1 !important;
+      background: #FFFAF1 !important;
+      color: #111111 !important;
       opacity: 1;
       transform: translateX(-24px) !important;
       filter: drop-shadow(-3px 6px 10px rgba(0,0,0,0.40));
@@ -930,10 +931,10 @@
       font-size: 32px;
       font-weight: 300;
       letter-spacing: 3px;
-      background: #111;
+      background: #FFFAF1;
       color: #fff;
       z-index: 5;
-      border: 1px solid #111;
+      border: 1px solid #FFFAF1;
     }
     .font-grid {
       position: absolute;
@@ -957,15 +958,15 @@
       align-items: center;
       justify-content: center;
       font-size: clamp(15px, 2.4vw, 30px);
-      border: 1px solid #111;
+      border: 1px solid #FFFAF1;
       user-select: none;
       line-height: 1;
       height: calc(100vw / 18);
       flex: none;
       transition: background .15s, color .15s;
     }
-    .alpha-cell:hover { background: var(--s8-sel-bg, #111); color: var(--s8-sel-fg, #fff); }
-    .alpha-cell.sel { background: var(--s8-sel-bg, #111); color: var(--s8-sel-fg, #fff); }
+    .alpha-cell:hover { background: var(--s8-sel-bg, #FFFAF1); color: var(--s8-sel-fg, #fff); }
+    .alpha-cell.sel { background: var(--s8-sel-bg, #FFFAF1); color: var(--s8-sel-fg, #fff); }
     .alpha-col-lbl {
       font-family: var(--font);
       font-size: 7px;
@@ -1023,7 +1024,7 @@
     }
 
     /* ─── Screen 9: Secondary Element ─── */
-    #s9 { background: #FFFAF1; justify-content: space-between; align-items: center; padding-bottom: 80px; }
+    #s9 { background: #111111; justify-content: space-between; align-items: center; padding-bottom: 80px; }
     #s9 .q { font-size: 28px; font-family: 'Rapida', serif; font-style: italic; color: var(--black); }
     #s9-arena {
       position: relative;
@@ -1092,7 +1093,7 @@
     #s9-optional { font-family: 'Arbel', sans-serif; font-size: 13px; color: var(--black); opacity: 0.4; text-align: center; margin: 0; direction: rtl; }
 
     /* ─── Screen 10: Reveal ─── */
-    #s10 { background: #FFFAF1; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
+    #s10 { background: #111111; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
     #s10 .q { color: var(--black); opacity: 1; margin-bottom: 20px; font-family: 'Rapida', serif; font-style: italic; font-size: 32px; }
     #s9-scene {
       flex: none;
@@ -1138,7 +1139,7 @@
       position: absolute;
       right: -22px; top: 3px; bottom: 3px;
       width: 22px;
-      background: var(--s9-spine-bg, linear-gradient(to right, #0d0d0d 0%, #2a2a2a 60%, #111 100%));
+      background: var(--s9-spine-bg, linear-gradient(to right, #0d0d0d 0%, #2a2a2a 60%, #FFFAF1 100%));
       border-radius: 0 3px 3px 0;
     }
     #cover-big {
@@ -1150,7 +1151,7 @@
     #s9-back-face {
       inset: 0;
       transform: rotateY(180deg) translateZ(65px);
-      background: var(--s9-back-bg, #111);
+      background: var(--s9-back-bg, #FFFAF1);
       overflow: visible;
     }
     #s9-back-face::after {
@@ -1158,7 +1159,7 @@
       position: absolute;
       left: -22px; top: 3px; bottom: 3px;
       width: 22px;
-      background: var(--s9-spine-bg, linear-gradient(to right, #0d0d0d 0%, #2a2a2a 60%, #111 100%));
+      background: var(--s9-spine-bg, linear-gradient(to right, #0d0d0d 0%, #2a2a2a 60%, #FFFAF1 100%));
       border-radius: 3px 0 0 3px;
     }
     /* Right side — spine (matches front cover color) */
@@ -1167,7 +1168,7 @@
       width: 130px; height: 432px;
       transform-origin: center;
       transform: rotateY(90deg);
-      background: var(--s9-spine-bg, #111);
+      background: var(--s9-spine-bg, #FFFAF1);
     }
     #s9-spine-face::after {
       content: '';
@@ -1202,7 +1203,7 @@
       display: flex; align-items: center; justify-content: center;
       padding: 24px 18px;
       max-width: none; margin: 0;
-      color: var(--s9-back-fg, #FFFAF1);
+      color: var(--s9-back-fg, #111111);
       font-size: 11px; line-height: 1.85; font-weight: 300;
       text-align: right; direction: rtl;
       opacity: 0;
@@ -1311,7 +1312,7 @@
       position: absolute;
       left: 100%; top: 2px; bottom: 2px;
       width: 12px;
-      background: var(--lib-spine, linear-gradient(to right, #080808 0%, #242424 55%, #111 100%));
+      background: var(--lib-spine, linear-gradient(to right, #080808 0%, #242424 55%, #FFFAF1 100%));
       border-radius: 0 3px 3px 0;
       box-shadow: 3px 0 6px rgba(0,0,0,.38);
     }
@@ -1353,7 +1354,7 @@
     }
     #book-modal.open { opacity: 1; pointer-events: all; }
     #book-modal-inner {
-      background: var(--cream, #FFFAF1);
+      background: var(--cream, #111111);
       border-radius: 6px;
       padding: 36px 32px 32px;
       max-width: 360px; width: 90%;
@@ -1373,7 +1374,7 @@
       position: absolute;
       left: 100%; top: 3px; bottom: 3px;
       width: 18px;
-      background: var(--modal-spine, linear-gradient(to right, #080808 0%, #242424 55%, #111 100%));
+      background: var(--modal-spine, linear-gradient(to right, #080808 0%, #242424 55%, #FFFAF1 100%));
       border-radius: 0 4px 4px 0;
       box-shadow: 4px 0 10px rgba(0,0,0,.4);
     }
@@ -1420,14 +1421,14 @@
       font-family: 'Arbel', sans-serif;
       font-size: 20px; font-weight: 700;
       text-align: center; direction: rtl;
-      color: var(--black, #111);
+      color: var(--black, #FFFAF1);
       margin-bottom: 4px;
     }
     #book-modal-summary {
       font-family: 'Arbel', sans-serif;
       font-size: 14px; line-height: 2;
       text-align: center; direction: rtl;
-      white-space: pre-line; color: var(--black, #111);
+      white-space: pre-line; color: var(--black, #FFFAF1);
       opacity: .85;
     }
     #book-modal-name {
@@ -1540,81 +1541,81 @@
   <div class="intro-icons">
     <!-- שורה 1 – רוחב מלא, 7 פריטים (y≈7%) -->
     <div class="intro-icon skull-tip-trigger" style="left:calc(7% - 92px);top:calc(7% - 90px);width:185px;height:180px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/גולגולת.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="skull-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הגולגולת היא סמל מוכר של מוות וסכנה, היא נוכחת בכריכות מז'אנר מתח ואימה מאז ומתמיד</div>
+    <div id="skull-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הגולגולת היא סמל מוכר של מוות וסכנה, היא נוכחת בכריכות מז'אנר מתח ואימה מאז ומתמיד</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(21% - 90px);top:calc(7% - 74px);width:180px;height:148px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/כתר.svg" alt=""></div>
     <div class="intro-icon children-tip-trigger" style="left:calc(35% - 85px);top:calc(7% - 102px);width:170px;height:205px;transform:rotate(-5deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/צללית ילדים.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="children-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, דמויות ילדים מייצגות את העבר שאי אפשר לחזור אליו</div>
+    <div id="children-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, דמויות ילדים מייצגות את העבר שאי אפשר לחזור אליו</div>
     <div class="intro-icon romance-tip-trigger" style="left:calc(50% - 84px);top:calc(14% - 96px);width:168px;height:192px;transform:rotate(3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/פרחים.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon pearl-tip-trigger" style="left:calc(65% - 52px);top:calc(7% - 55px);width:105px;height:155px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/נערה עם עגיל הפנינה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="pearl-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב, סיפורת יפה מאופיינת עם אלמנטים של יצירות אומנות מוכרות, למשל כמו בכריכה של הספר "נערה עם עגיל הפנינה" מאת טרייסי שבלייה</div>
+    <div id="pearl-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב, סיפורת יפה מאופיינת עם אלמנטים של יצירות אומנות מוכרות, למשל כמו בכריכה של הספר "נערה עם עגיל הפנינה" מאת טרייסי שבלייה</div>
     <div class="intro-icon bird-tip-trigger" style="left:calc(79% - 85px);top:calc(7% - 82px);width:170px;height:165px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/ציפור.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="bird-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הציפור השחורה, ובמיוחד העורב, היא סמל קלאסי של אימה ומוות בספרות</div>
+    <div id="bird-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הציפור השחורה, ובמיוחד העורב, היא סמל קלאסי של אימה ומוות בספרות</div>
     <div class="intro-icon astronaut-tip-trigger" style="left:calc(93% - 70px);top:calc(7% - 77px);width:140px;height:155px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="astronaut-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר מדע בדיוני, נראה שימוש רב באלמנטים שקשורים לחלל בעיצוב הכריכות</div>
+    <div id="astronaut-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר מדע בדיוני, נראה שימוש רב באלמנטים שקשורים לחלל בעיצוב הכריכות</div>
     <!-- שורה 2 – 6 פריטים, צדדים (y≈27%) -->
     <div class="intro-icon eye-tip-trigger" style="left:calc(4% - 105px);top:calc(27% - 81px);width:210px;height:162px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="eye-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">העין מזוהה עם כריכת הספר "1984" מאת ג'ורג' אורוול</div>
+    <div id="eye-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">העין מזוהה עם כריכת הספר "1984" מאת ג'ורג' אורוול</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(17% - 97px);top:calc(27% - 97px);width:195px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/דרקון.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon horrorhand-tip-trigger" style="left:calc(26% - 68px);top:calc(24% - 77px);width:136px;height:153px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/יד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="horrorhand-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה אנחנו נראה בכריכות אלמנטים רבים מחיי היום-יום שלנו שמקבלים נקודת מבט חדשה בהקשר של מותחנים</div>
+    <div id="horrorhand-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה אנחנו נראה בכריכות אלמנטים רבים מחיי היום-יום שלנו שמקבלים נקודת מבט חדשה בהקשר של מותחנים</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(34% - 130px);top:calc(37% - 130px);width:260px;height:260px;transform:rotate(-6deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
     <div class="intro-icon envelope-tip-trigger" style="left:calc(66% - 60px);top:calc(40% - 60px);width:120px;height:120px;transform:rotate(6deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מעטפה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="envelope-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב, מכתבים ומעטפות מסמלים את ז'אנר הרומנטיקה</div>
+    <div id="envelope-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב, מכתבים ומעטפות מסמלים את ז'אנר הרומנטיקה</div>
     <div class="intro-icon planet-tip-trigger" style="left:calc(72% - 82px);top:calc(30% - 82px);width:165px;height:165px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="planet-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר מדע בדיוני, נראה שימוש רב באלמנטים שקשורים לחלל בעיצוב הכריכות</div>
+    <div id="planet-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר מדע בדיוני, נראה שימוש רב באלמנטים שקשורים לחלל בעיצוב הכריכות</div>
     <div class="intro-icon womanback-tip-trigger" style="left:calc(83% - 65px);top:calc(27% - 92px);width:130px;height:185px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/צללית גב אישה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="womanback-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה, לרוב יהיה שימוש בצלליות של דמויות שאנו מביטים בהם מהגב מרחוק</div>
+    <div id="womanback-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה, לרוב יהיה שימוש בצלליות של דמויות שאנו מביטים בהם מהגב מרחוק</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(96% - 82px);top:calc(27% - 105px);width:165px;height:210px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/טירה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <!-- שורה 3 – קצוות + מרכז, 6 פריטים (y≈50%) -->
     <div class="intro-icon house-tip-trigger" style="left:calc(4% - 102px);top:calc(50% - 96px);width:205px;height:192px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/בית ודרך חדש.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="house-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי המתח והאימה, הבית המבודד מסמל סכנה שמחכה: מקום שנראה בטוח אבל אינו כזה</div>
+    <div id="house-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי המתח והאימה, הבית המבודד מסמל סכנה שמחכה: מקום שנראה בטוח אבל אינו כזה</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(16% - 65px);top:calc(50% - 112px);width:130px;height:225px;transform:rotate(4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/חרב.svg" alt=""></div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(27% - 90px);top:calc(50% - 90px);width:180px;height:180px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg" alt=""></div>
     <div class="intro-icon cat-tip-trigger" style="left:calc(74% - 105px);top:calc(57% - 105px);width:210px;height:210px;transform:rotate(5deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/חתולה שחורה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="cat-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הדימוי של החתול חוזר על עצמו רבות בכריכות של ספרים, במיוחד בז'אנר של ספרות יפה</div>
+    <div id="cat-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הדימוי של החתול חוזר על עצמו רבות בכריכות של ספרים, במיוחד בז'אנר של ספרות יפה</div>
     <div class="intro-icon knife-tip-trigger" style="left:calc(84% - 67px);top:calc(50% - 107px);width:135px;height:215px;transform:rotate(-4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/סכין.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="knife-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה אנחנו נראה בכריכות אלמנטים רבים מחיי היום-יום שלנו שמקבלים נקודת מבט חדשה בהקשר של מותחנים</div>
+    <div id="knife-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה אנחנו נראה בכריכות אלמנטים רבים מחיי היום-יום שלנו שמקבלים נקודת מבט חדשה בהקשר של מותחנים</div>
     <div class="intro-icon spaceship-tip-trigger" style="left:calc(93% - 82px);top:calc(43% - 77px);width:165px;height:155px;transform:rotate(8deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/חללית.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="spaceship-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר מדע בדיוני, נראה שימוש רב באלמנטים שקשורים לחלל בעיצוב הכריכות</div>
+    <div id="spaceship-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר מדע בדיוני, נראה שימוש רב באלמנטים שקשורים לחלל בעיצוב הכריכות</div>
     <!-- שורה 4 – צדדים, 8 פריטים (y≈70%) -->
     <div class="intro-icon silhouette-tip-trigger" style="left:calc(4% - 67px);top:calc(70% - 97px);width:135px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/צללית אדם עומד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="silhouette-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרי מותחן יש שימוש רב בצללים מסתוריים, למשל כמו בכריכה של הספר "המטופלת השקטה" מאת אלכס מיכאלידס</div>
+    <div id="silhouette-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרי מותחן יש שימוש רב בצללים מסתוריים, למשל כמו בכריכה של הספר "המטופלת השקטה" מאת אלכס מיכאלידס</div>
     <div class="intro-icon romance-tip-trigger" style="left:calc(20% - 87px);top:calc(70% - 87px);width:175px;height:175px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/ורד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon romance2-tip-trigger" style="left:calc(34% - 82px);top:calc(70% - 76px);width:165px;height:152px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/טבעת.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon romance2-tip-trigger" style="left:calc(12% - 65px);top:calc(40% - 65px);width:130px;height:130px;transform:rotate(-4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מנעול בצורת לב.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon candle-tip-trigger" style="left:calc(57% - 50px);top:calc(18% - 105px);width:100px;height:210px;transform:rotate(3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/נר.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="candle-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה אנחנו נראה בכריכות אלמנטים רבים מחיי היום-יום שלנו שמקבלים נקודת מבט חדשה בהקשר של מותחנים</div>
+    <div id="candle-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי מתח ואימה אנחנו נראה בכריכות אלמנטים רבים מחיי היום-יום שלנו שמקבלים נקודת מבט חדשה בהקשר של מותחנים</div>
     <div class="intro-icon heel-tip-trigger" style="left:calc(67% - 70px);top:calc(50% - 55px);width:140px;height:110px;transform:rotate(-6deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/נעל עקב.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="heel-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, אלמנטים מחיי היומיום הופכים לסמלים של רגע, זיכרון ומשמעות</div>
+    <div id="heel-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, אלמנטים מחיי היומיום הופכים לסמלים של רגע, זיכרון ומשמעות</div>
     <div class="intro-icon chess-tip-trigger" style="left:calc(66% - 67px);top:calc(70% - 97px);width:135px;height:195px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="chess-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">כלי השחמט לקוח מתוך הכריכה של "המשחק של אנדר" מאת אורסון סקוט קארד</div>
+    <div id="chess-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">כלי השחמט לקוח מתוך הכריכה של "המשחק של אנדר" מאת אורסון סקוט קארד</div>
     <div class="intro-icon rocket-tip-trigger" style="left:calc(83% - 71px);top:calc(70% - 133px);width:142px;height:266px;transform:rotate(-8deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/טיל.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="rocket-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי מדע בדיוני נוכל למצוא אלמנטים שקשורים לחלל, כמו בספר "מדריך הטרמפיסט לגלקסיה" מאת דאגלס אדמס</div>
+    <div id="rocket-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי מדע בדיוני נוכל למצוא אלמנטים שקשורים לחלל, כמו בספר "מדריך הטרמפיסט לגלקסיה" מאת דאגלס אדמס</div>
     <div class="intro-icon profile-tip-trigger" style="left:calc(96% - 60px);top:calc(63% - 80px);width:120px;height:160px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/צללית פרופיל.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="profile-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הז'אנר של ספרי מתח ואימה מלווה עמו הרבה צללים מסתוריים בכריכות</div>
+    <div id="profile-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">הז'אנר של ספרי מתח ואימה מלווה עמו הרבה צללים מסתוריים בכריכות</div>
     <div class="intro-icon robot-tip-trigger" style="left:calc(44% - 69px);top:calc(30% - 83px);width:138px;height:166px;transform:rotate(-5deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/רובוט.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="robot-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי מדע בדיוני נוכל למצוא אלמנטים עתידניים יותר מעולם הרובוטיקה, כמו בספר "יומני רובורצח" מאת מרתה וולס</div>
+    <div id="robot-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי מדע בדיוני נוכל למצוא אלמנטים עתידניים יותר מעולם הרובוטיקה, כמו בספר "יומני רובורצח" מאת מרתה וולס</div>
     <div class="intro-icon fantasy-tip-trigger" style="left:calc(78% - 43px);top:calc(40% - 55px);width:85px;height:110px;transform:rotate(-3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/בת ים חדש.svg" alt=""></div>
-    <div id="fantasy-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי פנטזיה, בדרך כלל יהיו אלמנטים הקשורים למלוכה, לכישופים וליצורים קסומים</div>
+    <div id="fantasy-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר של ספרי פנטזיה, בדרך כלל יהיו אלמנטים הקשורים למלוכה, לכישופים וליצורים קסומים</div>
     <div class="intro-icon phone-tip-trigger" style="left:calc(43% - 60px);top:calc(79% - 65px);width:120px;height:130px;transform:rotate(5deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/טלפון.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="phone-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, אלמנטים מחיי היומיום הופכים לסמלים של רגע, זיכרון ומשמעות</div>
+    <div id="phone-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, אלמנטים מחיי היומיום הופכים לסמלים של רגע, זיכרון ומשמעות</div>
     <!-- שורה 5 – רוחב מלא, 7 פריטים (y≈90%) -->
     <div class="intro-icon romance2-tip-trigger" style="left:calc(7% - 70px);top:calc(90% - 95px);width:140px;height:190px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/יד חדש.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
     <div class="intro-icon romance-tip-trigger" style="left:calc(21% - 77px);top:calc(90% - 72px);width:155px;height:145px;transform:rotate(-4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/פרפר.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="romance-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי רומנטיקה נוכל למצוא אלמנטים מעולם הטבע והחי</div>
+    <div id="romance-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי רומנטיקה נוכל למצוא אלמנטים מעולם הטבע והחי</div>
     <div class="intro-icon romance2-tip-trigger" style="left:calc(35% - 82px);top:calc(90% - 87px);width:165px;height:175px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/צללית זוג רוקד.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="romance2-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי רומנטיקה נוכל למצוא אלמנטים המייצגים מערכות יחסים וזוגיות</div>
+    <div id="romance2-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב בז'אנר של ספרי רומנטיקה נוכל למצוא אלמנטים המייצגים מערכות יחסים וזוגיות</div>
     <div class="intro-icon fruit-tip-trigger" style="left:calc(49% - 92px);top:calc(90% - 92px);width:185px;height:185px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/פרי.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="fruit-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, אלמנטים מחיי היומיום הופכים לסמלים של רגע, זיכרון ומשמעות</div>
+    <div id="fruit-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, אלמנטים מחיי היומיום הופכים לסמלים של רגע, זיכרון ומשמעות</div>
     <div class="intro-icon flame-tip-trigger" style="left:calc(63% - 92px);top:calc(90% - 115px);width:185px;height:230px;transform:rotate(-3deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/להבה.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="flame-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר ספרי הפנטזיה, האש מופיעה כסמל של שינוי וכוח</div>
+    <div id="flame-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בז'אנר ספרי הפנטזיה, האש מופיעה כסמל של שינוי וכוח</div>
     <div class="intro-icon statue-tip-trigger" style="left:calc(77% - 92px);top:calc(90% - 105px);width:185px;height:210px;transform:rotate(4deg);cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/פסל.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="statue-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב ספרות יפה מאופיינת עם אלמנטים אומנותיים מוכרים בכריכות שלה, כגון ציור ופיסול</div>
+    <div id="statue-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">לרוב ספרות יפה מאופיינת עם אלמנטים אומנותיים מוכרים בכריכות שלה, כגון ציור ופיסול</div>
     <div class="intro-icon branch-tip-trigger" style="left:calc(93% - 100px);top:calc(90% - 97px);width:200px;height:194px;cursor:pointer"><img loading="lazy" src="בנק אלמנטים מפורט/ספרות יפה/ענף.svg" alt=""><div style="position:absolute;inset:0;"></div></div>
-    <div id="branch-tooltip" style="display:none;position:fixed;background:#111;color:#fff;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, אלמנטים מחיי היומיום הופכים לסמלים של רגע, זיכרון ומשמעות</div>
+    <div id="branch-tooltip" style="display:none;position:fixed;background:#111111;color:#FFFAF1;font-size:12px;padding:6px 9px;border-radius:0;pointer-events:none;z-index:9999;max-width:220px;line-height:1.5">בספרות יפה, אלמנטים מחיי היומיום הופכים לסמלים של רגע, זיכרון ומשמעות</div>
   </div>
   <img id="logo-svg" src="logo%20new.svg" alt="לפי הכריכה">
-  <p style="position:relative;z-index:1;font-size:clamp(14px,1.4vw,20px);color:#111;margin-top:-60px;font-family:'Arbel',sans-serif;letter-spacing:0.01em;opacity:0.7">איך נראה הסיפור שלך?</p>
+  <p style="position:relative;z-index:1;font-size:clamp(14px,1.4vw,20px);color:#FFFAF1;margin-top:-60px;font-family:'Arbel',sans-serif;letter-spacing:0.01em;opacity:0.7">איך נראה הסיפור שלך?</p>
   <button class="btn" onclick="go(2)" style="position:fixed;bottom:20px;left:20px">שנתחיל?</button>
   <button class="btn" onclick="go(11)" style="position:fixed;bottom:20px;right:20px">הספרייה</button>
 </section>
@@ -5117,4 +5118,5 @@ selectGender('אחר');
 </script>
 </body>
 </html>
+
 
