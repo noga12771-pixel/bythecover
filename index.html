@@ -358,14 +358,6 @@
       transform: translate(-50%, -50%) rotate(45deg);
     }
     /* Screen 3 — white cursor injected by JS */
-
-    @keyframes colReveal {
-      from { clip-path: inset(0 0 0 100%); }
-      to   { clip-path: inset(0 0 0 0%); }
-    }
-    .genre-col.col-enter {
-      animation: colReveal 0.75s cubic-bezier(0.4,0,0.2,1) both;
-    }
     /* ─── Screen 4: Genre Columns ─── */
     #s4 {
       padding: 0 !important;
@@ -2362,16 +2354,7 @@ function go(n) {
   updateProgress();
   syncPreviews();
   if (n === 3) { state.s3Touched = false; updateS3Bg(); }
-  if (n === 4) {
-    const cols = document.querySelectorAll('.genre-col');
-    cols.forEach(c => c.classList.remove('col-enter'));
-    requestAnimationFrame(() => {
-      cols.forEach((c, i) => {
-        setTimeout(() => c.classList.add('col-enter'), i * 200);
-      });
-    });
-  }
-  if (n === 5) populateImageBooks();
+if (n === 5) populateImageBooks();
   if (n === 7) _s7Animate = true;
   if (n === 9) { _secItems = []; buildSecondaryScreen(true); }
   if (n === 10) {
