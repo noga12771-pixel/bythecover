@@ -2593,6 +2593,7 @@ function selectGenreCol(el, name) {
   el.classList.add('sel');
   state.genre = name;
   document.getElementById('genre-btn').disabled = false;
+  go(5);
 }
 
 function scatterGenreImages(col) {
