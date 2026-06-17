@@ -4444,10 +4444,10 @@ function _previewCoverSecondary(src) {
 }
 
 function selectSecondary(src, label) {
-  state.secondaryImage = (state.secondaryImage && state.secondaryImage.src === src)
-    ? null
-    : { src, label };
+  const isDeselect = state.secondaryImage && state.secondaryImage.src === src;
+  state.secondaryImage = isDeselect ? null : { src, label };
   buildSecondaryScreen(); // re-render without re-shuffling
+  if (!isDeselect) go(10);
 }
 
 function demoGenerate(p) {
