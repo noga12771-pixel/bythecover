@@ -2795,6 +2795,7 @@ function populateImageBooks() {
       setTimeout(() => rpl.remove(), 600);
       state.color = pal;
       document.getElementById('color-btn').disabled = false;
+      go(7);
       // Set screen 8 hover/sel colors from this palette
       const r = document.documentElement;
       r.style.setProperty('--s8-sel-bg', pal.colors[2] || pal.colors[0]);
