@@ -363,7 +363,7 @@
       to   { opacity: 1; transform: translateX(0); }
     }
     .genre-col.col-enter {
-      animation: colRise 0.55s cubic-bezier(0.22,1,0.36,1) both;
+      animation: colRise 0.9s cubic-bezier(0.16,1,0.3,1) both;
     }
     /* ─── Screen 4: Genre Columns ─── */
     #s4 {
@@ -2368,7 +2368,7 @@ function go(n) {
     cols.forEach(c => c.classList.remove('col-enter'));
     requestAnimationFrame(() => {
       cols.forEach((c, i) => {
-        setTimeout(() => c.classList.add('col-enter'), i * 70);
+        setTimeout(() => c.classList.add('col-enter'), i * 200);
       });
     });
   }
