@@ -2404,6 +2404,11 @@ function updateS3Bg() {
         #d1d3d4 calc(50% + 0.5px),
         transparent calc(50% + 0.5px))`;
     });
+    s3.querySelectorAll('.btn').forEach(btn => {
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.border = '';
+    });
     return;
   }
   const avg = state.sliders.reduce((a, b) => a + b, 0) / state.sliders.length;
