@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-17T00:00:00Z",
+  "title": "Design System: לפי הכריכה",
+  "extensions": {
+    "colorMeta": {
+      "ink":          { "role": "neutral",  "displayName": "Studio Black",   "canonical": "#111111", "tonalRamp": ["#0a0a0a","#111111","#1a1a1a","#242424","#2e2e2e","#3d3d3d","#555555","#888888"] },
+      "signal-yellow":{ "role": "primary",  "displayName": "Signal Yellow",  "canonical": "#fff200", "tonalRamp": ["#4d4800","#777000","#aaa000","#ddd100","#fff200","#fff566","#fff999","#fffccc"] },
+      "paper":        { "role": "neutral",  "displayName": "Paper White",    "canonical": "#FFFAF1", "tonalRamp": ["#666663","#999996","#ccccc9","#e5e5e2","#FFFAF1","#fffcf5","#fffdf9","#ffffff"] },
+      "gray-mid":     { "role": "neutral",  "displayName": "Mid Gray",       "canonical": "#d1d3d4", "tonalRamp": ["#3a3b3c","#555657","#787a7b","#9a9c9d","#b8babb","#d1d3d4","#e3e4e5","#f2f3f3"] },
+      "gray-warm":    { "role": "neutral",  "displayName": "Warm Gray",      "canonical": "#9A9288", "tonalRamp": ["#2e2b28","#4a4641","#6a6460","#888078","#9A9288","#b3aca3","#ccc6be","#e5e0db"] },
+      "gray-dark":    { "role": "neutral",  "displayName": "Dark Gray",      "canonical": "#343434", "tonalRamp": ["#141414","#222222","#2c2c2c","#343434","#3f3f3f","#4a4a4a","#606060","#808080"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display / שאלות", "purpose": "כותרות מסכים, שאלות ראשיות. Rapida weight 300 עם letter-spacing 4px." },
+      "body":    { "displayName": "Body / ממשק",    "purpose": "כל טקסט ממשק. Arbel, נקי, קריא." },
+      "label":   { "displayName": "Label / משני",  "purpose": "טקסטים מושתקים, רקע, הנחיות." }
+    },
+    "shadows": [
+      { "name": "book-hover", "value": "drop-shadow(0 12px 18px rgba(0,0,0,0.35))", "purpose": "CSS filter על ספרים ב-hover בלבד. לא box-shadow." }
+    ],
+    "motion": [
+      { "name": "book-float",    "value": "bookFloat 3.8s ease-in-out infinite",           "purpose": "ריחוף רציף לספרים. כל ספר עם --bf-dur ו--bf-phase שונים." },
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)",                  "purpose": "transitions של state — hover, בחירה." },
+      { "name": "icon-drift",    "value": "iconDrift 4s ease-in-out infinite",             "purpose": "אייקונים מסך 1. --drift-dur, --float-y, --sway-a per element." }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "כפתור ראשי — צהוב מלא, פינות חדות. Hover הופך לghost.",
+      "html": "<button class=\"ds-btn-primary\">לעמוד הבא</button>",
+      "css": ".ds-btn-primary { background: #fff200; color: #111111; border: 1px solid #fff200; border-radius: 0; padding: 10px 28px; font-family: 'Arbel', sans-serif; font-size: 15px; letter-spacing: 1px; cursor: pointer; transition: background 0.2s ease, color 0.2s ease; direction: rtl; } .ds-btn-primary:hover { background: transparent; color: #fff200; } .ds-btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "כפתור חזרה / משני — שקוף עם border צהוב.",
+      "html": "<button class=\"ds-btn-ghost\">לעמוד הקודם</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #fff200; border: 1px solid #fff200; border-radius: 0; padding: 10px 28px; font-family: 'Arbel', sans-serif; font-size: 15px; letter-spacing: 1px; cursor: pointer; transition: background 0.2s ease; direction: rtl; } .ds-btn-ghost:hover { background: rgba(255,242,0,0.08); }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": null,
+      "description": "שדה שם המשתמש — שקוף עם קו תחתון בלבד.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"שמך\" dir=\"rtl\" />",
+      "css": ".ds-input { background: transparent; border: none; border-bottom: 1px solid #FFFAF1; border-radius: 0; color: #FFFAF1; font-family: 'Arbel', sans-serif; font-size: 24px; padding: 8px 0; width: 300px; outline: none; direction: rtl; text-align: center; } .ds-input::placeholder { color: #FFFAF1; opacity: 0.25; font-size: 24px; } .ds-input:focus { border-bottom-color: #fff200; }"
+    },
+    {
+      "name": "Screen Question",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "שאלת מסך — כותרת ראשית של כל שלב. Rapida, צהוב.",
+      "html": "<p class=\"ds-screen-question\">איזה ז׳אנר הכי קורא לך?</p>",
+      "css": ".ds-screen-question { font-family: 'Rapida', serif; font-size: 32px; font-weight: 300; letter-spacing: 4px; color: #fff200; text-align: center; margin: 0 0 48px 0; direction: rtl; }"
+    },
+    {
+      "name": "Section Header Bar",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "רצועת כותרת עליונה — שחור עם טקסט צהוב. משמש במסך 6 ו-8.",
+      "html": "<div class=\"ds-header-bar\">איזו צבעוניות מעניינת אותך יותר?</div>",
+      "css": ".ds-header-bar { position: absolute; top: 0; right: 0; left: 0; background: #111111; color: #fff200; font-family: 'Rapida', serif; font-size: 32px; font-weight: 300; letter-spacing: 4px; text-align: center; padding: 18px 32px; margin: 0; direction: rtl; z-index: 3; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "הסטודיו השחור",
+    "overview": "מערכת עיצוב ישראלית, נועזת, לא מתנצלת. הרקע השחור הוא לא בחירת ברירת מחדל — הוא הצהרה: אנחנו עובדים כאן, זה סטודיו, לא חנות. הצהוב (#fff200) הוא האות, לא הקישוט. כל מסך הוא רגע עיצובי בפני עצמו — לא שלב בטופס.\n\nהטיפוגרפיה בעברית היא מרכזית, לא אחרי-מחשבה. Rapida לשאלות, Arbel לממשק — שניהם גופנים עם אישיות ישראלית ברורה.\n\nהמערכת דוחה: פורמליות בירוקרטית, כלי עיצוב גנריים, e-commerce סטנדרטי.",
+    "keyCharacteristics": [
+      "שחור מוחלט כרקע ראשי",
+      "צהוב (#fff200) כקול יחיד ונועז",
+      "פינות חדות בכל מקום — אפס עיגולים",
+      "RTL מלא, עברית first",
+      "אנימציות מכוונות — כל תנועה מספרת משהו"
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "הצהוב מופיע על ≤20% מכל מסך. רוב המסך שחור. הצהוב מרוויח את הקריאה ממרחוק בגלל שהוא נדיר.", "section": "colors" },
+      { "name": "The No Warm Tint Rule", "body": "הרקע הוא #111111 — לא #1a1a1a עם גוון חם, לא navy. שחור קריר וישיר.", "section": "colors" },
+      { "name": "The Hebrew First Rule", "body": "לא מותקן גופן לטיני לתוכן ממשק. כל הטקסט בעברית — גופן עברי.", "section": "typography" },
+      { "name": "The Flat Floor Rule", "body": "כל המשטחים שקטים. shadow מופיע רק על ספרים שנמצאים ב-hover. ממשק = flat. ספרים = עם גוף.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do השתמשי ב-#fff200 בלבד כ-accent. לא gradient, לא variant.",
+      "Do שמרי על פינות חדות (0px) בכל רכיבי ממשק.",
+      "Do כפתורי ניווט: position fixed, bottom 10%, מרכז, gap 32px.",
+      "Do Rapida לשאלות הגדולות, Arbel לכל השאר.",
+      "Do אנימציות ריחוף עם ease-in-out, 3.5s–5s. לא bounce."
+    ],
+    "donts": [
+      "Don't תוסיפי border-radius לכפתורים, cards, או containers.",
+      "Don't תשתמשי בגופני Google Fonts לממשק.",
+      "Don't תעצבי כמו אתר ממשלתי — אין טפסים מסורתיים, אין breadcrumbs.",
+      "Don't תעצבי כמו Canva/Figma — אין template grid.",
+      "Don't תעצבי כמו e-commerce — אין כפתורי קנייה, אין מחיר.",
+      "Don't תוסיפי shadow לאלמנטי ממשק.",
+      "Don't gradient text — צבע אחד, אחיד."
+    ]
+  }
+}
