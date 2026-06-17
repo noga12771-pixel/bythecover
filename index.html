@@ -3032,6 +3032,8 @@ function miniCover(w, h, comp, i) {
       state.typography = font;
       document.getElementById('font-btn').disabled = false;
       _syncPreviews();
+      if (!state.apiKey) state.apiKey = 'DEMO';
+      go(9);
     });
 
     grid.appendChild(col);
