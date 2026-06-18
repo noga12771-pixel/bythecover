@@ -417,6 +417,7 @@
       z-index: 1;
     }
     .genre-col:hover, .genre-col.sel { flex: 3.5; }
+    .genre-col.has-video:hover, .genre-col.has-video.sel { background: #111111; }
     .genre-col-name {
       color: #d1d3d4;
       font-size: 33.75px;
@@ -1756,7 +1757,7 @@
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s4">
   <div class="genre-columns">
-    <div class="genre-col" id="fantasy-col" onclick="selectGenreCol(this,'פנטזיה')">
+    <div class="genre-col has-video" id="fantasy-col" onclick="selectGenreCol(this,'פנטזיה')">
       <span class="genre-col-name">פנטזיה</span>
       <video id="fantasy-video" src="%D7%96%27%D7%90%D7%A0%D7%A8%20%D7%A4%D7%A0%D7%98%D7%96%D7%99%D7%94.mp4" loop muted playsinline preload="none"
         style="position:absolute;width:70%;height:70%;object-fit:contain;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 0.4s ease;pointer-events:none;z-index:2;"></video>
@@ -1769,7 +1770,7 @@
       col.addEventListener('mouseleave', () => { vid.style.opacity = '0'; vid.pause(); vid.currentTime = 0; });
     })();
     </script>
-    <div class="genre-col" id="horror-col" onclick="selectGenreCol(this,'מתח ואימה')">
+    <div class="genre-col has-video" id="horror-col" onclick="selectGenreCol(this,'מתח ואימה')">
       <span class="genre-col-name">מתח ואימה</span>
       <video id="horror-video" src="bird.mp4" loop muted playsinline preload="none"
         style="position:absolute;inset:0;width:70%;height:70%;object-fit:contain;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 0.4s ease;pointer-events:none;z-index:2;"></video>
@@ -1803,7 +1804,7 @@
         <div class="genre-img" style="left:30%;top:28%;width:20%;transform:rotate(-5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/רובוט.svg" alt=""></div>
       </div>
     </div>
-    <div class="genre-col" id="literary-col" onclick="selectGenreCol(this,'ספרות יפה')">
+    <div class="genre-col has-video" id="literary-col" onclick="selectGenreCol(this,'ספרות יפה')">
       <span class="genre-col-name">ספרות יפה</span>
       <video id="literary-video" src="%D7%96%27%D7%90%D7%A0%D7%A8%20%D7%A1%D7%A4%D7%A8%D7%95%D7%AA%20%D7%99%D7%A4%D7%94.mp4" loop muted playsinline preload="none"
         style="position:absolute;inset:0;width:70%;height:70%;object-fit:contain;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 0.4s ease;pointer-events:none;z-index:2;"></video>
@@ -1823,7 +1824,7 @@
       });
     })();
     </script>
-    <div class="genre-col" id="romance-col" onclick="selectGenreCol(this,'רומנטיקה')">
+    <div class="genre-col has-video" id="romance-col" onclick="selectGenreCol(this,'רומנטיקה')">
       <span class="genre-col-name">רומנטיקה</span>
       <video id="romance-video" src="%D7%A8%D7%95%D7%9E%D7%A0%D7%98%D7%99%D7%A7%D7%94.mp4" loop muted playsinline preload="none"
         style="position:absolute;width:70%;height:70%;object-fit:contain;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 0.4s ease;pointer-events:none;z-index:2;"></video>
