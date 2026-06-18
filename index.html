@@ -1571,35 +1571,6 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════
-     LOADING SCREEN — Logo motion
-══════════════════════════════════════════════ -->
-<div id="loading-screen" style="
-  position: fixed; inset: 0; background: #111111; z-index: 10000;
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity 0.8s ease;
-">
-  <video id="loading-video"
-    src="%D7%9C%D7%95%D7%92%D7%95%20%D7%97%D7%93%D7%A9%20%D7%9E%D7%95%D7%A9%D7%9F.mov"
-    autoplay muted playsinline
-    style="max-width: 80vw; max-height: 80vh; object-fit: contain;"
-  ></video>
-</div>
-<script>
-(function() {
-  const screen = document.getElementById('loading-screen');
-  const video  = document.getElementById('loading-video');
-  function dismiss() {
-    screen.style.opacity = '0';
-    setTimeout(() => { screen.style.display = 'none'; }, 850);
-  }
-  video.addEventListener('ended', dismiss);
-  video.addEventListener('error', dismiss);
-  // fallback: if video hasn't started within 3s, skip
-  const fallback = setTimeout(dismiss, 3000);
-  video.addEventListener('play', () => clearTimeout(fallback));
-})();
-</script>
 
 <div id="custom-cursor"></div>
 
