@@ -1823,19 +1823,19 @@
       });
     })();
     </script>
-    <div class="genre-col" onclick="selectGenreCol(this,'רומנטיקה')">
+    <div class="genre-col" id="romance-col" onclick="selectGenreCol(this,'רומנטיקה')">
       <span class="genre-col-name">רומנטיקה</span>
-      <div class="genre-imgs">
-        <div class="genre-img" style="left:3%;top:12%;width:31%"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/צללית זוג רוקד.svg" alt=""></div>
-        <div class="genre-img" style="left:52%;top:10%;width:26%"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/פרפר.svg" alt=""></div>
-        <div class="genre-img" style="left:41%;top:53%;width:21%;transform:rotate(-4deg)"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/יד חדש.svg" alt=""></div>
-        <div class="genre-img" style="left:5%;top:58%;width:26%;transform:rotate(5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/פרחים.svg" alt=""></div>
-        <div class="genre-img" style="left:60%;top:62%;width:22%;transform:rotate(-6deg)"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/ורד.svg" alt=""></div>
-        <div class="genre-img" style="left:14%;top:76%;width:18%"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/טבעת.svg" alt=""></div>
-        <div class="genre-img" style="left:32%;top:30%;width:20%"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מנעול בצורת לב.svg" alt=""></div>
-        <div class="genre-img" style="left:63%;top:36%;width:18%;transform:rotate(5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/רומנטיקה/מעטפה.svg" alt=""></div>
-      </div>
+      <video id="romance-video" src="%D7%A8%D7%95%D7%9E%D7%A0%D7%98%D7%99%D7%A7%D7%94.mp4" loop muted playsinline preload="none"
+        style="position:absolute;width:70%;height:70%;object-fit:contain;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 0.4s ease;pointer-events:none;z-index:2;"></video>
     </div>
+    <script>
+    (function() {
+      const col = document.getElementById('romance-col');
+      const vid = document.getElementById('romance-video');
+      col.addEventListener('mouseenter', () => { vid.style.opacity = '1'; vid.play().catch(() => {}); });
+      col.addEventListener('mouseleave', () => { vid.style.opacity = '0'; vid.pause(); vid.currentTime = 0; });
+    })();
+    </script>
   </div>
   <p class="genre-question">איזה ז'אנר הכי קורא לך?</p>
   <button class="btn" onclick="go(3)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
