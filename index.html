@@ -1769,9 +1769,11 @@
         <div class="genre-img" style="left:68%;top:34%;width:20%;transform:rotate(5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/בת ים חדש.svg" alt=""></div>
       </div>
     </div>
-    <div class="genre-col" onclick="selectGenreCol(this,'מתח ואימה')">
+    <div class="genre-col" id="horror-col" onclick="selectGenreCol(this,'מתח ואימה')">
       <span class="genre-col-name">מתח ואימה</span>
-      <div class="genre-imgs">
+      <video id="horror-video" src="bird.mov" loop muted playsinline preload="none"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.4s ease;pointer-events:none;z-index:2;"></video>
+      <div class="genre-imgs" id="horror-imgs">
         <div class="genre-img" style="left:3%;top:10%;width:32%"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/בית ודרך חדש.svg" alt=""></div>
         <div class="genre-img" style="left:56%;top:26%;width:22%;transform:rotate(5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/גולגולת.svg" alt=""></div>
         <div class="genre-img" style="left:44%;top:52%;width:15%;transform:rotate(-10deg)"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/סכין.svg" alt=""></div>
@@ -1782,6 +1784,24 @@
         <div class="genre-img" style="left:35%;top:75%;width:20%;transform:rotate(-5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/אימה ומתח/יד.svg" alt=""></div>
       </div>
     </div>
+    <script>
+    (function() {
+      const col = document.getElementById('horror-col');
+      const vid = document.getElementById('horror-video');
+      const imgs = document.getElementById('horror-imgs');
+      col.addEventListener('mouseenter', () => {
+        vid.style.opacity = '1';
+        imgs.style.opacity = '0';
+        vid.play().catch(() => {});
+      });
+      col.addEventListener('mouseleave', () => {
+        vid.style.opacity = '0';
+        imgs.style.opacity = '';
+        vid.pause();
+        vid.currentTime = 0;
+      });
+    })();
+    </script>
     <div class="genre-col" onclick="selectGenreCol(this,'מדע בדיוני')">
       <span class="genre-col-name">מדע בדיוני</span>
       <div class="genre-imgs">
