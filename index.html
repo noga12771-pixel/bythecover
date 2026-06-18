@@ -367,8 +367,9 @@
     .genre-columns {
       display: flex;
       width: 100%;
-      height: 88vh;
-      min-height: 440px;
+      height: calc(100vh - 160px);
+      min-height: 380px;
+      margin-top: 70px;
       position: relative;
     }
     .genre-col {
@@ -1846,7 +1847,7 @@
     </script>
   </div>
   <p class="genre-question">איזה ז'אנר הכי קורא לך?</p>
-  <div style="position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:10">
+  <div style="position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:100">
     <button class="btn" onclick="go(3)">לעמוד הקודם</button>
     <button class="btn" id="genre-btn" onclick="go(5)" disabled>לעמוד הבא</button>
   </div>
