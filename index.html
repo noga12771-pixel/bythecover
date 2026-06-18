@@ -2402,7 +2402,20 @@ if (n === 5) populateImageBooks();
   if (n === 9) { _secItems = []; buildSecondaryScreen(true); }
   if (n === 10) {
     if (!state.bookTitle) triggerReveal();
-    else { syncPreviews(); setTimeout(() => { if (window._s9UpdateTexture) window._s9UpdateTexture(); }, 80); }
+    else {
+      // re-resolve summary with current gender each time screen 10 is entered
+      if (state.summaryRaw) {
+        const resolved = resolveGender(state.summaryRaw);
+        state.summary = resolved;
+        const summaryEl = document.getElementById('summary-text');
+        if (summaryEl) { summaryEl.textContent = resolved; summaryEl.classList.add('show'); }
+        const pcSum = document.getElementById('pc-back-summary');
+        if (pcSum) pcSum.textContent = resolved;
+        const infoSummary = document.getElementById('s9-info-summary');
+        if (infoSummary) infoSummary.textContent = resolved;
+      }
+      syncPreviews(); setTimeout(() => { if (window._s9UpdateTexture) window._s9UpdateTexture(); }, 80);
+    }
     const infoTitle = document.getElementById('s9-info-title');
     if (infoTitle && state.bookTitle) infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
     _typeS10Title();
@@ -4293,6 +4306,7 @@ async function triggerReveal() {
 
   function _applyGenerated(title, summary) {
     state.bookTitle = title;
+    state.summaryRaw = summary;
     const resolvedSummary = resolveGender(summary);
     state.summary   = resolvedSummary;
     summaryEl.textContent = resolvedSummary;
@@ -4398,6 +4412,17 @@ function selectGender(v) {
     if (labels[i * 2])     labels[i * 2].textContent     = right;
     if (labels[i * 2 + 1]) labels[i * 2 + 1].textContent = left;
   });
+  // re-resolve summary if already generated
+  if (state.summaryRaw) {
+    const resolved = resolveGender(state.summaryRaw);
+    state.summary = resolved;
+    const summaryEl = document.getElementById('summary-text');
+    if (summaryEl) summaryEl.textContent = resolved;
+    const pcSum = document.getElementById('pc-back-summary');
+    if (pcSum) pcSum.textContent = resolved;
+    const infoSummary = document.getElementById('s9-info-summary');
+    if (infoSummary) infoSummary.textContent = resolved;
+  }
 }
 
 // ═══════════════════════════════════════════════
