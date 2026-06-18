@@ -417,7 +417,8 @@
       z-index: 1;
     }
     .genre-col:hover, .genre-col.sel { flex: 3.5; }
-    .genre-col.has-video:hover, .genre-col.has-video.sel { background: #111111; }
+    .genre-col.has-video { transition: background 0.3s ease, flex 0.4s ease; }
+    .genre-col.has-video:hover, .genre-col.has-video.sel { background: #111111 !important; }
     .genre-col-name {
       color: #d1d3d4;
       font-size: 33.75px;
