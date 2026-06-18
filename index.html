@@ -1791,19 +1791,19 @@
       });
     })();
     </script>
-    <div class="genre-col" onclick="selectGenreCol(this,'מדע בדיוני')">
+    <div class="genre-col has-video" id="scifi-col" onclick="selectGenreCol(this,'מדע בדיוני')">
       <span class="genre-col-name">מדע בדיוני</span>
-      <div class="genre-imgs">
-        <div class="genre-img" style="left:4%;top:8%;width:32%"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כוכב לכת.svg" alt=""></div>
-        <div class="genre-img" style="left:55%;top:22%;width:22%"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/אסטרונאוט.svg" alt=""></div>
-        <div class="genre-img" style="left:40%;top:50%;width:21%;transform:rotate(-6deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/חללית.svg" alt=""></div>
-        <div class="genre-img" style="left:7%;top:58%;width:19%;transform:rotate(7deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/כלי שחמט.svg" alt=""></div>
-        <div class="genre-img" style="left:62%;top:62%;width:20%"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/עין.svg" alt=""></div>
-        <div class="genre-img" style="left:14%;top:72%;width:22%"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/צללית פרופיל.svg" alt=""></div>
-        <div class="genre-img" style="left:72%;top:8%;width:14%;transform:rotate(15deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/טיל.svg" alt=""></div>
-        <div class="genre-img" style="left:30%;top:28%;width:20%;transform:rotate(-5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/מדע בדיוני/רובוט.svg" alt=""></div>
-      </div>
+      <video id="scifi-video" src="%D7%9E%D7%93%D7%A2%20%D7%91%D7%93%D7%99%D7%95%D7%A0%D7%99.mp4" loop muted playsinline preload="none"
+        style="position:absolute;width:70%;height:70%;object-fit:contain;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 0.4s ease;pointer-events:none;z-index:2;"></video>
     </div>
+    <script>
+    (function() {
+      const col = document.getElementById('scifi-col');
+      const vid = document.getElementById('scifi-video');
+      col.addEventListener('mouseenter', () => { vid.style.opacity = '1'; vid.play().catch(() => {}); });
+      col.addEventListener('mouseleave', () => { vid.style.opacity = '0'; vid.pause(); vid.currentTime = 0; });
+    })();
+    </script>
     <div class="genre-col has-video" id="literary-col" onclick="selectGenreCol(this,'ספרות יפה')">
       <span class="genre-col-name">ספרות יפה</span>
       <video id="literary-video" src="%D7%96%27%D7%90%D7%A0%D7%A8%20%D7%A1%D7%A4%D7%A8%D7%95%D7%AA%20%D7%99%D7%A4%D7%94.mp4" loop muted playsinline preload="none"
