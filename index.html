@@ -1756,19 +1756,19 @@
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s4">
   <div class="genre-columns">
-    <div class="genre-col" onclick="selectGenreCol(this,'פנטזיה')">
+    <div class="genre-col" id="fantasy-col" onclick="selectGenreCol(this,'פנטזיה')">
       <span class="genre-col-name">פנטזיה</span>
-      <div class="genre-imgs">
-        <div class="genre-img" style="left:4%;top:16%;width:17%"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/חרב.svg" alt=""></div>
-        <div class="genre-img" style="left:52%;top:8%;width:30%"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/טירה.svg" alt=""></div>
-        <div class="genre-img" style="left:26%;top:50%;width:22%;transform:rotate(-7deg)"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/להבה.svg" alt=""></div>
-        <div class="genre-img" style="left:57%;top:56%;width:26%;transform:rotate(4deg)"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/מכשפה.svg" alt=""></div>
-        <div class="genre-img" style="left:10%;top:70%;width:35%;transform:rotate(-5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/דרקון.svg" alt=""></div>
-        <div class="genre-img" style="left:62%;top:74%;width:20%"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/כתר.svg" alt=""></div>
-        <div class="genre-img" style="left:38%;top:28%;width:22%"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/כדור בדולח.svg" alt=""></div>
-        <div class="genre-img" style="left:68%;top:34%;width:20%;transform:rotate(5deg)"><img loading="lazy" src="בנק אלמנטים מפורט/פנטזיה/בת ים חדש.svg" alt=""></div>
-      </div>
+      <video id="fantasy-video" src="%D7%96%27%D7%90%D7%A0%D7%A8%20%D7%A4%D7%A0%D7%98%D7%96%D7%99%D7%94.mp4" loop muted playsinline preload="none"
+        style="position:absolute;width:70%;height:70%;object-fit:contain;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 0.4s ease;pointer-events:none;z-index:2;"></video>
     </div>
+    <script>
+    (function() {
+      const col = document.getElementById('fantasy-col');
+      const vid = document.getElementById('fantasy-video');
+      col.addEventListener('mouseenter', () => { vid.style.opacity = '1'; vid.play().catch(() => {}); });
+      col.addEventListener('mouseleave', () => { vid.style.opacity = '0'; vid.pause(); vid.currentTime = 0; });
+    })();
+    </script>
     <div class="genre-col" id="horror-col" onclick="selectGenreCol(this,'מתח ואימה')">
       <span class="genre-col-name">מתח ואימה</span>
       <video id="horror-video" src="bird.mp4" loop muted playsinline preload="none"
