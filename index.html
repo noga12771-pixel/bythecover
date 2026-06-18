@@ -4391,7 +4391,7 @@ function selectGender(v) {
   state.gender = v;
   const q = { 'זכר': 'איך היית מתאר את עצמך?', 'נקבה': 'איך היית מתארת את עצמך?', 'אחר': 'איך היית מתאר/ת את עצמך?' };
   const el = document.getElementById('s3-question');
-  if (el) el.textContent = q[v] || q['אחר'];
+  if (el) { el.textContent = q[v] || q['אחר']; el.dataset.twFull = q[v] || q['אחר']; }
   const labels = document.querySelectorAll('#sliders-wrap .sl-lbl');
   const src = (v === 'נקבה') ? SLIDERS_F : (v === 'אחר') ? SLIDERS_MIX : SLIDERS;
   src.forEach(([right, left], i) => {
