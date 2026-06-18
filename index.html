@@ -4373,8 +4373,17 @@ function resolveGender(text) {
   const sofitToRegular = {'ם':'מ','ן':'נ','ף':'פ','ך':'כ','ץ':'צ'};
   const desofit = s => s.replace(/[םןףךץ]$/, c => sofitToRegular[c] || c);
   return text
+    // special cases first
+    .replace(/את\/ה/g, male ? 'אתה' : 'את')
+    .replace(/אותו\/ה/g, male ? 'אותו' : 'אותה')
     .replace(/שלו\/לה/g, male ? 'שלו' : 'שלה')
-    .replace(/([א-ת]+)\/([א-ת])(?![א-ת])/g, (_, base, suf) => male ? base : desofit(base) + suf)
+    // single-char suffix: if base ends in ו and suffix is ה → swap ו→ה for female
+    .replace(/([א-ת]+)\/([א-ת])(?![א-ת])/g, (_, base, suf) => {
+      if (male) return base;
+      if (base.endsWith('ו') && suf === 'ה') return base.slice(0, -1) + 'ה';
+      return desofit(base) + suf;
+    })
+    // two-or-more char suffix: male = first, female = second
     .replace(/([א-ת]+)\/([א-ת]{2,})/g, (_, m, f) => male ? m : f);
 }
 
