@@ -417,7 +417,7 @@
       z-index: 1;
     }
     .genre-col:hover, .genre-col.sel { flex: 3.5; }
-    .genre-col.has-video { transition: background 0.3s ease, flex 0.4s ease; }
+    .genre-col.has-video { transition: background 0.3s ease, flex 0.4s ease; background: #111111 !important; }
     .genre-col.has-video:hover, .genre-col.has-video.sel { background: #111111 !important; }
     .genre-col-name {
       color: #d1d3d4;
@@ -1773,7 +1773,7 @@
     </script>
     <div class="genre-col has-video" id="horror-col" onclick="selectGenreCol(this,'מתח ואימה')">
       <span class="genre-col-name">מתח ואימה</span>
-      <video id="horror-video" src="%D7%96%27%D7%90%D7%A0%D7%A8%20%D7%9E%D7%AA%D7%97%20%D7%95%D7%90%D7%99%D7%9E%D7%94.mp4" loop muted playsinline preload="none"
+      <video id="horror-video" src="%D7%9E%D7%AA%D7%97%20%D7%95%D7%90%D7%99%D7%9E%D7%94.mp4" loop muted playsinline preload="none"
         style="position:absolute;width:70%;height:70%;object-fit:contain;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 0.4s ease;pointer-events:none;z-index:2;"></video>
     </div>
     <script>
