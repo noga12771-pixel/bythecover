@@ -2740,6 +2740,10 @@ document.querySelectorAll('.genre-col').forEach(col => {
 // ═══════════════════════════════════════════════
 // SCREEN 5 — Image books (populated dynamically on go(5))
 // ═══════════════════════════════════════════════
+const IMAGE_VIDEO_MAP = {
+  'בת ים': 'בנק אלמנטים סרטונים/פנטזיה/בת ים.mp4',
+};
+
 function populateImageBooks() {
   const shelf = document.getElementById('books-shelf');
   if (!shelf) return;
@@ -2790,6 +2794,20 @@ function populateImageBooks() {
     wrap.appendChild(el);
     const imgEl = el.querySelector('.book-card-img img');
 
+    // Add hover video if available for this image
+    const videoSrc = IMAGE_VIDEO_MAP[img.key];
+    let hoverVid = null;
+    if (videoSrc) {
+      hoverVid = document.createElement('video');
+      hoverVid.src = videoSrc;
+      hoverVid.loop = true;
+      hoverVid.muted = true;
+      hoverVid.playsInline = true;
+      hoverVid.preload = 'none';
+      hoverVid.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.3s ease;pointer-events:none;z-index:2;border-radius:inherit;';
+      el.appendChild(hoverVid);
+    }
+
     wrap.addEventListener('mouseenter', () => {
       const cur = getComputedStyle(wrap).transform;
       wrap.style.animation = 'none';
@@ -2801,8 +2819,10 @@ function populateImageBooks() {
         wrap.style.zIndex = '30';
       }));
       if (!wrap.classList.contains('sel')) imgEl.style.filter = _randImgFilter();
+      if (hoverVid) { hoverVid.style.opacity = '1'; hoverVid.play().catch(() => {}); }
     });
     wrap.addEventListener('mouseleave', () => {
+      if (hoverVid) { hoverVid.style.opacity = '0'; hoverVid.pause(); hoverVid.currentTime = 0; }
       if (wrap.classList.contains('sel')) return;
       imgEl.style.filter = '';
       wrap.style.filter = '';
