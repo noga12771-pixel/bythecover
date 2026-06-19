@@ -1861,8 +1861,10 @@
   <p class="q" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;margin:0">איזה דימוי הכי מושך אותך?</p>
   <div class="books-shelf" id="books-shelf"></div>
   <div id="cover-preview" style="display:none"></div>
-  <button class="btn" onclick="go(4)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
-  <button class="btn" id="img-btn" onclick="go(6)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
+  <div style="position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:100">
+    <button class="btn" onclick="go(4)">לעמוד הקודם</button>
+    <button class="btn" id="img-btn" onclick="go(6)" disabled>לעמוד הבא</button>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════
