@@ -1888,8 +1888,10 @@
 <section class="screen" id="s7">
   <p class="q" style="margin-bottom:32px">איך דמיינת את הדברים עומדים?</p>
   <div id="s7-shelf"></div>
-  <button class="btn" onclick="go(6)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
-  <button class="btn" id="comp-btn" onclick="go(8)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
+  <div style="position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:100">
+    <button class="btn" onclick="go(6)">לעמוד הקודם</button>
+    <button class="btn" id="comp-btn" onclick="go(8)" disabled>לעמוד הבא</button>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════
@@ -1903,8 +1905,10 @@
       <div id="cover-preview-4"></div>
     </div>
   </div>
-  <button class="btn" onclick="go(7)" style="position:fixed;bottom:20px;right:20px;z-index:30">לעמוד הקודם</button>
-  <button class="btn" id="font-btn" onclick="if(!state.apiKey)state.apiKey='DEMO';go(9);" disabled style="position:fixed;bottom:20px;left:20px;z-index:30">לעמוד הבא</button>
+  <div style="position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:100">
+    <button class="btn" onclick="go(7)">לעמוד הקודם</button>
+    <button class="btn" id="font-btn" onclick="if(!state.apiKey)state.apiKey='DEMO';go(9);" disabled>לעמוד הבא</button>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════
