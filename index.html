@@ -1964,8 +1964,10 @@
       <div id="library-grid"></div>
     </div>
   </div>
-  <button id="lib-prev-btn" class="btn" onclick="go(10)" style="position:fixed;bottom:20px;right:20px;z-index:20">לעמוד הקודם</button>
-  <button class="btn" onclick="resetAndGoHome()" style="position:fixed;bottom:20px;left:20px;z-index:20">לעמוד הבית</button>
+  <div style="position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:100">
+    <button id="lib-prev-btn" class="btn" onclick="go(10)">לעמוד הקודם</button>
+    <button class="btn" onclick="resetAndGoHome()">לעמוד הבית</button>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════
