@@ -2747,7 +2747,8 @@ const IMAGE_VIDEO_MAP = {
   'כתר':   'בנק אלמנטים סרטונים/פנטזיה/כתר.mp4',
   'להבה':  'בנק אלמנטים סרטונים/פנטזיה/אש.mp4',
   'כדור בדולח': 'בנק אלמנטים סרטונים/פנטזיה/כדור בדולח.mp4',
-  'טירה':  'בנק אלמנטים סרטונים/פנטזיה/טירה.mp4',
+  'טירה':   'בנק אלמנטים סרטונים/פנטזיה/טירה.mp4',
+  'מכשפה': 'בנק אלמנטים סרטונים/פנטזיה/מכשפה.mp4',
 };
 
 function populateImageBooks() {
@@ -2824,7 +2825,7 @@ function populateImageBooks() {
         wrap.style.filter = 'drop-shadow(0 12px 18px rgba(0,0,0,0.35))';
         wrap.style.zIndex = '30';
       }));
-      if (!wrap.classList.contains('sel')) imgEl.style.filter = _randImgFilter();
+      if (!wrap.classList.contains('sel') && !hoverVid) imgEl.style.filter = _randImgFilter();
       if (hoverVid) { hoverVid.style.opacity = '1'; hoverVid.play().catch(() => {}); }
     });
     wrap.addEventListener('mouseleave', () => {
