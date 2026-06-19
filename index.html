@@ -1876,8 +1876,10 @@
   <div id="s6-book-wrap" class="book-wrap">
     <div id="cover-preview-2"></div>
   </div>
-  <button class="btn" onclick="go(5)" style="position:fixed;bottom:20px;right:20px">לעמוד הקודם</button>
-  <button class="btn" id="color-btn" onclick="go(7)" disabled style="position:fixed;bottom:20px;left:20px">לעמוד הבא</button>
+  <div style="position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:100">
+    <button class="btn" onclick="go(5)">לעמוד הקודם</button>
+    <button class="btn" id="color-btn" onclick="go(7)" disabled>לעמוד הבא</button>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════
