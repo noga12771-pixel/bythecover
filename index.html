@@ -2837,7 +2837,6 @@ function populateImageBooks() {
     let hoverVid = null;
     if (videoSrc) {
       hoverVid = document.createElement('video');
-      hoverVid.src = videoSrc;
       hoverVid.loop = true;
       hoverVid.muted = true;
       hoverVid.playsInline = true;
@@ -2857,7 +2856,11 @@ function populateImageBooks() {
         wrap.style.zIndex = '30';
       }));
       if (!wrap.classList.contains('sel') && !hoverVid) imgEl.style.filter = _randImgFilter();
-      if (hoverVid) { hoverVid.style.opacity = '1'; hoverVid.play().catch(() => {}); }
+      if (hoverVid) {
+        if (!hoverVid.src) hoverVid.src = videoSrc;
+        hoverVid.style.opacity = '1';
+        hoverVid.play().catch(() => {});
+      }
     });
     wrap.addEventListener('mouseleave', () => {
       if (hoverVid) { hoverVid.style.opacity = '0'; hoverVid.pause(); hoverVid.currentTime = 0; }
