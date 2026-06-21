@@ -5004,7 +5004,7 @@ function buildBackCoverDataUrl(callback) {
         img.onload = () => {
           const lw = Math.round(W * 0.38);
           const lh2 = Math.round(lw * (img.height / img.width));
-          const lx = W - lw - Math.round(W * 0.08);
+          const lx = Math.round((W - lw) / 2);
           const ly = H - lh2 - Math.round(H * 0.05);
           const lc = document.createElement('canvas');
           lc.width = lw; lc.height = lh2;
