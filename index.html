@@ -73,6 +73,41 @@
       font-style: normal;
     }
 
+    @font-face {
+      font-family: 'Narkissim';
+      src: url('פונטים/narkissim-textbold.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'AlenbiSerifBlack';
+      src: url('פונטים/AlenbiSerif-Black.2032e7164f9c06e2e3b422dc3e9a8d90.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'LyonTextHlar';
+      src: url('פונטים/lyontexthlar-semibold.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'SouthV2';
+      src: url('פונטים/South_v2-Bold.d98a6f4659ce02106b3b1f8809beb46e(1).ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'SpeedmanBlack';
+      src: url('פונטים/Speedman-Black.e7db0153408b20f56fceacc8c68334d1.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     :root {
       --black: #FFFAF1;
       --cream: #111111;
@@ -2318,7 +2353,12 @@ const FONTS = [
   { key:'Hadas Bau',         family:"'HadasBau', serif",                            sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
   { key:'Narkis Block Studio', family:"'NarkisBlockStudio', serif",                 sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} },
   { key:'Liebling',          family:"'Liebling', serif",                            sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
-  { key:'Haim G',            family:"'HaimG', sans-serif",                          sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} }
+  { key:'Haim G',            family:"'HaimG', sans-serif",                          sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} },
+  { key:'Narkissim',         family:"'Narkissim', serif",                           sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} },
+  { key:'Alenbi Serif Black', family:"'AlenbiSerifBlack', serif",                   sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'} },
+  { key:'Lyon Text Hlar',    family:"'LyonTextHlar', serif",                        sample:'אבגד', score:{A:'R',B:'P',C:'order',D:'connect'} },
+  { key:'South V2',          family:"'SouthV2', sans-serif",                        sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'} },
+  { key:'Speedman Black',    family:"'SpeedmanBlack', sans-serif",                  sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'indep'} }
 ];
 
 // ═══════════════════════════════════════════════
@@ -3597,6 +3637,11 @@ const _FONT_FILES = {
   'Liebling':          'פונטים/liebling-regular.ttf',
   'NarkisBlockStudio': 'פונטים/NarkisBlockStudio-Regular.ttf',
   'OHSalmanHabaka':    'פונטים/OHSalmanHabaka1.0-Regular.otf',
+  'Narkissim':         'פונטים/narkissim-textbold.ttf',
+  'AlenbiSerifBlack':  'פונטים/AlenbiSerif-Black.2032e7164f9c06e2e3b422dc3e9a8d90.ttf',
+  'LyonTextHlar':      'פונטים/lyontexthlar-semibold.ttf',
+  'SouthV2':           'פונטים/South_v2-Bold.d98a6f4659ce02106b3b1f8809beb46e(1).ttf',
+  'SpeedmanBlack':     'פונטים/Speedman-Black.e7db0153408b20f56fceacc8c68334d1.ttf',
   'Heebo':             'פונטים/Heebo-Regular.ttf',
   'Frank Ruhl Libre':  'פונטים/FrankRuhlLibre-VariableFont_wght.ttf',
 };
@@ -5066,6 +5111,11 @@ function _doPrintPostcard(arbelDataUrl, masadaDataUrl) {
   @font-face { font-family: 'NarkisBlockStudio'; src: url('פונטים/NarkisBlockStudio-Regular.ttf') format('truetype'); }
   @font-face { font-family: 'Liebling';       src: url('פונטים/liebling-regular.ttf') format('truetype'); }
   @font-face { font-family: 'HaimG';          src: url('פונטים/HaimG-Regular.53878e88f76c547146dc518c566b6ca6.ttf') format('truetype'); }
+  @font-face { font-family: 'Narkissim';      src: url('פונטים/narkissim-textbold.ttf') format('truetype'); }
+  @font-face { font-family: 'AlenbiSerifBlack'; src: url('פונטים/AlenbiSerif-Black.2032e7164f9c06e2e3b422dc3e9a8d90.ttf') format('truetype'); }
+  @font-face { font-family: 'LyonTextHlar';   src: url('פונטים/lyontexthlar-semibold.ttf') format('truetype'); }
+  @font-face { font-family: 'SouthV2';        src: url('פונטים/South_v2-Bold.d98a6f4659ce02106b3b1f8809beb46e(1).ttf') format('truetype'); }
+  @font-face { font-family: 'SpeedmanBlack';  src: url('פונטים/Speedman-Black.e7db0153408b20f56fceacc8c68334d1.ttf') format('truetype'); }
   @page { size: 10cm 15cm; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   .page { position: relative; width: 10cm; height: 15cm; overflow: hidden; page-break-after: always; }
