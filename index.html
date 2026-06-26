@@ -186,6 +186,9 @@
     .btn.inv { background: var(--cream); color: var(--black); border-color: var(--cream); }
     .btn.inv:hover { background: transparent; color: var(--cream); }
     .btn:disabled { opacity: .28; pointer-events: none; }
+    /* Screen 3 light background — buttons adapt via class, not inline styles */
+    #s3.s3-light .btn { background: transparent; color: #111111; border-color: #111111; }
+    #s3.s3-light .btn:hover { background: rgba(0,0,0,0.08); color: #111111; border-color: #111111; }
 
     /* ─── Screen 1: Opening ─── */
     #s1 { background: var(--cream); position: relative; overflow: hidden; }
@@ -2557,11 +2560,7 @@ function updateS3Bg() {
     s3.querySelectorAll('.slider-tick').forEach(t => { t.style.background = '#d1d3d4'; });
     const s3q0 = document.getElementById('s3-question');
     if (s3q0) s3q0.style.color = '#fff200';
-    s3.querySelectorAll('.btn').forEach(btn => {
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.style.border = '';
-    });
+    s3.classList.remove('s3-light');
     return;
   }
   const avg = state.sliders.reduce((a, b) => a + b, 0) / state.sliders.length;
@@ -2596,17 +2595,12 @@ function updateS3Bg() {
   // Update question title: yellow on dark, black on light
   const s3q = document.getElementById('s3-question');
   if (s3q) s3q.style.color = fgColor === '#111111' ? '#111111' : '#fff200';
-  // Update buttons: on light background add black outline so they don't vanish
+  // Update buttons: use class instead of inline styles so :hover still works
+  s3.classList.toggle('s3-light', fgColor === '#111111');
   s3.querySelectorAll('.btn').forEach(btn => {
-    if (fgColor === '#111111') {
-      btn.style.background = 'transparent';
-      btn.style.color = '#111111';
-      btn.style.border = '1.5px solid #111111';
-    } else {
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.style.border = '';
-    }
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.style.border = '';
   });
   // Store fg for particles
   s3._fgColor = fgColor;
