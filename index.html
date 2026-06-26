@@ -2271,17 +2271,19 @@ const SLIDERS_MIX = [
   ['מוחצן/ת','מופנם/ת']
 ];
 
+// profile: [serious, realistic, luxury, retro, pessimistic, planned, introverted]
+//           sl[0]   sl[1]     sl[2]   sl[3]  sl[4]        sl[5]    sl[6]
 const PALETTES = [
-  { name:'כהה וקרה',   colors:['#1D2326','#611427','#DDDCC5','#6A6A61'], textColor:'#DDDCC5', score:{A:'S',B:'P',C:'order',D:'indep'}, vibe:9 },
-  { name:'חמה ועשירה', colors:['#33312B','#EAA71B','#6B5E42','#413C33'], textColor:'#EAA71B', score:{A:'R',B:'E',C:'chaos',D:'connect'}, vibe:7 },
-  { name:'רכה ועדינה', colors:['#7EF1FC','#FCEC7E','#FC7EC6','#A855D4'], textColor:'#A855D4', nameColor:'#FC7EC6', score:{A:'R',B:'P',C:'order',D:'connect'}, vibe:3 },
-  { name:'נייטרלית ומינימלית', colors:['#2C2C2C','#9A9288','#4A4A4A','#9A9288'], textColor:'#FFFFFF', nameColor:'#C0BBB5', score:{A:'S',B:'P',C:'order',D:'indep'}, vibe:8 },
-  { name:'נועזת ופלורסנטית', colors:['#CCFF00','#FF6600','#FF0066','#00FFCC'], textColor:'#FF0066', score:{A:'R',B:'E',C:'chaos',D:'indep'}, vibe:2 },
-  { name:'צבעונית ועליזה',   colors:['#D96A7E','#3A8C5D','#6B98BF','#F2E291'], textColor:'#F2E291', score:{A:'R',B:'E',C:'chaos',D:'connect'}, vibe:2 },
-  { name:'וינטג׳ ואדמתית',  colors:['#778C61','#F2BF80','#733434','#F2B3B3'], textColor:'#733434', score:{A:'S',B:'E',C:'order',D:'connect'}, vibe:6 },
-  { name:'קיצית ושמחה',    colors:['#FAE8A0','#F07850','#C03535','#5BCCE0'], textColor:'#C03535', score:{A:'R',B:'E',C:'chaos',D:'connect'}, vibe:2 },
-  { name:'פסטלית ורגועה',  colors:['#89ABD9','#C0B8DD','#84C1D9','#DFD9E3'], textColor:'#DFD9E3', score:{A:'R',B:'P',C:'order',D:'connect'}, vibe:4 },
-  { name:'רומנטית ועדינה', colors:['#FFDADB','#DB7F8E','#9EA3A6','#614E54'], textColor:'#614E54', score:{A:'R',B:'P',C:'order',D:'connect'}, vibe:3 }
+  { name:'כהה וקרה',   colors:['#1D2326','#611427','#DDDCC5','#6A6A61'], textColor:'#DDDCC5', score:{A:'S',B:'P',C:'order',D:'indep'}, profile:[9,7,7,3,8,7,8] },
+  { name:'חמה ועשירה', colors:['#33312B','#EAA71B','#6B5E42','#413C33'], textColor:'#EAA71B', score:{A:'R',B:'E',C:'chaos',D:'connect'}, profile:[7,5,8,7,4,5,5] },
+  { name:'רכה ועדינה', colors:['#7EF1FC','#FCEC7E','#FC7EC6','#A855D4'], textColor:'#A855D4', nameColor:'#FC7EC6', score:{A:'R',B:'P',C:'order',D:'connect'}, profile:[2,3,3,4,2,3,6] },
+  { name:'נייטרלית ומינימלית', colors:['#2C2C2C','#9A9288','#4A4A4A','#9A9288'], textColor:'#FFFFFF', nameColor:'#C0BBB5', score:{A:'S',B:'P',C:'order',D:'indep'}, profile:[8,7,5,2,5,8,7] },
+  { name:'נועזת ופלורסנטית', colors:['#CCFF00','#FF6600','#FF0066','#00FFCC'], textColor:'#FF0066', score:{A:'R',B:'E',C:'chaos',D:'indep'}, profile:[2,4,4,2,3,2,1] },
+  { name:'צבעונית ועליזה',   colors:['#D96A7E','#3A8C5D','#6B98BF','#F2E291'], textColor:'#F2E291', score:{A:'R',B:'E',C:'chaos',D:'connect'}, profile:[2,3,2,4,1,2,1] },
+  { name:'וינטג׳ ואדמתית',  colors:['#778C61','#F2BF80','#733434','#F2B3B3'], textColor:'#733434', score:{A:'S',B:'E',C:'order',D:'connect'}, profile:[6,6,5,9,5,5,5] },
+  { name:'קיצית ושמחה',    colors:['#FAE8A0','#F07850','#C03535','#5BCCE0'], textColor:'#C03535', score:{A:'R',B:'E',C:'chaos',D:'connect'}, profile:[2,3,2,3,1,3,2] },
+  { name:'פסטלית ורגועה',  colors:['#89ABD9','#C0B8DD','#84C1D9','#DFD9E3'], textColor:'#DFD9E3', score:{A:'R',B:'P',C:'order',D:'connect'}, profile:[3,3,3,4,3,5,6] },
+  { name:'רומנטית ועדינה', colors:['#FFDADB','#DB7F8E','#9EA3A6','#614E54'], textColor:'#614E54', score:{A:'R',B:'P',C:'order',D:'connect'}, profile:[3,2,4,5,3,3,5] }
 ];
 
 const CATEGORIES = [
@@ -2351,20 +2353,20 @@ const COMPOSITIONS = [
 ];
 
 const FONTS = [
-  { key:'Frank Ruhl Libre',  family:"'Frank Ruhl Libre', Georgia, serif",          sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, vibe:8 },
-  { key:'Heebo',             family:"'Heebo', Arial, sans-serif",                  sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, vibe:5 },
-  { key:'OHSalmanHabaka',    family:"'OHSalmanHabaka', cursive",                   sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, vibe:2 },
-  { key:'Flamingo FM',       family:"'FlamingoBM', cursive",                       sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, vibe:1 },
-  { key:'Index DL v1 AAA',   family:"'IndexDL', 'Courier New', monospace",         sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, vibe:7 },
-  { key:'Hadas Bau',         family:"'HadasBau', serif",                            sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, vibe:2 },
-  { key:'Narkis Block Studio', family:"'NarkisBlockStudio', serif",                 sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, vibe:6 },
-  { key:'Liebling',          family:"'Liebling', serif",                            sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, vibe:2 },
-  { key:'Haim G',            family:"'HaimG', sans-serif",                          sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, vibe:5 },
-  { key:'Narkissim',         family:"'Narkissim', serif",                           sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, vibe:7 },
-  { key:'Alenbi Serif Black', family:"'AlenbiSerifBlack', serif",                   sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, vibe:9 },
-  { key:'Lyon Text Hlar',    family:"'LyonTextHlar', serif",                        sample:'אבגד', score:{A:'R',B:'P',C:'order',D:'connect'}, vibe:8 },
-  { key:'South V2',          family:"'SouthV2', sans-serif",                        sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, vibe:4 },
-  { key:'Speedman Black',    family:"'SpeedmanBlack', sans-serif",                  sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'indep'}, vibe:3 }
+  { key:'Frank Ruhl Libre',   family:"'Frank Ruhl Libre', Georgia, serif",         sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, profile:[8,6,7,6,5,7,6] },
+  { key:'Heebo',              family:"'Heebo', Arial, sans-serif",                 sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, profile:[5,5,4,3,5,5,5] },
+  { key:'OHSalmanHabaka',     family:"'OHSalmanHabaka', cursive",                  sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, profile:[2,3,3,5,3,2,3] },
+  { key:'Flamingo FM',        family:"'FlamingoBM', cursive",                      sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, profile:[1,2,3,5,2,2,2] },
+  { key:'Index DL v1 AAA',    family:"'IndexDL', 'Courier New', monospace",        sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, profile:[7,6,5,2,6,7,6] },
+  { key:'Hadas Bau',          family:"'HadasBau', serif",                          sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, profile:[2,3,3,5,2,2,3] },
+  { key:'Narkis Block Studio', family:"'NarkisBlockStudio', serif",                sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, profile:[6,5,6,5,5,6,5] },
+  { key:'Liebling',           family:"'Liebling', serif",                          sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, profile:[2,2,4,5,2,2,4] },
+  { key:'Haim G',             family:"'HaimG', sans-serif",                        sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, profile:[5,5,5,4,5,5,5] },
+  { key:'Narkissim',          family:"'Narkissim', serif",                         sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, profile:[7,6,6,6,5,6,5] },
+  { key:'Alenbi Serif Black', family:"'AlenbiSerifBlack', serif",                  sample:'אבגד', score:{A:'S',B:'P',C:'order',D:'indep'}, profile:[9,7,8,7,6,7,6] },
+  { key:'Lyon Text Hlar',     family:"'LyonTextHlar', serif",                      sample:'אבגד', score:{A:'R',B:'P',C:'order',D:'connect'}, profile:[8,6,7,5,5,7,6] },
+  { key:'South V2',           family:"'SouthV2', sans-serif",                      sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'connect'}, profile:[4,4,4,4,4,4,4] },
+  { key:'Speedman Black',     family:"'SpeedmanBlack', sans-serif",                sample:'אבגד', score:{A:'R',B:'E',C:'chaos',D:'indep'}, profile:[3,4,3,3,3,3,3] }
 ];
 
 // ═══════════════════════════════════════════════
@@ -2944,14 +2946,27 @@ function populateImageBooks() {
 // ═══════════════════════════════════════════════
 // SCREEN 6 — Color Palettes
 // ═══════════════════════════════════════════════
-// ─── Slider vibe helper ────────────────────────────────────────────────────
-// Returns 0 (כיפי/fun) → 10 (רציני/serious) based on screen-3 sliders.
-// slider[0]: low=כיפי, high=רציני (confirmed from bg-color logic)
-// slider[4]: low=פסימי(dark), high=אופטימי(bright) → optimism reduces seriousness
-function _getUserVibeScore() {
+// ─── Slider fit helpers ────────────────────────────────────────────────────
+// Weights per slider dimension (how much each affects palette/font filtering)
+const _SLIDER_W = [2.0, 0.8, 1.2, 1.0, 1.0, 0.7, 0.7];
+
+// Distance between a palette/font profile and the user's slider values (lower = better fit)
+function _fitDistance(profile, sl) {
+  return profile.reduce((sum, p, i) => sum + Math.abs(p - sl[i]) * _SLIDER_W[i], 0);
+}
+
+// 0 = all sliders at extremes, 1 = all sliders at neutral (5)
+function _neutrality() {
   const sl = state.sliders;
-  const serious = sl[0] * 1.4 + (10 - sl[4]) * 0.4 + sl[2] * 0.2;
-  return Math.max(0, Math.min(10, serious / 2));
+  const avgDist = sl.reduce((sum, v) => sum + Math.abs(v - 5), 0) / sl.length;
+  return 1 - avgDist / 5;
+}
+
+// How many items to show: 10 when neutral, min 6 at extremes
+function _showCount(total) {
+  if (!state.s3Touched) return total;
+  const n = _neutrality();
+  return Math.round(6 + n * (total - 6));
 }
 
 function buildColorStrips() {
@@ -2959,11 +2974,19 @@ function buildColorStrips() {
   if (!wrap) return;
   wrap.innerHTML = '';
 
-  // Sort palettes by closeness to user's vibe; keep original order on first load (sliders untouched)
-  const userVibe = _getUserVibeScore();
-  const sorted = state.s3Touched
-    ? [...PALETTES].sort((a, b) => Math.abs(a.vibe - userVibe) - Math.abs(b.vibe - userVibe))
-    : PALETTES;
+  // Filter palettes by fit; keep original order, just remove worst matches
+  let displayPalettes;
+  if (state.s3Touched) {
+    const sl = state.sliders;
+    const withDist = PALETTES.map(p => ({ p, d: _fitDistance(p.profile, sl) }));
+    withDist.sort((a, b) => a.d - b.d);
+    const count = _showCount(PALETTES.length);
+    // Take the best-fitting ones, then restore original PALETTES order
+    const kept = new Set(withDist.slice(0, count).map(x => x.p.name));
+    displayPalettes = PALETTES.filter(p => kept.has(p.name));
+  } else {
+    displayPalettes = PALETTES;
+  }
 
   // flex-grow patterns per strip — uneven rectangle widths
   const FLEX_PATTERNS = [
@@ -2975,11 +2998,9 @@ function buildColorStrips() {
   ];
   const QUESTION_WORDS = ['איזו', 'צבעוניות', 'מעניינת', 'אותך', 'יותר?'];
   const WORD_RIGHT    = ['40px', '40px', '40px', '240px', '240px'];
-  sorted.forEach((pal, palIdx) => {
+  displayPalettes.forEach((pal, palIdx) => {
     const strip = document.createElement('div');
     strip.className = 'color-strip';
-    // Mark best-match palettes (top 4 when sliders were touched)
-    if (state.s3Touched && palIdx < 4) strip.classList.add('vibe-match');
     // repeat the palette colors 3 times across the full width
     const repeated = [...pal.colors, ...pal.colors, ...pal.colors];
     const flexes = FLEX_PATTERNS[palIdx % FLEX_PATTERNS.length];
@@ -3186,14 +3207,15 @@ function buildFonts() {
   titleEl.textContent = 'איזה גופן מתאים לך?';
   grid.appendChild(titleEl);
 
-  // Filter & sort fonts by user's vibe when sliders were touched
+  // Filter fonts by fit to sliders; keep original order, remove worst matches
   let displayFonts;
   if (state.s3Touched) {
-    const userVibe = _getUserVibeScore();
-    // Filter: keep fonts within 4 vibe points; always keep at least 6
-    const filtered = FONTS.filter(f => Math.abs(f.vibe - userVibe) <= 4);
-    displayFonts = (filtered.length >= 6 ? filtered : [...FONTS])
-      .sort((a, b) => Math.abs(a.vibe - userVibe) - Math.abs(b.vibe - userVibe));
+    const sl = state.sliders;
+    const withDist = FONTS.map(f => ({ f, d: _fitDistance(f.profile, sl) }));
+    withDist.sort((a, b) => a.d - b.d);
+    const count = _showCount(FONTS.length);
+    const kept = new Set(withDist.slice(0, count).map(x => x.f.key));
+    displayFonts = FONTS.filter(f => kept.has(f.key));
   } else {
     displayFonts = FONTS;
   }
@@ -3213,8 +3235,6 @@ function buildFonts() {
     const col = document.createElement('div');
     col.className = 'alpha-col';
     col.dataset.fi = fi;
-    // Highlight best-match columns (first cycle when sliders touched)
-    if (state.s3Touched && ci < displayFonts.length) col.classList.add('vibe-match');
 
     shuffle(HEBREW).forEach(letter => {
       const cell = document.createElement('div');
