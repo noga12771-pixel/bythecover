@@ -2470,7 +2470,7 @@ function go(n) {
   state.screen = n;
   updateProgress();
   syncPreviews();
-  if (n === 3) { state.s3Touched = false; updateS3Bg(); }
+  if (n === 3) { updateS3Bg(); }
   if (n === 6) buildColorStrips();
   if (n === 8) buildFonts();
   if (n === 5) populateImageBooks();
