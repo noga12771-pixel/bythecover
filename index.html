@@ -1347,15 +1347,17 @@
       white-space: pre-line;
       min-height: 4em;
     }
-    @keyframes summaryLineIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
     }
-    .summary-line {
-      display: block;
+    #s9-info-summary::after {
+      content: '|';
+      display: inline;
+      animation: cursorBlink 0.7s step-start infinite;
       opacity: 0;
-      animation: summaryLineIn 0.5s ease forwards;
     }
+    #s9-info-summary.typing::after { opacity: 1; }
 
     /* ─── Screen 11: Library ─── */
     #s11 { padding: 0 !important; display: block !important; overflow: hidden; }
@@ -4517,18 +4519,19 @@ async function triggerReveal() {
   const summaryEl = document.getElementById('summary-text');
 
   function _animateSummary(text, el) {
-    const sentences = text.split(/(?<=\.) /g).filter(s => s.trim());
-    if (sentences.length <= 1) {
-      // fallback: split by newline
-      const lines = text.split('\n').filter(l => l.trim());
-      el.innerHTML = lines.map((l, i) =>
-        `<span class="summary-line" style="animation-delay:${(i * 0.18).toFixed(2)}s">${l}</span>`
-      ).join('\n');
-    } else {
-      el.innerHTML = sentences.map((s, i) =>
-        `<span class="summary-line" style="animation-delay:${(i * 0.22).toFixed(2)}s">${s}</span>`
-      ).join(' ');
+    el.textContent = '';
+    el.classList.add('typing');
+    let i = 0;
+    const speed = 22;
+    function tick() {
+      if (i < text.length) {
+        el.textContent += text[i++];
+        setTimeout(tick, speed);
+      } else {
+        el.classList.remove('typing');
+      }
     }
+    tick();
   }
 
   function _applyGenerated(title, summary) {
