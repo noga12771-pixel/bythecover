@@ -1105,7 +1105,7 @@
       pointer-events: none;
       z-index: 4;
       line-height: 1.2;
-      transition: font-family 0.2s;
+      transition: opacity 0.18s ease;
     }
     #cover-preview-4 {
       width: 280px !important;
@@ -1147,6 +1147,13 @@
     }
     @keyframes coverFade {
       from { opacity: 0.2; scale: 0.97; }
+    }
+    @keyframes paletteFadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    #cover-preview-2.pal-anim svg {
+      animation: paletteFadeIn 0.32s ease forwards;
     }
     .sec-item {
       position: absolute;
@@ -3061,10 +3068,13 @@ function _previewPalette(pal) {
       ? `linear-gradient(to right, color-mix(in srgb, ${spineColor} 50%, #000) 0%, ${spineColor} 45%, color-mix(in srgb, ${spineColor} 70%, #000) 100%)`
       : 'linear-gradient(to right, #0d0d0d 0%, #2a2a2a 60%, #111 100%)');
   }
+  el.classList.remove('pal-anim');
+  void el.offsetWidth; // force reflow to restart animation
   el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 160 240">
     <defs><style>.ff{font-family:'Heebo',sans-serif}</style></defs>
     ${buildCoverSVG(160, 240, bg, accent, state.image?.svg ?? null, state.name || '', state.typography, fg, state.composition, getPalImgTint(pal), undefined, pal?.nameColor)}
   </svg>`;
+  el.classList.add('pal-anim');
 }
 
 function updateCatTabs() {
@@ -3259,18 +3269,27 @@ function buildFonts() {
     col.addEventListener('mouseenter', () => {
       grid.classList.add('grid-hovered');
       col.classList.add('col-hovered');
-      if (!state.typography) {
-        const titleDiv = document.querySelector('.cp4-html-title');
-        if (titleDiv) titleDiv.style.fontFamily = font.family;
+      const titleDiv = document.querySelector('.cp4-html-title');
+      if (titleDiv) {
+        titleDiv.style.opacity = '0';
+        setTimeout(() => {
+          titleDiv.style.fontFamily = font.family;
+          titleDiv.style.opacity = '1';
+        }, 150);
       }
     });
 
     col.addEventListener('mouseleave', () => {
       col.classList.remove('col-hovered');
       grid.classList.remove('grid-hovered');
-      if (!state.typography) {
-        const titleDiv = document.querySelector('.cp4-html-title');
-        if (titleDiv) titleDiv.style.fontFamily = "'Rapida', serif";
+      const titleDiv = document.querySelector('.cp4-html-title');
+      const restoreFamily = state.typography ? state.typography.family : "'Rapida', serif";
+      if (titleDiv) {
+        titleDiv.style.opacity = '0';
+        setTimeout(() => {
+          titleDiv.style.fontFamily = restoreFamily;
+          titleDiv.style.opacity = '1';
+        }, 150);
       }
     });
 
