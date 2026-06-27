@@ -3520,6 +3520,12 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
       const sx2 = W * 0.04;
       const sy2 = H * 0.73;
       secondaryFg = `${secDefs}<image href="${secondaryImg}" x="${sx2.toFixed(1)}" y="${sy2.toFixed(1)}" width="${sw2.toFixed(1)}" height="${sw2.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.80" ${secFilterAttr}/>`;
+    } else if (c === 'קטן וקטן') {
+      // Small, centered, between title (y:65%) and author (bottom)
+      const sw2 = W * 0.22;
+      const sx2 = (W - sw2) / 2;
+      const sy2 = H * 0.70;
+      secondaryFg = `${secDefs}<image href="${secondaryImg}" x="${sx2.toFixed(1)}" y="${sy2.toFixed(1)}" width="${sw2.toFixed(1)}" height="${sw2.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.80" ${secFilterAttr}/>`;
     } else { // חצוי and any other
       const sw2 = W * 0.32;
       const sx2 = W * 0.54;
