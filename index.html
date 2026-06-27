@@ -1940,7 +1940,7 @@
   <div id="s7-shelf"></div>
   <div style="position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:100">
     <button class="btn" onclick="go(6)">לעמוד הקודם</button>
-    <button class="btn" id="comp-btn" onclick="go(8)" disabled>לעמוד הבא</button>
+    <button class="btn" id="comp-btn" onclick="go(8)">לעמוד הבא</button>
   </div>
 </section>
 
@@ -3167,8 +3167,8 @@ function _buildS7Shelf() {
       state.composition = comp;
       state.compositionLocked = true;
       bigCover.innerHTML = _s7BookSVG(comp, 340, 510);
-      document.getElementById('comp-btn').disabled = false;
       updatePreview();
+      go(8);
     });
 
     grid.appendChild(card);
@@ -3343,6 +3343,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   if (c === 'מכסה הכל')      { bookTitleY = H * 0.15; bookTitleSize = W * 0.09 + 2; }
   if (c === 'חצוי')           { bookTitleY = H * 0.12; bookTitleX = W * 0.75; authorX = W * 0.78; }
   if (c === 'אסימטרי')        { bookTitleY = H * 0.18; }
+  if (c === 'קטן וקטן')       { bookTitleY = H * 0.65; }
 
   // Auto-scale title font to prevent overflow (conservative char-width factor = 1.0)
   { const maxTitleW = (c === 'חצוי' || c === 'אסימטרי') ? W * 0.45 : W * 0.82;
