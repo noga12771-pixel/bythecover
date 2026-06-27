@@ -976,6 +976,7 @@
     }
     .s7-mini-card:hover { opacity: 0.85; transform: translateY(-3px); }
     .s7-mini-card.sel { opacity: 1; }
+    .s7-mini-wrap.book-wrap::before { width: 8px; }
     .s7-mini-cover {
       width: 120px;
       height: 180px;
@@ -3146,11 +3147,16 @@ function _buildS7Shelf() {
     miniCoverDiv.className = 's7-mini-cover';
     miniCoverDiv.innerHTML = _s7BookSVG(comp, 120, 180);
 
+    const miniWrap = document.createElement('div');
+    miniWrap.className = 's7-mini-wrap book-wrap';
+    miniWrap.style.setProperty('--spine-bg', spineGrad);
+    miniWrap.appendChild(miniCoverDiv);
+
     const lbl = document.createElement('span');
     lbl.className = 's7-mini-label';
     lbl.textContent = comp.label;
 
-    card.appendChild(miniCoverDiv);
+    card.appendChild(miniWrap);
     card.appendChild(lbl);
     cardList.push(card);
 
