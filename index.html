@@ -937,68 +937,64 @@
     #s7 .q { font-size: 32px; }
     #s7-shelf {
       display: flex;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
       flex: 1;
       width: 100%;
+      gap: 50px;
+      padding: 0 48px;
+      direction: rtl;
     }
-    #s7-book-wrap { position: relative; z-index: 2; display: inline-block; overflow: visible; }
+    #s7-book-wrap { position: relative; z-index: 2; display: inline-block; overflow: visible; flex-shrink: 0; }
     #s7-big-cover {
-      width: 300px;
-      height: 450px;
+      width: 340px;
+      height: 510px;
       border-radius: 5px 2px 2px 5px;
       overflow: hidden;
-      box-shadow: -6px 10px 40px rgba(0,0,0,.6), -18px 22px 64px rgba(0,0,0,.28);
+      box-shadow: -8px 14px 48px rgba(0,0,0,.7), -22px 28px 72px rgba(0,0,0,.32);
       position: relative;
       z-index: 10;
+      transition: box-shadow 0.3s;
     }
     #s7-big-cover svg { width: 100%; height: 100%; display: block; }
-    .s7-labels {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      transform: translateX(-100%);
+    .s7-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      flex-shrink: 0;
+      direction: rtl;
+    }
+    .s7-mini-card {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 10px;
-      padding: 30px 0;
-      z-index: 3;
-    }
-    .s7-lbl-btn {
-      width: 130px;
-      background: var(--tab-color, #ccc);
-      border: none;
-      border-radius: 0;
-      animation: tabSlideIn 0.4s cubic-bezier(.34,1.56,.64,1) var(--tab-delay, 0s) both;
-      clip-path: polygon(0% 0%, calc(100% - 22px) 0%, 100% 50%, calc(100% - 22px) 100%, 0% 100%);
-      padding: 13px 32px 13px 14px;
-      font-family: 'Arbel', sans-serif;
-      font-size: 13px;
+      align-items: center;
+      gap: 8px;
       cursor: pointer;
-      opacity: 0.85;
-      transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .15s, color .15s, filter .2s;
-      text-align: center;
+      opacity: 0.55;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .s7-mini-card:hover { opacity: 0.85; transform: translateY(-3px); }
+    .s7-mini-card.sel { opacity: 1; }
+    .s7-mini-cover {
+      width: 120px;
+      height: 180px;
+      border-radius: 4px 1px 1px 4px;
+      overflow: hidden;
+      box-shadow: -3px 6px 18px rgba(0,0,0,.6);
+      transition: box-shadow 0.2s;
+    }
+    .s7-mini-card.sel .s7-mini-cover {
+      box-shadow: -3px 6px 18px rgba(0,0,0,.6), 0 0 0 2px #fff200;
+    }
+    .s7-mini-cover svg { width: 100%; height: 100%; display: block; }
+    .s7-mini-label {
+      font-family: 'Arbel', sans-serif;
+      font-size: 12px;
       color: #FFFAF1;
+      text-align: center;
       white-space: pre-line;
       line-height: 1.3;
-      filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.45));
-      transform: translateX(22px);
-    }
-    .s7-lbl-btn:hover {
-      transform: translateX(-24px);
-      background: #FFFAF1 !important;
-      color: #111111 !important;
-      opacity: 1;
-      filter: drop-shadow(-3px 6px 10px rgba(0,0,0,0.40));
-    }
-    .s7-lbl-btn.sel {
-      background: #FFFAF1 !important;
-      color: #111111 !important;
-      opacity: 1;
-      transform: translateX(-24px) !important;
-      filter: drop-shadow(-3px 6px 10px rgba(0,0,0,0.40));
     }
 
     /* ─── Screen 8: Typography (alphabet grid) ─── */
@@ -3117,6 +3113,13 @@ function _buildS7Shelf() {
     ? `linear-gradient(to right,color-mix(in srgb,${spineColor} 50%,#000) 0%,${spineColor} 45%,color-mix(in srgb,${spineColor} 70%,#000) 100%)`
     : 'linear-gradient(to right,#0d0d0d 0%,#2a2a2a 60%,#111 100%)';
 
+  if (!state.composition) {
+    state.composition = COMPOSITIONS[0];
+    document.getElementById('comp-btn').disabled = false;
+  }
+  let selComp = state.composition;
+
+  // ── Large book (right side) ──
   const bookWrap = document.createElement('div');
   bookWrap.id = 's7-book-wrap';
   bookWrap.className = 'book-wrap';
@@ -3124,58 +3127,52 @@ function _buildS7Shelf() {
 
   const bigCover = document.createElement('div');
   bigCover.id = 's7-big-cover';
-  const activComp = state.composition || COMPOSITIONS[0];
-  bigCover.innerHTML = _s7BookSVG(activComp, 300, 450);
+  bigCover.innerHTML = _s7BookSVG(selComp, 340, 510);
   bookWrap.appendChild(bigCover);
-  let compositionChosen = !!state.compositionLocked;
-
-  // Labels row lives INSIDE bookWrap so it can stick out from the left side
-  let labelsRow = document.createElement('div');
-  labelsRow.id = 's7-labels';
-  labelsRow.className = 's7-labels';
-  bookWrap.appendChild(labelsRow);
-
   shelf.appendChild(bookWrap);
 
-  if (!state.composition) {
-    state.composition = COMPOSITIONS[0];
-    document.getElementById('comp-btn').disabled = false;
-  }
-  const selKey = state.composition.key;
-  const btnList = [];
+  // ── Mini grid (left side) ──
+  const grid = document.createElement('div');
+  grid.className = 's7-grid';
+  const cardList = [];
 
-  const tabColors = state.color ? state.color.colors : ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF'];
-  COMPOSITIONS.forEach((comp, ci) => {
-    const btn = document.createElement('button');
-    btn.className = 's7-lbl-btn' + (comp.key === selKey ? ' sel' : '');
-    const tabCol = tabColors[ci % tabColors.length];
-    btn.style.setProperty('--tab-color', tabCol);
-    if (_s7Animate) btn.style.setProperty('--tab-delay', `${ci * 0.08}s`);
-    else btn.style.setProperty('animation', 'none');
-    btn.style.color = _isColorDark(tabCol) ? '#FFFAF1' : '#111';
-    btn.textContent = comp.label;
-    btnList.push(btn);
+  COMPOSITIONS.forEach((comp) => {
+    const card = document.createElement('div');
+    card.className = 's7-mini-card' + (comp.key === selComp.key ? ' sel' : '');
 
-    btn.addEventListener('mouseenter', () => {
-      if (!compositionChosen) bigCover.innerHTML = _s7BookSVG(comp, 300, 450);
+    const miniCoverDiv = document.createElement('div');
+    miniCoverDiv.className = 's7-mini-cover';
+    miniCoverDiv.innerHTML = _s7BookSVG(comp, 120, 180);
+
+    const lbl = document.createElement('span');
+    lbl.className = 's7-mini-label';
+    lbl.textContent = comp.label;
+
+    card.appendChild(miniCoverDiv);
+    card.appendChild(lbl);
+    cardList.push(card);
+
+    card.addEventListener('mouseenter', () => {
+      bigCover.innerHTML = _s7BookSVG(comp, 340, 510);
     });
-    btn.addEventListener('mouseleave', () => {
-      if (!compositionChosen) bigCover.innerHTML = _s7BookSVG(activComp, 300, 450);
+    card.addEventListener('mouseleave', () => {
+      bigCover.innerHTML = _s7BookSVG(selComp, 340, 510);
     });
-    btn.addEventListener('click', () => {
-      btnList.forEach(b => b.classList.remove('sel'));
-      btn.classList.add('sel');
+    card.addEventListener('click', () => {
+      cardList.forEach(c => c.classList.remove('sel'));
+      card.classList.add('sel');
+      selComp = comp;
       state.composition = comp;
       state.compositionLocked = true;
-      compositionChosen = true;
-      bigCover.innerHTML = _s7BookSVG(comp, 300, 450);
+      bigCover.innerHTML = _s7BookSVG(comp, 340, 510);
       document.getElementById('comp-btn').disabled = false;
       updatePreview();
-      go(8);
     });
 
-    labelsRow.appendChild(btn);
+    grid.appendChild(card);
   });
+
+  shelf.appendChild(grid);
   _s7Animate = false;
 }
 
