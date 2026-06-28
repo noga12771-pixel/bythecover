@@ -1123,15 +1123,17 @@
       position: relative;
       flex: 1;
       width: 100%;
-      min-height: 460px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 20px;
+      overflow: hidden;
     }
-    #s9-book-wrap { position: relative; z-index: 2; }
+    #s9-book-wrap { position: relative; z-index: 2; flex-shrink: 0; }
     #s9-big-cover {
-      width: 280px;
-      height: 420px;
+      width: 200px;
+      height: 300px;
       border-radius: 5px 2px 2px 5px;
       overflow: hidden;
       box-shadow: -6px 10px 40px rgba(0,0,0,.6), -18px 22px 64px rgba(0,0,0,.28);
@@ -1139,50 +1141,67 @@
     }
     #s9-big-cover svg { width: 100%; height: 100%; display: block; }
     #cover-preview-5 { width: 100%; height: 100%; }
-    @keyframes noteIn {
-      from { opacity: 0; translate: 0 32px; scale: 0.82; }
-    }
-    @keyframes tabSlideIn {
-      from { opacity: 0; translate: 40px 0; }
-    }
     @keyframes coverFade {
       from { opacity: 0.2; scale: 0.97; }
     }
-    .sec-item {
-      position: absolute;
-      width: clamp(110px, 12vw, 190px); height: clamp(130px, 14vw, 220px);
+    @keyframes filmScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-25%); }
+    }
+    .s9-film-row {
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-shrink: 0;
+    }
+    .s9-film-inner {
+      display: flex;
+      gap: 14px;
+      animation: filmScroll 28s linear infinite;
+      will-change: transform;
+    }
+    .s9-film-row.row-bot .s9-film-inner {
+      animation-direction: reverse;
+      animation-delay: -14s;
+    }
+    .s9-film-row:hover .s9-film-inner {
+      animation-play-state: paused;
+    }
+    .s9-film-card {
+      flex-shrink: 0;
+      width: 120px;
+      height: 156px;
+      border-radius: 4px;
       cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1;
-      border-radius: 4px 4px 3px 3px;
-      box-shadow: 2px 5px 16px rgba(0,0,0,0.22);
-      transform: rotate(var(--rot, 0deg));
-      transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s;
-      animation: noteIn 0.5s cubic-bezier(.34,1.56,.64,1) var(--note-delay, 0s) both;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
     }
-    .cover-anim { animation: coverFade 0.3s ease; }
-    .sec-item:hover {
-      transform: rotate(var(--rot, 0deg)) translateY(-18px) scale(1.07);
-      box-shadow: 4px 16px 32px rgba(0,0,0,0.28);
+    .s9-film-card:hover {
+      transform: translateY(-14px) scale(1.08);
+      box-shadow: 0 18px 36px rgba(0,0,0,.55);
       z-index: 10;
     }
-    .sec-item.sel {
-      transform: rotate(var(--rot, 0deg)) translateY(-18px) scale(1.07);
-      box-shadow: 4px 16px 32px rgba(0,0,0,0.28);
+    .s9-film-card.sel {
+      transform: translateY(-14px) scale(1.08);
+      box-shadow: 0 0 0 2px #fff200, 0 18px 36px rgba(0,0,0,.55);
       z-index: 10;
     }
-    .sec-item .img-sil {
+    .s9-film-card .img-sil {
       display: block;
-      width: 62%; height: 62%;
+      width: 55%; height: 55%;
       -webkit-mask: var(--sil-src) center / contain no-repeat;
       mask: var(--sil-src) center / contain no-repeat;
       background: var(--sil-color, #1a1a1a);
-      opacity: 0.65;
+      opacity: 0.70;
       transition: opacity .18s;
       flex-shrink: 0;
     }
-    .sec-item.sel .img-sil { opacity: 0.92; }
-    .sec-item:hover .img-sil { opacity: 0.82; }
+    .s9-film-card:hover .img-sil,
+    .s9-film-card.sel .img-sil { opacity: 1; }
+    .cover-anim { animation: coverFade 0.3s ease; }
     #s9-optional { font-family: 'Arbel', sans-serif; font-size: 13px; color: var(--black); opacity: 0.4; text-align: center; margin: 0; direction: rtl; }
 
     /* ─── Screen 10: Reveal ─── */
@@ -4801,42 +4820,52 @@ function buildSecondaryScreen(regenerate) {
     _secItems = pool.slice(0, 8);
   }
 
-  // Remove old floating items, keep book-wrap
-  arena.querySelectorAll('.sec-item').forEach(el => el.remove());
+  // Remove old film rows, keep book-wrap
+  arena.querySelectorAll('.sec-item, .s9-film-row').forEach(el => el.remove());
 
   const palColors = state.color ? state.color.colors : ['#FF9EC4','#FFD166','#5CE8B0','#59B7F5'];
-  _secItems.forEach((item, i) => {
-    const pos = _SEC_POSITIONS[i] || { top: '10%', horiz: 'left:3vw', rot: 0 };
-    const sel = state.secondaryImage && state.secondaryImage.src === item.src;
-    // Each side (4 cards) cycles through all 4 palette colors
-    const noteColor = palColors[i % 4] || '#FFD166';
-    const isDark = _isColorDark(noteColor);
-    const silColor = isDark
-      ? '#FFFAF1'
-      : (palColors.find(c => _isColorDark(c) && c !== noteColor) || '#1a1a1a');
-    const div = document.createElement('div');
-    div.className = 'sec-item' + (sel ? ' sel' : '');
-    div.style.cssText = `top:${pos.top};${pos.horiz};--rot:${pos.rot}deg;background:${noteColor}`;
-    div.style.setProperty('--sil-color', silColor);
-    div.style.setProperty('--sil-src', `url('${encodeURI(item.src)}')`);
-    if (regenerate) div.style.setProperty('--note-delay', `${i * 0.07}s`);
-    else div.style.setProperty('animation', 'none');
-    div.onclick = () => selectSecondary(item.src, item.label);
-    div.onmouseenter = () => { if (!state.secondaryImage) _previewCoverSecondary(item.src); };
-    div.onmouseleave = () => { if (!state.secondaryImage) _previewCoverSecondary(null); };
-    div.innerHTML = `<span class="img-sil"></span>`;
-    arena.appendChild(div);
-  });
+
+  const half = Math.ceil(_secItems.length / 2);
+  const row1Items = _secItems.slice(0, half);
+  const row2Items = _secItems.slice(half).length ? _secItems.slice(half) : _secItems.slice(0, half);
+
+  function makeFilmRow(items, cls) {
+    const row = document.createElement('div');
+    row.className = 's9-film-row ' + cls;
+    const inner = document.createElement('div');
+    inner.className = 's9-film-inner';
+    // Repeat 4x for seamless -25% loop
+    const repeated = [...items, ...items, ...items, ...items];
+    repeated.forEach((item, i) => {
+      const noteColor = palColors[i % palColors.length] || '#FFD166';
+      const isDark = _isColorDark(noteColor);
+      const silColor = isDark ? '#FFFAF1' : (palColors.find(c => _isColorDark(c) && c !== noteColor) || '#1a1a1a');
+      const sel = state.secondaryImage && state.secondaryImage.src === item.src;
+      const card = document.createElement('div');
+      card.className = 's9-film-card' + (sel ? ' sel' : '');
+      card.style.background = noteColor;
+      card.style.setProperty('--sil-color', silColor);
+      card.style.setProperty('--sil-src', `url('${encodeURI(item.src)}')`);
+      card.innerHTML = `<span class="img-sil"></span>`;
+      card.onmouseenter = () => { if (!state.secondaryImage) _previewCoverSecondary(item.src); };
+      card.onmouseleave = () => { if (!state.secondaryImage) _previewCoverSecondary(null); };
+      card.onclick = () => selectSecondary(item.src, item.label);
+      inner.appendChild(card);
+    });
+    row.appendChild(inner);
+    return row;
+  }
+
+  const bookWrap = document.getElementById('s9-book-wrap');
+  arena.insertBefore(makeFilmRow(row1Items, 'row-top'), bookWrap);
+  const botRow = makeFilmRow(row2Items, 'row-bot');
+  bookWrap.after(botRow);
 
   // Set spine color from palette
-  const bookWrap = document.getElementById('s9-book-wrap');
   if (bookWrap && state.color) {
-    const spineColor = state.color.colors[1];
-    if (spineColor) {
-      const sc = spineColor;
-      const spineGrad = `linear-gradient(to right,color-mix(in srgb,${sc} 50%,#000) 0%,${sc} 45%,color-mix(in srgb,${sc} 80%,#fff) 100%)`;
-      bookWrap.style.setProperty('--spine-bg', spineGrad);
-    }
+    const sc = state.color.colors[1];
+    if (sc) bookWrap.style.setProperty('--spine-bg',
+      `linear-gradient(to right,color-mix(in srgb,${sc} 50%,#000) 0%,${sc} 45%,color-mix(in srgb,${sc} 80%,#fff) 100%)`);
   }
 
   syncPreviews();
