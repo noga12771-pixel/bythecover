@@ -1202,8 +1202,8 @@
       display: block;
       white-space: nowrap;
       overflow: visible;
-      line-height: 2.8;
-      letter-spacing: 0.5em;
+      line-height: 6;
+      letter-spacing: 1.2em;
       will-change: transform;
     }
     #s10 { background: #111111; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
@@ -4508,10 +4508,10 @@ function _buildS10BgText() {
   const el = document.getElementById('s10-bg-text');
   if (!el) return;
   const word = 'לפי הכריכה';
-  const repeat = Array(25).fill(word).join('          ');
+  const repeat = Array(8).fill(word).join('                    ');
   el.innerHTML = '';
-  const rowH = 13 * 2.8;
-  const rowCount = Math.ceil((window.innerHeight + 200) / rowH) + 4;
+  const rowH = 13 * 6;
+  const rowCount = Math.ceil((window.innerHeight + 300) / rowH) + 3;
   for (let i = 0; i < rowCount; i++) {
     const row = document.createElement('div');
     row.className = 's10-row';
