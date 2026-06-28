@@ -1181,18 +1181,6 @@
     }
     .sec-item.sel .img-sil { opacity: 0.92; }
     .sec-item:hover .img-sil { opacity: 0.92; }
-    .img-sil-pixel {
-      position: absolute;
-      width: 62%; height: 62%;
-      left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
-      image-rendering: pixelated;
-      transition: opacity 0.5s ease;
-      z-index: 3;
-      pointer-events: none;
-    }
-    .sec-item:hover .img-sil-pixel,
-    .sec-item.sel .img-sil-pixel { opacity: 0; }
     .cover-anim { animation: coverFade 0.3s ease; }
     #s9-optional { font-family: 'Arbel', sans-serif; font-size: 13px; color: var(--black); opacity: 0.4; text-align: center; margin: 0; direction: rtl; }
 
@@ -4832,40 +4820,7 @@ function buildSecondaryScreen(regenerate) {
     if (regenerate) div.style.setProperty('--note-delay', `${i * 0.07}s`);
     else div.style.animation = 'none';
 
-    // Pixel canvas — load SVG at low resolution to build pixelated shape
-    const PIX_W = 16, PIX_H = 20;
-    const cvs = document.createElement('canvas');
-    cvs.className = 'img-sil-pixel';
-    cvs.width = PIX_W; cvs.height = PIX_H;
-    const sr = parseInt(silColor.replace('#','').slice(0,2)||'ff',16);
-    const sg = parseInt(silColor.replace('#','').slice(2,4)||'ff',16);
-    const sb = parseInt(silColor.replace('#','').slice(4,6)||'ff',16);
-    const ctx2 = cvs.getContext('2d');
-    const tmpImg = new Image();
-    tmpImg.crossOrigin = 'anonymous';
-    tmpImg.onload = () => {
-      ctx2.clearRect(0,0,PIX_W,PIX_H);
-      ctx2.drawImage(tmpImg, 0, 0, PIX_W, PIX_H);
-      try {
-        const id = ctx2.getImageData(0,0,PIX_W,PIX_H);
-        for (let i = 0; i < id.data.length; i += 4) {
-          if (id.data[i+3] > 15) {
-            const v = (Math.random()-0.5)*40;
-            id.data[i]   = Math.round(Math.max(0,Math.min(255,sr+v)));
-            id.data[i+1] = Math.round(Math.max(0,Math.min(255,sg+v)));
-            id.data[i+2] = Math.round(Math.max(0,Math.min(255,sb+v)));
-            id.data[i+3] = 220;
-          } else { id.data[i+3] = 0; }
-        }
-        ctx2.putImageData(id, 0, 0);
-      } catch(e) {
-        ctx2.fillStyle = silColor; ctx2.fillRect(0,0,PIX_W,PIX_H);
-      }
-    };
-    tmpImg.src = item.src;
-
     div.innerHTML = `<span class="img-sil"></span>`;
-    div.appendChild(cvs);
 
     div.onclick = () => selectSecondary(item.src, item.label);
     div.onmouseenter = () => { if (!state.secondaryImage) _previewCoverSecondary(item.src); };
