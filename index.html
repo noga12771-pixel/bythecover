@@ -1202,8 +1202,8 @@
       display: block;
       white-space: nowrap;
       overflow: visible;
-      line-height: 1.9;
-      letter-spacing: 0.2em;
+      line-height: 2.8;
+      letter-spacing: 0.5em;
       will-change: transform;
     }
     #s10 { background: #111111; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
@@ -4361,7 +4361,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
     console.log('S9: initRenderer', W, 'x', H);
 
     threeScene = new THREE.Scene();
-    threeScene.background = new THREE.Color(0x111111);
+    threeScene.background = null;
 
     threeCamera = new THREE.PerspectiveCamera(28, W / H, 0.1, 100);
     threeCamera.position.set(0, 0.1, 5.3);
@@ -4369,8 +4369,10 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
 
     threeRenderer = new THREE.WebGLRenderer({
       antialias: true,
+      alpha: true,
       canvas: document.getElementById('s9-three-canvas')
     });
+    threeRenderer.setClearColor(0x000000, 0);
     threeRenderer.setSize(W, H);
     threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     threeRenderer.shadowMap.enabled = true;
@@ -4505,19 +4507,20 @@ let _s10BgAnimRunning = false;
 function _buildS10BgText() {
   const el = document.getElementById('s10-bg-text');
   if (!el) return;
-  const word = (state.bookTitle || 'לפי הכריכה') + '   ';
-  const repeat = Array(60).fill(word).join('');
+  const word = 'לפי הכריכה';
+  const repeat = Array(25).fill(word).join('          ');
   el.innerHTML = '';
-  const rowH = 13 * 1.9;
-  const rowCount = Math.ceil((window.innerHeight + 200) / rowH) + 6;
+  const rowH = 13 * 2.8;
+  const rowCount = Math.ceil((window.innerHeight + 200) / rowH) + 4;
   for (let i = 0; i < rowCount; i++) {
     const row = document.createElement('div');
     row.className = 's10-row';
     row.textContent = repeat;
-    row.dataset.phase = (Math.random() * Math.PI * 2).toFixed(3);
-    row.dataset.speed = (0.3 + Math.random() * 0.7).toFixed(3);
-    row.dataset.amp   = (10 + Math.random() * 20).toFixed(1);
-    row.dataset.dir   = Math.random() > 0.5 ? '1' : '-1';
+    row.dataset.phase  = (Math.random() * Math.PI * 2).toFixed(3);
+    row.dataset.phaseY = (Math.random() * Math.PI * 2).toFixed(3);
+    row.dataset.speed  = (0.18 + Math.random() * 0.22).toFixed(3);
+    row.dataset.rx     = (18 + Math.random() * 30).toFixed(1);
+    row.dataset.ry     = (6  + Math.random() * 12).toFixed(1);
     el.appendChild(row);
   }
   if (!_s10BgAnimRunning) {
@@ -4526,14 +4529,15 @@ function _buildS10BgText() {
       const el2 = document.getElementById('s10-bg-text');
       if (!el2 || !el2.children.length) { _s10BgAnimRunning = false; return; }
       const t = Date.now() / 1000;
-      const autoY = Math.sin(t * 0.18) * 10 + Math.sin(t * 0.11) * 5;
-      el2.style.transform = `translateY(${autoY}px)`;
       Array.from(el2.children).forEach(row => {
-        const phase = parseFloat(row.dataset.phase);
-        const speed = parseFloat(row.dataset.speed);
-        const amp   = parseFloat(row.dataset.amp);
-        const dir   = parseFloat(row.dataset.dir);
-        row.style.transform = `translateX(${Math.sin(t * speed * 0.3 + phase) * amp * dir}px)`;
+        const phase  = parseFloat(row.dataset.phase);
+        const phaseY = parseFloat(row.dataset.phaseY);
+        const speed  = parseFloat(row.dataset.speed);
+        const rx     = parseFloat(row.dataset.rx);
+        const ry     = parseFloat(row.dataset.ry);
+        const x = Math.cos(t * speed + phase)  * rx;
+        const y = Math.sin(t * speed + phaseY) * ry;
+        row.style.transform = `translate(${x}px, ${y}px)`;
       });
       requestAnimationFrame(s10BgAnimate);
     })();
