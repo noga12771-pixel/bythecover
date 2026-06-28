@@ -1380,6 +1380,26 @@
     #s9-info-summary.typing::after { opacity: 1; }
 
     /* ─── Screen 11: Library ─── */
+    #s11-bg-text {
+      position: absolute;
+      inset: -60px;
+      font-size: 13px;
+      font-family: 'Arbel', sans-serif;
+      color: #d1d3d4;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+      user-select: none;
+      overflow: hidden;
+    }
+    .s11-row {
+      display: block;
+      white-space: nowrap;
+      overflow: visible;
+      line-height: 6;
+      letter-spacing: 1.2em;
+      will-change: transform;
+    }
     #s11 { padding: 0 !important; display: block !important; overflow: hidden; }
     #lib-bg-logo { display: none; }
     #lib-bg-logo img {
@@ -2041,6 +2061,7 @@
      SCREEN 11 — Library
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s11">
+  <div id="s11-bg-text"></div>
   <p class="q">הספרייה</p>
   <div id="lib-bg-logo">
     <img src="%D7%9C%D7%A4%D7%99%20%D7%94%D7%9B%D7%A8%D7%99%D7%9B%D7%94%20%D7%9C%D7%95%D7%92%D7%95%20%D7%97%D7%93%D7%A9%202%20%D7%91%D7%A6%D7%94%D7%95%D7%91.svg" alt="">
@@ -2543,6 +2564,7 @@ function go(n) {
     const prevBtn = document.getElementById('lib-prev-btn');
     if (prevBtn) prevBtn.style.display = fromHome ? 'none' : '';
     renderLibrary(fromHome);
+    _buildS11BgText();
   }
   typewriteQ(n);
   window.scrollTo(0,0);
@@ -5163,6 +5185,48 @@ function demoGenerate(p) {
 // ═══════════════════════════════════════════════
 // SCREEN 11 — Library
 // ═══════════════════════════════════════════════
+
+let _s11BgAnimRunning = false;
+function _buildS11BgText() {
+  const el = document.getElementById('s11-bg-text');
+  if (!el) return;
+  const allCovers = JSON.parse(localStorage.getItem(LIBRARY_KEY) || '[]');
+  const titles = allCovers.map(c => c.bookTitle).filter(Boolean);
+  if (!titles.length) { el.innerHTML = ''; return; }
+  const words = titles.join('          ');
+  const repeat = (words + '          ').repeat(Math.ceil(200 / words.length) + 1);
+  el.innerHTML = '';
+  const rowH = 13 * 6;
+  const rowCount = Math.ceil((window.innerHeight + 300) / rowH) + 3;
+  for (let i = 0; i < rowCount; i++) {
+    const row = document.createElement('div');
+    row.className = 's11-row';
+    row.textContent = repeat;
+    row.dataset.phase  = (Math.random() * Math.PI * 2).toFixed(3);
+    row.dataset.phaseY = (Math.random() * Math.PI * 2).toFixed(3);
+    row.dataset.speed  = (0.18 + Math.random() * 0.22).toFixed(3);
+    row.dataset.rx     = (18 + Math.random() * 30).toFixed(1);
+    row.dataset.ry     = (6  + Math.random() * 12).toFixed(1);
+    el.appendChild(row);
+  }
+  if (!_s11BgAnimRunning) {
+    _s11BgAnimRunning = true;
+    (function s11BgAnimate() {
+      const el2 = document.getElementById('s11-bg-text');
+      if (!el2 || !el2.children.length) { _s11BgAnimRunning = false; return; }
+      const t = Date.now() / 1000;
+      Array.from(el2.children).forEach(row => {
+        const phase  = parseFloat(row.dataset.phase);
+        const phaseY = parseFloat(row.dataset.phaseY);
+        const speed  = parseFloat(row.dataset.speed);
+        const rx     = parseFloat(row.dataset.rx);
+        const ry     = parseFloat(row.dataset.ry);
+        row.style.transform = `translate(${Math.cos(t * speed + phase) * rx}px, ${Math.sin(t * speed + phaseY) * ry}px)`;
+      });
+      requestAnimationFrame(s11BgAnimate);
+    })();
+  }
+}
 
 function buildBackCoverDataUrl(callback) {
   const W = 600, H = 900;
