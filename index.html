@@ -1201,8 +1201,8 @@
       display: block;
       white-space: nowrap;
       overflow: visible;
-      line-height: 6;
-      letter-spacing: 1.2em;
+      line-height: 3.2;
+      letter-spacing: 0.5em;
       will-change: transform;
     }
     #s10 { background: #111111; gap: 0; justify-content: flex-start; padding-top: 30px; padding-bottom: 80px; overflow: hidden; }
@@ -1395,8 +1395,8 @@
       display: block;
       white-space: nowrap;
       overflow: visible;
-      line-height: 6;
-      letter-spacing: 1.2em;
+      line-height: 3.2;
+      letter-spacing: 0.5em;
       will-change: transform;
     }
     #s11 { padding: 0 !important; display: block !important; overflow: hidden; }
@@ -4529,9 +4529,9 @@ function _buildS10BgText() {
   const el = document.getElementById('s10-bg-text');
   if (!el) return;
   const word = 'לפי הכריכה';
-  const repeat = Array(8).fill(word).join('                    ');
+  const repeat = Array(15).fill(word).join('        ');
   el.innerHTML = '';
-  const rowH = 13 * 6;
+  const rowH = 13 * 3.2;
   const rowCount = Math.ceil((window.innerHeight + 300) / rowH) + 3;
   for (let i = 0; i < rowCount; i++) {
     const row = document.createElement('div');
@@ -5190,10 +5190,10 @@ function _buildS11BgText() {
   const allCovers = JSON.parse(localStorage.getItem(LIBRARY_KEY) || '[]');
   const titles = allCovers.map(c => c.bookTitle).filter(Boolean);
   if (!titles.length) { el.innerHTML = ''; return; }
-  const words = titles.join('          ');
-  const repeat = (words + '          ').repeat(Math.ceil(200 / words.length) + 1);
+  const words = titles.join('        ');
+  const repeat = (words + '        ').repeat(Math.ceil(400 / words.length) + 2);
   el.innerHTML = '';
-  const rowH = 13 * 6;
+  const rowH = 13 * 3.2;
   const rowCount = Math.ceil((window.innerHeight + 300) / rowH) + 3;
   for (let i = 0; i < rowCount; i++) {
     const row = document.createElement('div');
