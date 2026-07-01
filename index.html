@@ -1187,6 +1187,7 @@
 
     /* ─── Screen 10: Reveal ─── */
     #s10-bg-text {
+      display: none;
       position: absolute;
       inset: -60px;
       font-size: 13px;
@@ -1381,6 +1382,7 @@
 
     /* ─── Screen 11: Library ─── */
     #s11-bg-text {
+      display: none;
       position: absolute;
       inset: -60px;
       font-size: 13px;
@@ -2555,7 +2557,6 @@ function go(n) {
     }
     const infoTitle = document.getElementById('s9-info-title');
     if (infoTitle && state.bookTitle) infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
-    _buildS10BgText();
     _typeS10Title();
   }
   if (n === 11) {
@@ -2564,7 +2565,6 @@ function go(n) {
     const prevBtn = document.getElementById('lib-prev-btn');
     if (prevBtn) prevBtn.style.display = fromHome ? 'none' : '';
     renderLibrary(fromHome);
-    _buildS11BgText();
   }
   typewriteQ(n);
   window.scrollTo(0,0);
