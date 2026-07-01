@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -2544,11 +2544,11 @@ function go(n) {
         const resolved = resolveGender(state.summaryRaw);
         state.summary = resolved;
         const summaryEl = document.getElementById('summary-text');
-        if (summaryEl) { summaryEl.textContent = resolved; summaryEl.classList.add('show'); }
+        if (summaryEl) { summaryEl.textContent = preventOrphanWord(resolved); summaryEl.classList.add('show'); }
         const pcSum = document.getElementById('pc-back-summary');
-        if (pcSum) pcSum.textContent = resolved;
+        if (pcSum) pcSum.textContent = preventOrphanWord(resolved);
         const infoSummary = document.getElementById('s9-info-summary');
-        if (infoSummary) infoSummary.textContent = resolved;
+        if (infoSummary) infoSummary.textContent = preventOrphanWord(resolved);
       }
       syncPreviews(); setTimeout(() => { if (window._s9UpdateTexture) window._s9UpdateTexture(); }, 80);
     }
@@ -4623,11 +4623,11 @@ async function triggerReveal() {
     state.summaryRaw = summary;
     const resolvedSummary = resolveGender(summary);
     state.summary   = resolvedSummary;
-    summaryEl.textContent = resolvedSummary;
+    summaryEl.textContent = preventOrphanWord(resolvedSummary);
     summaryEl.classList.add('show');
     const pcSum  = document.getElementById('pc-back-summary');
     const pcName = document.getElementById('pc-back-name');
-    if (pcSum)  pcSum.textContent  = resolvedSummary;
+    if (pcSum)  pcSum.textContent  = preventOrphanWord(resolvedSummary);
     if (pcName) pcName.textContent = state.name || '';
     // Show generated text in screen 9 info panel
     const infoTitle   = document.getElementById('s9-info-title');
@@ -4636,7 +4636,7 @@ async function triggerReveal() {
       infoTitle.textContent = title;
       infoTitle.style.fontFamily = state.typography ? state.typography.family : "'Arbel', sans-serif";
     }
-    if (infoSummary) _animateSummary(resolveGender(summary), infoSummary);
+    if (infoSummary) _animateSummary(preventOrphanWord(resolveGender(summary)), infoSummary);
     updatePreview();
   }
 
@@ -4694,6 +4694,15 @@ async function triggerReveal() {
 }
 
 
+// Replace the last space of each paragraph with a non-breaking space so no line ends with a single orphan word
+function preventOrphanWord(text) {
+  if (!text) return text;
+  return text.split('\n').map(line => {
+    const idx = line.lastIndexOf(' ');
+    return idx === -1 ? line : line.slice(0, idx) + '\u00A0' + line.slice(idx + 1);
+  }).join(String.fromCharCode(10));
+}
+
 function resolveGender(text) {
   const g = state.gender;
   if (!g || g === 'אחר') return text;
@@ -4731,11 +4740,11 @@ function selectGender(v) {
     const resolved = resolveGender(state.summaryRaw);
     state.summary = resolved;
     const summaryEl = document.getElementById('summary-text');
-    if (summaryEl) summaryEl.textContent = resolved;
+    if (summaryEl) summaryEl.textContent = preventOrphanWord(resolved);
     const pcSum = document.getElementById('pc-back-summary');
-    if (pcSum) pcSum.textContent = resolved;
+    if (pcSum) pcSum.textContent = preventOrphanWord(resolved);
     const infoSummary = document.getElementById('s9-info-summary');
-    if (infoSummary) infoSummary.textContent = resolved;
+    if (infoSummary) infoSummary.textContent = preventOrphanWord(resolved);
   }
 }
 
@@ -5582,7 +5591,7 @@ function openBookModal(entry) {
     titleEl.style.display = entry.bookTitle ? '' : 'none';
     titleEl.style.fontFamily = fontFamily;
   }
-  document.getElementById('book-modal-summary').textContent = entry.summary || '';
+  document.getElementById('book-modal-summary').textContent = preventOrphanWord(entry.summary || '');
   document.getElementById('book-modal-name').textContent    = entry.name    || '';
   document.getElementById('book-modal').classList.add('open');
   document.addEventListener('keydown', _modalEsc);
