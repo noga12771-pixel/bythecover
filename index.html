@@ -5688,19 +5688,23 @@ selectGender('אחר');
       groups.forEach(function(g){ g.tip.style.display = 'none'; g.last = null; });
       return;
     }
-    var onAny = groups.some(function(g){ return !!hitTest(x, y, g.cls); });
+    var matchedGroup = null, matchedTrigger = null;
+    groups.some(function(g){
+      var trigger = hitTest(x, y, g.cls);
+      if (trigger) { matchedGroup = g; matchedTrigger = trigger; return true; }
+      return false;
+    });
 
     groups.forEach(function(g){
-      var trigger = hitTest(x, y, g.cls);
-      if (trigger) {
-        if (g.last === trigger && g.tip.style.display === 'block') {
+      if (g === matchedGroup) {
+        if (g.last === matchedTrigger && g.tip.style.display === 'block') {
           g.tip.style.display = 'none';
           g.last = null;
         } else {
           positionTip(g.tip, x, y);
-          g.last = trigger;
+          g.last = matchedTrigger;
         }
-      } else if (!onAny) {
+      } else {
         g.tip.style.display = 'none';
         g.last = null;
       }
