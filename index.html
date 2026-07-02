@@ -394,11 +394,16 @@
       pointer-events: none;
       z-index: 999999;
       transform: translate(-50%, -50%) rotate(0deg);
-      transition: transform 0.18s ease;
+      transition: transform 0.18s ease, background 0.18s ease;
       will-change: transform, left, top;
     }
     #custom-cursor.clickable {
       transform: translate(-50%, -50%) rotate(45deg);
+    }
+    #custom-cursor.s7-book-hover {
+      transform: translate(-50%, -50%) rotate(45deg) scale(5);
+      background: #ffffff;
+      mix-blend-mode: difference;
     }
     /* Screen 3 — white cursor injected by JS */
     /* ─── Screen 4: Genre Columns ─── */
@@ -5734,7 +5739,8 @@ selectGender('אחר');
 // ═══════════════════════════════════════════════
 (function() {
   const cur = document.getElementById('custom-cursor');
-  const CLICKABLE = 'a, button, label, .btn, .book-card-wrap, .lib-book, .book-card, .s7-lbl-btn, .s4-col-item, .color-swatch, .comp-btn, .intro-icon, [onclick], summary, select, input[type="checkbox"], input[type="radio"], input[type="range"], input[type="text"]';
+  const CLICKABLE = 'a, button, label, .btn, .book-card-wrap, .lib-book, .book-card, .s7-lbl-btn, .s7-mini-card, .s4-col-item, .color-swatch, .comp-btn, .intro-icon, [onclick], summary, select, input[type="checkbox"], input[type="radio"], input[type="range"], input[type="text"]';
+  const S7_BOOK_HOVER = '.s7-mini-card';
 
   document.addEventListener('mousemove', function(e) {
     cur.style.left = e.clientX + 'px';
@@ -5743,9 +5749,11 @@ selectGender('אחר');
 
   document.addEventListener('mouseover', function(e) {
     if (e.target.closest(CLICKABLE)) cur.classList.add('clickable');
+    if (e.target.closest(S7_BOOK_HOVER)) cur.classList.add('s7-book-hover');
   });
   document.addEventListener('mouseout', function(e) {
     if (e.target.closest(CLICKABLE)) cur.classList.remove('clickable');
+    if (e.target.closest(S7_BOOK_HOVER)) cur.classList.remove('s7-book-hover');
   });
 
   document.addEventListener('mouseleave', function() { cur.style.opacity = '0'; });
