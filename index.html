@@ -3017,18 +3017,28 @@ function _fitDistance(profile, sl) {
   return profile.reduce((sum, p, i) => sum + Math.abs(p - sl[i]) * _SLIDER_W[i], 0);
 }
 
-// 0 = all sliders at extremes, 1 = all sliders at neutral (5)
+// 0 = at least one slider strongly tilted, 1 = all sliders neutral (5).
+// Uses the single MOST-tilted slider (not the average) so one clear lean isn't
+// diluted by the other sliders sitting neutral — a slight tilt should already
+// narrow the results, not get washed out.
 function _neutrality() {
   const sl = state.sliders;
-  const avgDist = sl.reduce((sum, v) => sum + Math.abs(v - 5), 0) / sl.length;
-  return 1 - avgDist / 5;
+  let maxWeightedDist = 0;
+  sl.forEach((v, i) => {
+    const d = Math.abs(v - 5) * _SLIDER_W[i];
+    if (d > maxWeightedDist) maxWeightedDist = d;
+  });
+  const maxPossible = 5 * Math.max(..._SLIDER_W);
+  return Math.max(0, Math.min(1, 1 - maxWeightedDist / maxPossible));
 }
 
-// How many items to show: 10 when neutral, min 6 at extremes
+// How many items to show: all when neutral, tightening fast as any slider leans —
+// even a slight tilt should already show mostly matching options, not everything.
 function _showCount(total) {
   if (!state.s3Touched) return total;
-  const n = _neutrality();
-  return Math.round(6 + n * (total - 6));
+  const n = Math.pow(_neutrality(), 1.8);
+  const minCount = Math.max(3, Math.round(total * 0.3));
+  return Math.round(minCount + n * (total - minCount));
 }
 
 function buildColorStrips() {
