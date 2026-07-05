@@ -1800,7 +1800,7 @@
   <video id="logo-svg" src="%D7%9C%D7%95%D7%92%D7%95%20%D7%91%D7%9E%D7%95%D7%A9%D7%9F%20%D7%91%D7%9C%D7%95%D7%A4%20%D7%97%D7%93%D7%A9.mp4" autoplay loop muted playsinline></video>
   <p id="s1-subtitle" style="font-size:clamp(14px,1.4vw,20px);color:#d1d3d4;margin:0;font-family:'Arbel',sans-serif;letter-spacing:0.01em;white-space:nowrap;position:relative;z-index:1">איך נראה הסיפור שלך?</p>
   <div style="position:relative;margin-top:40px;display:flex;gap:32px;z-index:10">
-    <button class="btn" onclick="go(2)">שנתחיל?</button>
+    <button class="btn" onclick="startNewBook()">שנתחיל?</button>
     <button class="btn" onclick="go(11)">הספרייה</button>
   </div>
 </section>
@@ -2526,6 +2526,15 @@ const FONTS = [
 // ═══════════════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════════════
+// Screen-9 fine-tune sliders belong to one specific book, not the wizard as a
+// whole — reset them right here so they can never leak into a new book even
+// if the user reached screen 1 via "previous" instead of "לעמוד הבית".
+function startNewBook() {
+  state.adjust = { ...DEFAULT_ADJUST };
+  document.querySelectorAll('#s9-adjust-panel input[type=range]').forEach(r => r.value = 0);
+  go(2);
+}
+
 function resetAndGoHome() {
   state.name = '';
   state.sliders = [5,5,5,5,5,5,5];
