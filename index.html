@@ -1058,7 +1058,7 @@
       border: 1px solid #FFFAF1;
       user-select: none;
       line-height: 1;
-      height: calc(100vw / 18);
+      height: calc(100vw / var(--s8-col-count, 18));
       flex: none;
       transition: background .15s, color .15s;
     }
@@ -2519,7 +2519,6 @@ function resetAndGoHome() {
   document.querySelectorAll('.genre-col').forEach(c => c.classList.remove('sel'));
   const genreBtn = document.getElementById('genre-btn'); if (genreBtn) genreBtn.disabled = true;
   document.querySelectorAll('.alpha-cell.sel').forEach(c => c.classList.remove('sel'));
-  document.querySelectorAll('.alpha-col.col-hovered').forEach(c => c.classList.remove('col-hovered'));
   const fontBtn = document.getElementById('font-btn');
   if (fontBtn) fontBtn.disabled = true;
   document.querySelectorAll('#sliders-wrap input[type=range]').forEach((r,i) => { r.value = 5; state.sliders[i] = 5; });
@@ -3294,58 +3293,48 @@ function buildFonts() {
   const keptF = new Set(withDistF.slice(0, countF).map(x => x.f.key));
   const displayFonts = FONTS.filter(f => keptF.has(f.key));
 
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
+  // Fixed grid size regardless of how many fonts passed the filter — keeps cells
+  // small and consistent instead of growing when fewer fonts are shown.
+  const COLS = 18, ROWS = 22;
+  grid.style.gridTemplateColumns = '';
+  grid.style.removeProperty('--s8-col-count');
+
+  // Build a flat pool covering every kept font evenly, then shuffle it as one
+  // list (not per-column) so fonts and letters scatter messily across the grid.
+  const pairs = [];
+  for (let i = 0; i < COLS * ROWS; i++) {
+    pairs.push({ font: displayFonts[i % displayFonts.length], letter: HEBREW[i % HEBREW.length] });
+  }
+  for (let i = pairs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
   }
 
-  for (let ci = 0; ci < 18; ci++) {
-    const font = displayFonts[ci % displayFonts.length];
-    const fi = ci % displayFonts.length;
-    const col = document.createElement('div');
-    col.className = 'alpha-col';
-    col.dataset.fi = fi;
+  let alreadyMarkedSel = false;
+  pairs.forEach(({ font, letter }) => {
+    const cell = document.createElement('div');
+    cell.className = 'alpha-cell';
+    cell.style.fontFamily = font.family;
+    cell.textContent = letter;
+    cell.title = font.key;
 
-    shuffle(HEBREW).forEach(letter => {
-      const cell = document.createElement('div');
-      cell.className = 'alpha-cell';
-      cell.style.fontFamily = font.family;
-      cell.textContent = letter;
-      cell.addEventListener('click', () => {
-        grid.querySelectorAll('.alpha-cell.sel').forEach(c => c.classList.remove('sel'));
-        cell.classList.add('sel');
-      });
-      col.appendChild(cell);
-    });
-
-    const lbl = document.createElement('div');
-    lbl.className = 'alpha-col-lbl';
-    lbl.textContent = font.key;
-    col.appendChild(lbl);
-
-    col.addEventListener('mouseenter', () => {
-      grid.classList.add('grid-hovered');
-      col.classList.add('col-hovered');
+    cell.addEventListener('mouseenter', () => {
       if (!state.typography) {
         const titleDiv = document.querySelector('.cp4-html-title');
         if (titleDiv) titleDiv.style.fontFamily = font.family;
       }
     });
 
-    col.addEventListener('mouseleave', () => {
-      col.classList.remove('col-hovered');
-      grid.classList.remove('grid-hovered');
+    cell.addEventListener('mouseleave', () => {
       if (!state.typography) {
         const titleDiv = document.querySelector('.cp4-html-title');
         if (titleDiv) titleDiv.style.fontFamily = "'Rapida', serif";
       }
     });
 
-    col.addEventListener('click', () => {
+    cell.addEventListener('click', () => {
+      grid.querySelectorAll('.alpha-cell.sel').forEach(c => c.classList.remove('sel'));
+      cell.classList.add('sel');
       state.typography = font;
       document.getElementById('font-btn').disabled = false;
       _syncPreviews();
@@ -3353,8 +3342,13 @@ function buildFonts() {
       go(9);
     });
 
-    grid.appendChild(col);
-  }
+    if (!alreadyMarkedSel && state.typography && font.key === state.typography.key) {
+      cell.classList.add('sel');
+      alreadyMarkedSel = true;
+    }
+
+    grid.appendChild(cell);
+  });
 }
 buildFonts();
 
