@@ -1135,7 +1135,7 @@
       align-items: center;
       justify-content: center;
     }
-    #s9-book-wrap { position: relative; z-index: 2; }
+    #s9-book-wrap { position: relative; z-index: 2; margin-bottom: 110px; }
     #s9-big-cover {
       width: 280px;
       height: 420px;
@@ -1190,6 +1190,22 @@
     .sec-item:hover .img-sil { opacity: 0.92; }
     .cover-anim { animation: coverFade 0.3s ease; }
     #s9-optional { font-family: 'Arbel', sans-serif; font-size: 13px; color: var(--black); opacity: 0.4; text-align: center; margin: 0; direction: rtl; }
+    #s9-adjust-panel {
+      position: fixed;
+      bottom: 18%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 18px;
+      z-index: 60;
+      background: rgba(17,17,17,.72);
+      border: 1px solid rgba(255,250,241,.15);
+      padding: 12px 22px;
+      direction: rtl;
+    }
+    .s9-adj-item { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 88px; }
+    .s9-adj-lbl { font-family: 'Arbel', sans-serif; font-size: 10px; color: var(--black); opacity: .7; text-align: center; line-height: 1.3; }
+    .s9-adj-item input[type=range] { width: 80px; flex: none; }
 
     /* ─── Screen 10: Reveal ─── */
     #s10-bg-text {
@@ -2033,6 +2049,14 @@
       <div id="s9-big-cover"><div id="cover-preview-5"></div></div>
     </div>
   </div>
+  <div id="s9-adjust-panel">
+    <div class="s9-adj-item"><span class="s9-adj-lbl">ריווח דימוי ראשי</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('imgOffsetY', this.value)"></div>
+    <div class="s9-adj-item"><span class="s9-adj-lbl">ריווח דימוי משני</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('secOffsetY', this.value)"></div>
+    <div class="s9-adj-item"><span class="s9-adj-lbl">גודל דימוי ראשי</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('imgScale', this.value)"></div>
+    <div class="s9-adj-item"><span class="s9-adj-lbl">גודל דימוי משני</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('secScale', this.value)"></div>
+    <div class="s9-adj-item"><span class="s9-adj-lbl">גודל גופן</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('fontScale', this.value)"></div>
+    <div class="s9-adj-item"><span class="s9-adj-lbl">ריווח בין אותיות</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('letterSpacing', this.value)"></div>
+  </div>
   <div style="position:fixed;bottom:10%;left:50%;transform:translateX(-50%);display:flex;gap:32px;z-index:100">
     <button class="btn" onclick="go(8)">לעמוד הקודם</button>
     <button class="btn" onclick="go(10)">לעמוד הבא</button>
@@ -2304,8 +2328,14 @@ const state = {
   summary: '',
   bookTitle: '',
   apiKey: '',
-  scores: { emotion:0, logic:0, intro:0, extro:0, order:0, chaos:0, connect:0, indep:0 }
+  scores: { emotion:0, logic:0, intro:0, extro:0, order:0, chaos:0, connect:0, indep:0 },
+  // Fine-tune sliders on screen 9 (each -10..10, meaning percent) — let the user
+  // nudge the generated layout instead of only picking from fixed presets.
+  adjust: { imgOffsetX:0, imgOffsetY:0, secOffsetX:0, secOffsetY:0, imgScale:0, secScale:0, fontScale:0, letterSpacing:0 }
 };
+
+// Default (no-op) adjust values, used whenever a cover doesn't carry its own (e.g. older saved library entries)
+const DEFAULT_ADJUST = { imgOffsetX:0, imgOffsetY:0, secOffsetX:0, secOffsetY:0, imgScale:0, secScale:0, fontScale:0, letterSpacing:0 };
 
 // ═══════════════════════════════════════════════
 // DATA
@@ -2510,6 +2540,8 @@ function resetAndGoHome() {
   state.summary = '';
   state.bookTitle = '';
   state.scores = { emotion:0, logic:0, intro:0, extro:0, order:0, chaos:0, connect:0, indep:0 };
+  state.adjust = { imgOffsetX:0, imgOffsetY:0, secOffsetX:0, secOffsetY:0, imgScale:0, secScale:0, fontScale:0, letterSpacing:0 };
+  document.querySelectorAll('#s9-adjust-panel input[type=range]').forEach(r => r.value = 0);
   // reset UI elements
   const nameInput = document.getElementById('name-input');
   if (nameInput) nameInput.value = '';
@@ -3133,7 +3165,7 @@ function _previewPalette(pal) {
   }
   el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 160 240">
     <defs><style>.ff{font-family:'Heebo',sans-serif}</style></defs>
-    ${buildCoverSVG(160, 240, bg, accent, state.image?.svg ?? null, state.name || '', state.typography, fg, state.composition, getPalImgTint(pal), undefined, pal?.nameColor)}
+    ${buildCoverSVG(160, 240, bg, accent, state.image?.svg ?? null, state.name || '', state.typography, fg, state.composition, getPalImgTint(pal), undefined, pal?.nameColor, undefined, state.adjust)}
   </svg>`;
 }
 
@@ -3173,7 +3205,7 @@ function _s7BookSVG(comp, w, h) {
   const font   = state.typography || null;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 ${w} ${h}">
     <defs><style>.ff{font-family:'Heebo',sans-serif}</style></defs>
-    ${buildCoverSVG(w, h, bg, accent, imgSvg, state.name || '', font, fg, comp, getPalImgTint(state.color), undefined, state.color?.nameColor)}
+    ${buildCoverSVG(w, h, bg, accent, imgSvg, state.name || '', font, fg, comp, getPalImgTint(state.color), undefined, state.color?.nameColor, undefined, state.adjust)}
   </svg>`;
 }
 
@@ -3397,11 +3429,22 @@ function _calcTitleFontSize(W, compKey, bookTitle) {
   if (est > maxW) sz = Math.max(6, sz * maxW / est);
   return sz;
 }
-function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont, titleColor, comp, imgTint, bookTitle, nameColor, secondaryImg) {
+function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont, titleColor, comp, imgTint, bookTitle, nameColor, secondaryImg, adjust) {
 
   let imgUse = '';
   const fg = titleColor || '#111111';
   const c = comp ? comp.key : 'מרכזי עם ריק';
+
+  // Screen-9 fine-tune sliders (each -10..10, meaning percent) — nudge the
+  // generated layout without changing which composition/position was picked.
+  const adj = adjust || DEFAULT_ADJUST;
+  const imgOffX = (adj.imgOffsetX || 0) / 100 * W;
+  const imgOffY = (adj.imgOffsetY || 0) / 100 * H;
+  const imgScaleMul = 1 + (adj.imgScale || 0) / 100;
+  const secOffX = (adj.secOffsetX || 0) / 100 * W;
+  const secOffY = (adj.secOffsetY || 0) / 100 * H;
+  const secScaleMul = 1 + (adj.secScale || 0) / 100;
+  const fontScaleMul = 1 + (adj.fontScale || 0) / 100;
 
   // Text positions — computed first so image can be clamped around them
   const authorName = titleText || '';
@@ -3416,6 +3459,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   if (c === 'חצוי')           { bookTitleY = H * 0.12; bookTitleX = W * 0.75; authorX = W * 0.78; }
   if (c === 'אסימטרי')        { bookTitleY = H * 0.18; }
   if (c === 'קטן וקטן')       { bookTitleY = H * 0.65; }
+  bookTitleSize *= fontScaleMul;
 
   // Auto-scale title font to prevent overflow (conservative char-width factor = 1.0)
   { const maxTitleW = (c === 'חצוי' || c === 'אסימטרי') ? W * 0.45 : W * 0.82;
@@ -3439,10 +3483,10 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
     '__logo_centered__': {x:'50%',y:'47%',w:'90%',h:'65%'}
   };
   const pos = positions[c] || positions['מרכזי עם ריק'];
-  const iw = parseFloat(pos.w)/100*W;
-  let ih = parseFloat(pos.h)/100*H;
-  const ix = parseFloat(pos.x)/100*W - iw/2;
-  let iy = parseFloat(pos.y)/100*H - ih/2;
+  const iw = parseFloat(pos.w)/100*W * imgScaleMul;
+  let ih = parseFloat(pos.h)/100*H * imgScaleMul;
+  const ix = parseFloat(pos.x)/100*W - iw/2 + imgOffX;
+  let iy = parseFloat(pos.y)/100*H - ih/2 + imgOffY;
 
   // Clamp image bottom to stay clear of text (skip full-bleed, rotated, and half-split)
   if (c !== 'מכסה הכל' && c !== 'חצוי' && !pos.rot && iy + ih > imgBottomMax) {
@@ -3519,9 +3563,10 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   }
 
   // Title position based on composition
+  const letterSpacingPx = (adj.letterSpacing || 0) / 10 * bookTitleSize * 0.06;
   const bookTitleEl = `<text
     x="${bookTitleX}" y="${bookTitleY}"
-    style="font-family:${fontStr}"
+    style="font-family:${fontStr};letter-spacing:${letterSpacingPx.toFixed(2)}px"
     font-size="${bookTitleSize}"
     fill="${fg}" text-anchor="${bookTitleAnchor}" opacity="0.9"
   >${bookTitle || 'כותרת'}</text>`;
@@ -3561,9 +3606,9 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
 
     if (c === 'מרכזי עם ריק' || c === 'מכסה הכל') {
       // Large background watermark, behind primary — bigger, lower, accent color
-      const sw2 = Math.max(W, H) * 1.1;
-      const sx2 = (W - sw2) / 2;
-      const sy2 = (H - sw2) / 2;
+      const sw2 = Math.max(W, H) * 1.1 * secScaleMul;
+      const sx2 = (W - sw2) / 2 + secOffX;
+      const sy2 = (H - sw2) / 2 + secOffY;
       // Use accent color for variety; rebuild filter with accent tint
       const altTint = accentColor || secTint;
       const ar2 = parseInt(altTint.slice(1,3),16)/255;
@@ -3581,20 +3626,20 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
       secondaryBg = `${altDefs}<image href="${secondaryImg}" x="${sx2.toFixed(1)}" y="${sy2.toFixed(1)}" width="${sw2.toFixed(1)}" height="${sw2.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.18" filter="url(#${afid})"/>`;
     } else if (c === 'טקסט דומיננטי') {
       // Bottom-left corner, above author line
-      const sw2 = W * 0.22;
-      const sx2 = W * 0.04;
-      const sy2 = H * 0.73;
+      const sw2 = W * 0.22 * secScaleMul;
+      const sx2 = W * 0.04 + secOffX;
+      const sy2 = H * 0.73 + secOffY;
       secondaryFg = `${secDefs}<image href="${secondaryImg}" x="${sx2.toFixed(1)}" y="${sy2.toFixed(1)}" width="${sw2.toFixed(1)}" height="${sw2.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.80" ${secFilterAttr}/>`;
     } else if (c === 'קטן וקטן') {
       // Small, centered, between title (y:65%) and author (bottom)
-      const sw2 = W * 0.22;
-      const sx2 = (W - sw2) / 2;
-      const sy2 = H * 0.70;
+      const sw2 = W * 0.22 * secScaleMul;
+      const sx2 = (W - sw2) / 2 + secOffX;
+      const sy2 = H * 0.70 + secOffY;
       secondaryFg = `${secDefs}<image href="${secondaryImg}" x="${sx2.toFixed(1)}" y="${sy2.toFixed(1)}" width="${sw2.toFixed(1)}" height="${sw2.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.80" ${secFilterAttr}/>`;
     } else { // חצוי and any other
-      const sw2 = W * 0.32;
-      const sx2 = W * 0.54;
-      const sy2 = H * 0.46;
+      const sw2 = W * 0.32 * secScaleMul;
+      const sx2 = W * 0.54 + secOffX;
+      const sy2 = H * 0.46 + secOffY;
       secondaryFg = `${secDefs}<image href="${secondaryImg}" x="${sx2.toFixed(1)}" y="${sy2.toFixed(1)}" width="${sw2.toFixed(1)}" height="${sw2.toFixed(1)}" preserveAspectRatio="xMidYMid meet" opacity="0.78" ${secFilterAttr}/>`;
     }
   }
@@ -3636,7 +3681,7 @@ function _syncPreviews() {
     const secImg2 = (id === 'cover-preview-5') ? (state.secondaryImage?.src ?? null) : null;
     el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 160 240">
       <defs><style>.ff{font-family:'Heebo',sans-serif}</style></defs>
-      ${buildCoverSVG(160, 240, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), undefined, state.color?.nameColor, secImg2)}
+      ${buildCoverSVG(160, 240, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), undefined, state.color?.nameColor, secImg2, state.adjust)}
     </svg>`;
     // For cover-preview-4 (screen 8): overlay HTML text so fonts render reliably
     if (id === 'cover-preview-4') {
@@ -3692,7 +3737,7 @@ function _syncPreviews() {
   if (big) {
     // SVG renders title and name directly (matches screen 10 print preview)
     big.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 288 432">
-      ${buildCoverSVG(288, 432, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null)}
+      ${buildCoverSVG(288, 432, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null, state.adjust)}
     </svg>`;
   }
 
@@ -3703,12 +3748,19 @@ function _syncPreviews() {
   const pcf = document.getElementById('pc-front');
   if (pcf) {
     pcf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 283 425">
-      ${buildCoverSVG(283, 425, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null)}
+      ${buildCoverSVG(283, 425, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null, state.adjust)}
     </svg>`;
   }
 }
 
 function updatePreview() { syncPreviews(); }
+
+// Screen 9 fine-tune sliders — each nudges the generated layout by up to ±10%
+function updateAdjust(field, value) {
+  if (!state.adjust) state.adjust = { ...DEFAULT_ADJUST };
+  state.adjust[field] = parseFloat(value) || 0;
+  updatePreview();
+}
 
 // ═══════════════════════════════════════════════
 // SCORING
@@ -4062,6 +4114,16 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         oc2.fillRect(0, 0, COV_W, COV_H); oc2.restore();
       }
 
+      // Screen-9 fine-tune sliders (each -10..10, meaning percent) — mirrors buildCoverSVG
+      const adj = state.adjust || DEFAULT_ADJUST;
+      const imgOffX = (adj.imgOffsetX || 0) / 100 * COV_W;
+      const imgOffY = (adj.imgOffsetY || 0) / 100 * COV_H;
+      const imgScaleMul = 1 + (adj.imgScale || 0) / 100;
+      const secOffX = (adj.secOffsetX || 0) / 100 * COV_W;
+      const secOffY = (adj.secOffsetY || 0) / 100 * COV_H;
+      const secScaleMul = 1 + (adj.secScale || 0) / 100;
+      const fontScaleMul = 1 + (adj.fontScale || 0) / 100;
+
       // title Y — computed first so image clamp can use it
       const ck2 = comp ? comp.key : '';
       let tY = COV_H * 0.75, tX = COV_W * 0.5;
@@ -4073,8 +4135,8 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
 
       // Background secondary for מרכזי עם ריק / מכסה הכל — draw BEFORE primary
       if (secImg && (comp?.key === 'מרכזי עם ריק' || comp?.key === 'מכסה הכל')) {
-        const sw2 = Math.max(COV_W, COV_H) * 1.1;
-        const sx2 = (COV_W - sw2) / 2, sy2 = (COV_H - sw2) / 2;
+        const sw2 = Math.max(COV_W, COV_H) * 1.1 * secScaleMul;
+        const sx2 = (COV_W - sw2) / 2 + secOffX, sy2 = (COV_H - sw2) / 2 + secOffY;
         const altTint = accent || fg;
         const tc = document.createElement('canvas');
         tc.width = Math.max(1, Math.ceil(sw2)); tc.height = tc.width;
@@ -4150,9 +4212,9 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
             'קטן וקטן':     { cx:.50, cy:.28, pw:.28, ph:.28 },
           };
           const p = POS[ck] || POS['מרכזי עם ריק'];
-          const boxW = p.pw * COV_W, boxH = p.ph * COV_H;
-          const boxX = p.cx * COV_W - boxW / 2;
-          let boxY = p.cy * COV_H - boxH / 2;
+          const boxW = p.pw * COV_W * imgScaleMul, boxH = p.ph * COV_H * imgScaleMul;
+          const boxX = p.cx * COV_W - boxW / 2 + imgOffX;
+          let boxY = p.cy * COV_H - boxH / 2 + imgOffY;
           if (ck !== 'מכסה הכל' && ck !== 'חצוי') {
             const imgBottomMax = tY - COV_H * 0.08;
             if (boxY + boxH > imgBottomMax) boxY = imgBottomMax - boxH;
@@ -4189,13 +4251,13 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         if (ck3 === 'מרכזי עם ריק' || ck3 === 'מכסה הכל' || ck3 === 'אסימטרי') {
           // Background secondary already drawn before primary; אסימטרי handled in scatter
         } else if (ck3 === 'טקסט דומיננטי') {
-          const sw2 = COV_W * 0.22, sx2 = COV_W * 0.04, sy2 = COV_H * 0.73;
+          const sw2 = COV_W * 0.22 * secScaleMul, sx2 = COV_W * 0.04 + secOffX, sy2 = COV_H * 0.73 + secOffY;
           drawSecTinted(sx2, sy2, sw2, sw2, 0.80, 0);
         } else if (ck3 === 'קטן וקטן') {
-          const sw2 = COV_W * 0.22, sx2 = (COV_W - sw2) / 2, sy2 = COV_H * 0.70;
+          const sw2 = COV_W * 0.22 * secScaleMul, sx2 = (COV_W - sw2) / 2 + secOffX, sy2 = COV_H * 0.70 + secOffY;
           drawSecTinted(sx2, sy2, sw2, sw2, 0.80, 0);
         } else { // חצוי
-          const sw2 = COV_W * 0.32, sx2 = COV_W * 0.54, sy2 = COV_H * 0.46;
+          const sw2 = COV_W * 0.32 * secScaleMul, sx2 = COV_W * 0.54 + secOffX, sy2 = COV_H * 0.46 + secOffY;
           drawSecTinted(sx2, sy2, sw2, sw2, 0.78, 0);
         }
       }
@@ -4203,7 +4265,8 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       // title + author — render via SVG with embedded font (guarantees correct font regardless of canvas limitations)
       const _primaryFont = font ? font.family.split(',')[0].replace(/['"]/g, '').trim() : 'Rapida';
       const as = Math.round(COV_W * 0.065);
-      const ts = Math.round(_calcTitleFontSize(COV_W, ck2, title));
+      const ts = Math.round(_calcTitleFontSize(COV_W, ck2, title) * fontScaleMul);
+      const letterSpacingPx = (adj.letterSpacing || 0) / 10 * ts * 0.06;
       const escXml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
       // squish into FRONT slot first (text SVG drawn on top)
@@ -4219,7 +4282,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         if (arbelDataUrl) fontFaces += `@font-face{font-family:'Arbel';src:url('${arbelDataUrl}');font-weight:normal;}`;
         const textSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${COV_W}" height="${COV_H}">
           <defs><style>${fontFaces}</style></defs>
-          <text x="${tX}" y="${tY}" font-family="'${_primaryFont}',Heebo,sans-serif" font-size="${ts}" fill="${fg}" opacity="0.9" text-anchor="middle" direction="rtl">${escXml(title)}</text>
+          <text x="${tX}" y="${tY}" font-family="'${_primaryFont}',Heebo,sans-serif" font-size="${ts}" style="letter-spacing:${letterSpacingPx.toFixed(2)}px" fill="${fg}" opacity="0.9" text-anchor="middle" direction="rtl">${escXml(title)}</text>
           <text x="${COV_W * 0.5}" y="${COV_H - 14}" font-family="'Arbel',Heebo,sans-serif" font-size="${as}" fill="${fg}" opacity="0.55" text-anchor="middle" direction="rtl">${escXml(name)}</text>
         </svg>`;
         const svgUrl = URL.createObjectURL(new Blob([textSvg], {type:'image/svg+xml'}));
@@ -4871,7 +4934,7 @@ function _previewCoverSecondary(src) {
   const imgSvg= state.image ? state.image.svg : null;
   el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 160 240">
     <defs><style>.ff{font-family:'Heebo',sans-serif}</style></defs>
-    ${buildCoverSVG(160,240,bg,accent,imgSvg,state.name||'',state.typography,fg,state.composition,getPalImgTint(state.color),undefined,state.color?.nameColor,src)}
+    ${buildCoverSVG(160,240,bg,accent,imgSvg,state.name||'',state.typography,fg,state.composition,getPalImgTint(state.color),undefined,state.color?.nameColor,src,state.adjust)}
   </svg>`;
 }
 
@@ -4879,7 +4942,7 @@ function selectSecondary(src, label) {
   const isDeselect = state.secondaryImage && state.secondaryImage.src === src;
   state.secondaryImage = isDeselect ? null : { src, label };
   buildSecondaryScreen(); // re-render without re-shuffling
-  if (!isDeselect) go(10);
+  // Stay on screen 9 (don't auto-advance) so the user can fine-tune it with the sliders
 }
 
 function demoGenerate(p) {
@@ -5337,7 +5400,7 @@ function _doPrintPostcard(arbelDataUrl, masadaDataUrl) {
   const summary = state.summary || document.getElementById('summary-text')?.textContent || '';
 
   const W = 283, H = 425;
-  const frontSVG = buildCoverSVG(W, H, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null);
+  const frontSVG = buildCoverSVG(W, H, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null, state.adjust);
 
   buildBackCoverDataUrl(backDataUrl => {
     const baseHref = document.location.href.replace(/[^/]*$/, '');
@@ -5442,6 +5505,7 @@ function saveToLibrary() {
     bookTitle:      state.bookTitle || '',
     summary:        state.summary || '',
     secondaryImage: state.secondaryImage || null,
+    adjust:         state.adjust || null,
     id:             Date.now()
   });
   if (lib.length > 60) lib.shift();
@@ -5469,7 +5533,7 @@ function renderLibrary(skipSave) {
     const imgSvg = entry.image?.svg          || null;
     const inner  = buildCoverSVG(W, H, bg, accent, imgSvg, entry.name,
                                  entry.typography, fg, entry.composition,
-                                 getPalImgTint(entry.color), entry.bookTitle || '', entry.color?.nameColor, entry.secondaryImage?.src ?? null);
+                                 getPalImgTint(entry.color), entry.bookTitle || '', entry.color?.nameColor, entry.secondaryImage?.src ?? null, entry.adjust);
     const spineCol = entry.color?.colors?.[1];
     const spineGrad = spineCol
       ? `linear-gradient(to right, color-mix(in srgb,${spineCol} 50%,#000) 0%, ${spineCol} 45%, color-mix(in srgb,${spineCol} 70%,#000) 100%)`
@@ -5566,7 +5630,7 @@ function openBookModal(entry) {
   const imgSvg = entry.image?.svg         || null;
   const inner  = buildCoverSVG(W, H, bg, accent, imgSvg, entry.name,
                                entry.typography, fg, entry.composition,
-                               getPalImgTint(entry.color), entry.bookTitle || '', entry.color?.nameColor, entry.secondaryImage?.src ?? null);
+                               getPalImgTint(entry.color), entry.bookTitle || '', entry.color?.nameColor, entry.secondaryImage?.src ?? null, entry.adjust);
   const spineCol = entry.color?.colors?.[1];
   const spineGrad = spineCol
     ? `linear-gradient(to right, color-mix(in srgb,${spineCol} 50%,#000) 0%, ${spineCol} 45%, color-mix(in srgb,${spineCol} 70%,#000) 100%)`
