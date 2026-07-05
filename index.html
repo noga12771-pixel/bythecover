@@ -5342,7 +5342,7 @@ function buildBackCoverDataUrl(callback) {
   // Summary text (Arbel renders natively in canvas)
   if (summary) {
     document.fonts.ready.then(() => {
-      const fs = Math.max(18, Math.round(W * 0.052));
+      const fs = Math.max(14, Math.round(W * 0.024));
       ctx.save();
       ctx.font = `${fs}px Arbel, sans-serif`;
       ctx.fillStyle = fg; ctx.globalAlpha = 0.82;
@@ -5356,7 +5356,7 @@ function buildBackCoverDataUrl(callback) {
         else cur = test;
       }
       if (cur) lines.push(cur);
-      const lh = fs * 1.7;
+      const lh = fs * 1.35;
       let ty = (H - lines.length * lh) / 2 + fs;
       for (const l of lines) { ctx.fillText(l, W / 2, ty); ty += lh; }
       ctx.restore();
