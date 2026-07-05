@@ -5408,7 +5408,9 @@ function _doPrintPostcard(arbelDataUrl, masadaDataUrl) {
   const name  = state.name || '';
   const summary = state.summary || document.getElementById('summary-text')?.textContent || '';
 
-  const W = 283, H = 425;
+  // A5 portrait (148×210mm) — viewBox uses the same ratio as the physical page
+  // so the cover fills it exactly with no letterboxing margins.
+  const W = 148, H = 210;
   const frontSVG = buildCoverSVG(W, H, bg, accent, imgSvg, name, font, fg, comp, getPalImgTint(state.color), state.bookTitle || '', state.color?.nameColor, state.secondaryImage?.src ?? null, state.adjust);
 
   buildBackCoverDataUrl(backDataUrl => {
@@ -5441,11 +5443,11 @@ function _doPrintPostcard(arbelDataUrl, masadaDataUrl) {
   @font-face { font-family: 'LyonTextHlar';   src: url('פונטים/lyontexthlar-semibold.ttf') format('truetype'); }
   @font-face { font-family: 'SouthV2';        src: url('פונטים/South_v2-Bold.d98a6f4659ce02106b3b1f8809beb46e(1).ttf') format('truetype'); }
   @font-face { font-family: 'SpeedmanBlack';  src: url('פונטים/Speedman-Black.e7db0153408b20f56fceacc8c68334d1.ttf') format('truetype'); }
-  @page { size: 10cm 15cm; margin: 0; }
+  @page { size: A5 portrait; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  .page { position: relative; width: 10cm; height: 15cm; overflow: hidden; page-break-after: always; }
+  .page { position: relative; width: 148mm; height: 210mm; overflow: hidden; page-break-after: always; }
   .page svg { display: block; width: 100%; height: 100%; }
-  .back { width: 10cm; height: 15cm; overflow: hidden; }
+  .back { width: 148mm; height: 210mm; overflow: hidden; }
   .back img { width: 100%; height: 100%; object-fit: cover; display: block; }
 </style></head><body>
 <div class="page">
@@ -5457,7 +5459,7 @@ function _doPrintPostcard(arbelDataUrl, masadaDataUrl) {
 </body></html>`;
 
     const iframe = document.createElement('iframe');
-    iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:10cm;height:30cm;border:none;';
+    iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:148mm;height:420mm;border:none;';
     document.body.appendChild(iframe);
     iframe.onload = () => {
       const win = iframe.contentWindow;
