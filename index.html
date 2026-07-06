@@ -1174,7 +1174,7 @@
     }
     .sec-item.sel {
       transform: rotate(var(--rot, 0deg)) translateY(-14px) scale(1.07);
-      box-shadow: 0 0 0 2px #fff200, 4px 16px 32px rgba(0,0,0,0.35);
+      box-shadow: 4px 16px 32px rgba(0,0,0,0.35);
       z-index: 10;
     }
     .sec-item .img-sil {
@@ -4961,9 +4961,10 @@ function buildSecondaryScreen(regenerate) {
   _secItems.forEach((item, i) => {
     const pos = _SEC_POSITIONS[i] || { rot: 0 };
     const sel = state.secondaryImage && state.secondaryImage.src === item.src;
-    const noteColor = palColors[i % 4] || '#FFD166';
+    // Selected note: yellow + black instead of the yellow outline stroke
+    const noteColor = sel ? '#fff200' : (palColors[i % 4] || '#FFD166');
     const isDark = _isColorDark(noteColor);
-    const silColor = isDark ? '#FFFAF1' : (palColors.find(c => _isColorDark(c) && c !== noteColor) || '#1a1a1a');
+    const silColor = sel ? '#111111' : (isDark ? '#FFFAF1' : (palColors.find(c => _isColorDark(c) && c !== noteColor) || '#1a1a1a'));
 
     const div = document.createElement('div');
     div.className = 'sec-item' + (sel ? ' sel' : '');
