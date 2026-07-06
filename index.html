@@ -5623,6 +5623,12 @@ function renderLibrary(skipSave) {
     nameOv.className = 'lib-html-name';
     nameOv.style.color = fg;
     nameOv.textContent = entry.name || '';
+    // Match buildCoverSVG's authorX shift for 'חצוי' (name sits off-center there)
+    if (comp === 'חצוי') {
+      nameOv.style.left = '78%'; nameOv.style.right = 'auto'; nameOv.style.transform = 'translateX(-50%)';
+    } else {
+      nameOv.style.left = '0'; nameOv.style.right = '0'; nameOv.style.transform = '';
+    }
     face.appendChild(nameOv);
 
     div.addEventListener('click', () => openBookModal(entry));
@@ -5706,6 +5712,12 @@ function openBookModal(entry) {
   if (!mName) { mName = document.createElement('div'); mName.className = 'modal-html-name'; face.appendChild(mName); }
   mName.style.color = entry.color?.nameColor || fg;
   mName.textContent = entry.name || '';
+  // Match buildCoverSVG's authorX shift for 'חצוי' (name sits off-center there)
+  if (comp === 'חצוי') {
+    mName.style.left = '78%'; mName.style.right = 'auto'; mName.style.transform = 'translateX(-50%)';
+  } else {
+    mName.style.left = '0'; mName.style.right = '0'; mName.style.transform = '';
+  }
   const titleEl = document.getElementById('book-modal-title');
   if (titleEl) {
     titleEl.textContent = entry.bookTitle || '';
