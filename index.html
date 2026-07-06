@@ -1218,6 +1218,20 @@
       z-index: 2;
     }
     .s9-adj-item input[type=range] { width: 100%; flex: none; }
+    .s9-adj-item .slider-wrap { position: relative; width: 100%; }
+    .s9-adj-item .slider-ticks {
+      position: absolute;
+      bottom: 1px; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 9px;
+      pointer-events: none;
+    }
+    .s9-adj-item .slider-tick {
+      width: 1px; height: 6px;
+      background: var(--black);
+      opacity: 0.6;
+    }
 
     /* ─── Screen 10: Reveal ─── */
     #s10-bg-text {
@@ -3799,6 +3813,20 @@ function updateAdjust(field, value) {
   state.adjust[field] = parseFloat(value) || 0;
   updatePreview();
 }
+
+// Add the same tick-mark ruler (like screen 3's sliders) to the screen 9 fine-tune sliders
+(function() {
+  document.querySelectorAll('#s9-adjust-col .s9-adj-item input[type=range]').forEach(input => {
+    const wrap = document.createElement('div');
+    wrap.className = 'slider-wrap';
+    input.parentNode.insertBefore(wrap, input);
+    wrap.appendChild(input);
+    const ticks = document.createElement('div');
+    ticks.className = 'slider-ticks';
+    ticks.innerHTML = Array.from({length:11}, () => '<span class="slider-tick"></span>').join('');
+    wrap.appendChild(ticks);
+  });
+})();
 
 // ═══════════════════════════════════════════════
 // SCORING
