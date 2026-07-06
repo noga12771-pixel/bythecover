@@ -3727,6 +3727,12 @@ function _syncPreviews() {
       nameDiv.style.fontFamily = "'Arbel', sans-serif";
       nameDiv.style.color = fg;
       nameDiv.textContent = name;
+      // Match buildCoverSVG's authorX shift for 'חצוי' (name sits off-center there)
+      if (comp && comp.key === 'חצוי') {
+        nameDiv.style.left = '78%'; nameDiv.style.right = 'auto'; nameDiv.style.transform = 'translateX(-50%)';
+      } else {
+        nameDiv.style.left = '0'; nameDiv.style.right = '0'; nameDiv.style.transform = '';
+      }
       let titleDiv = el.querySelector('.cp4-html-title');
       if (!titleDiv) {
         titleDiv = document.createElement('div');
@@ -4158,10 +4164,10 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
 
       // title Y — computed first so image clamp can use it
       const ck2 = comp ? comp.key : '';
-      let tY = COV_H * 0.75, tX = COV_W * 0.5;
+      let tY = COV_H * 0.75, tX = COV_W * 0.5, nameX = COV_W * 0.5;
       if (ck2 === 'טקסט דומיננטי') tY = COV_H * 0.62;
       if (ck2 === 'מכסה הכל')      tY = COV_H * 0.15;
-      if (ck2 === 'חצוי')          { tY = COV_H * 0.12; tX = COV_W * 0.75; }
+      if (ck2 === 'חצוי')          { tY = COV_H * 0.12; tX = COV_W * 0.75; nameX = COV_W * 0.78; }
       if (ck2 === 'אסימטרי')       { tY = COV_H * 0.18; }
       if (ck2 === 'קטן וקטן')      { tY = COV_H * 0.65; }
       tY += titleOffY;
@@ -4318,7 +4324,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         const textSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${COV_W}" height="${COV_H}">
           <defs><style>${fontFaces}</style></defs>
           <text x="${tX}" y="${tY}" font-family="'${_primaryFont}',Heebo,sans-serif" font-size="${ts}" style="letter-spacing:${letterSpacingPx.toFixed(2)}px" fill="${fg}" opacity="0.9" text-anchor="middle" direction="rtl">${escXml(title)}</text>
-          <text x="${COV_W * 0.5}" y="${COV_H - 14}" font-family="'Arbel',Heebo,sans-serif" font-size="${as}" fill="${fg}" opacity="0.55" text-anchor="middle" direction="rtl">${escXml(name)}</text>
+          <text x="${nameX}" y="${COV_H - 14}" font-family="'Arbel',Heebo,sans-serif" font-size="${as}" fill="${fg}" opacity="0.55" text-anchor="middle" direction="rtl">${escXml(name)}</text>
         </svg>`;
         const svgUrl = URL.createObjectURL(new Blob([textSvg], {type:'image/svg+xml'}));
         const tImg = new Image();
