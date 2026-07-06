@@ -3753,7 +3753,8 @@ function _syncPreviews() {
       if (ck === 'טקסט דומיננטי') { titleDiv.style.top = '59%'; titleDiv.style.fontSize = '46px'; }
       else if (ck === 'מכסה הכל') { titleDiv.style.top = '12%'; }
       else if (ck === 'חצוי')      { titleDiv.style.top = '9%'; titleDiv.style.textAlign = 'right'; titleDiv.style.right = '8%'; titleDiv.style.left = ''; }
-      else if (ck === 'אסימטרי')   { titleDiv.style.top = '10%'; titleDiv.style.bottom = ''; titleDiv.style.textAlign = 'center'; }
+      else if (ck === 'אסימטרי')   { titleDiv.style.top = '12%'; titleDiv.style.bottom = ''; titleDiv.style.textAlign = 'center'; }
+      else if (ck === 'קטן וקטן')  { titleDiv.style.top = 'auto'; titleDiv.style.bottom = '35%'; }
       else                          { titleDiv.style.top = 'auto'; titleDiv.style.bottom = '25%'; }
     }
   });
@@ -5616,6 +5617,7 @@ function renderLibrary(skipSave) {
       titleOv.style.left = '0'; titleOv.style.right = '0';
       titleOv.style.transform = `translateX(${Math.round(W * 0.25)}px)`;
     } else if (comp === 'אסימטרי') { titleOv.style.top = '12%'; titleOv.style.bottom = ''; }
+    else if (comp === 'קטן וקטן') { titleOv.style.top = 'auto'; titleOv.style.bottom = '35%'; }
     else { titleOv.style.top = 'auto'; titleOv.style.bottom = '25%'; }
     face.appendChild(titleOv);
 
@@ -5703,9 +5705,10 @@ function openBookModal(entry) {
   mTitle.textContent = bookTitleText;
   mTitle.style.left = '0'; mTitle.style.right = '0'; mTitle.style.textAlign = 'center'; mTitle.style.transform = '';
   if      (comp === 'מכסה הכל')        { mTitle.style.top = '12%'; mTitle.style.bottom = ''; }
-  else if (comp === 'טקסט דומיננטי')   { mTitle.style.top = '56%'; mTitle.style.bottom = ''; }
+  else if (comp === 'טקסט דומיננטי')   { mTitle.style.top = '59%'; mTitle.style.bottom = ''; }
   else if (comp === 'חצוי')            { mTitle.style.top = '9%';  mTitle.style.bottom = ''; mTitle.style.transform = `translateX(${Math.round(W*0.25)}px)`; }
   else if (comp === 'אסימטרי')         { mTitle.style.top = '12%'; mTitle.style.bottom = ''; mTitle.style.transform = ''; }
+  else if (comp === 'קטן וקטן')        { mTitle.style.top = 'auto'; mTitle.style.bottom = '35%'; }
   else                                  { mTitle.style.top = 'auto'; mTitle.style.bottom = '25%'; }
 
   let mName = face.querySelector('.modal-html-name');
