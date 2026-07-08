@@ -5891,18 +5891,19 @@ selectGender('אחר');
   const CLICKABLE = 'a, button, label, .btn, .book-card-wrap, .lib-book, .book-card, .s7-lbl-btn, .s7-mini-card, .s4-col-item, .color-swatch, .comp-btn, .intro-icon, [onclick], summary, select, input[type="checkbox"], input[type="radio"], input[type="range"], input[type="text"]';
   const S7_BOOK_HOVER = '.s7-mini-card';
 
+  // Self-correcting: re-derive hover state from the actual element under the
+  // cursor on every move, instead of trusting mouseover/mouseout bookkeeping.
+  // Dynamically-rebuilt cards (screen 7, library, color strips, ...) can be
+  // wiped and recreated while the mouse sits still over them — browsers don't
+  // always fire 'mouseout' when the hovered element is removed from the DOM,
+  // which used to leave the cursor stuck in its hover state indefinitely.
+  // elementFromPoint() has no such gap: it reflects reality on every move.
   document.addEventListener('mousemove', function(e) {
     cur.style.left = e.clientX + 'px';
     cur.style.top  = e.clientY + 'px';
-  });
-
-  document.addEventListener('mouseover', function(e) {
-    if (e.target.closest(CLICKABLE)) cur.classList.add('clickable');
-    if (e.target.closest(S7_BOOK_HOVER)) cur.classList.add('s7-book-hover');
-  });
-  document.addEventListener('mouseout', function(e) {
-    if (e.target.closest(CLICKABLE)) cur.classList.remove('clickable');
-    if (e.target.closest(S7_BOOK_HOVER)) cur.classList.remove('s7-book-hover');
+    const target = document.elementFromPoint(e.clientX, e.clientY);
+    cur.classList.toggle('clickable', !!(target && target.closest(CLICKABLE)));
+    cur.classList.toggle('s7-book-hover', !!(target && target.closest(S7_BOOK_HOVER)));
   });
 
   document.addEventListener('mouseleave', function() { cur.style.opacity = '0'; });
