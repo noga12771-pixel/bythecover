@@ -3040,8 +3040,10 @@ function populateImageBooks() {
       hoverVid.loop = true;
       hoverVid.muted = true;
       hoverVid.playsInline = true;
-      hoverVid.preload = 'none';
-      hoverVid.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.3s ease;pointer-events:none;z-index:2;border-radius:inherit;';
+      hoverVid.preload = 'auto';
+      hoverVid.src = videoSrc;
+      hoverVid.load();
+      hoverVid.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none;z-index:2;border-radius:inherit;';
       el.appendChild(hoverVid);
     }
 
@@ -3057,7 +3059,6 @@ function populateImageBooks() {
       }));
       if (!wrap.classList.contains('sel') && !hoverVid) imgEl.style.filter = _randImgFilter();
       if (hoverVid) {
-        if (!hoverVid.src) hoverVid.src = videoSrc;
         hoverVid.style.opacity = '1';
         hoverVid.play().catch(() => {});
       }
@@ -5570,12 +5571,7 @@ function loadLibraryWithDefault() {
 function saveToLibrary() {
   if (!state.color || !state.image) return;
   const lib = loadLibrary();
-  // Skip if identical to last saved cover
-  const last = lib[lib.length - 1];
-  if (last && last.name === (state.name || '') &&
-      last.image?.svg === state.image?.svg &&
-      last.color?.colors?.[0] === state.color?.colors?.[0]) return;
-  lib.push({
+  const snapshot = {
     color:       state.color,
     image:       state.image,
     composition: state.composition,
@@ -5585,8 +5581,20 @@ function saveToLibrary() {
     summary:        state.summary || '',
     secondaryImage: state.secondaryImage || null,
     adjust:         state.adjust || null,
-    id:             Date.now()
-  });
+  };
+  // If this is the same book as the last saved entry (same name/image/color),
+  // refresh it in place rather than skipping — otherwise later edits to the
+  // title, fine-tune sliders, composition, etc. would never reach the library
+  // (and the modal/print would fall out of sync with what's shown there).
+  const last = lib[lib.length - 1];
+  if (last && last.name === snapshot.name &&
+      last.image?.svg === snapshot.image?.svg &&
+      last.color?.colors?.[0] === snapshot.color?.colors?.[0]) {
+    Object.assign(last, snapshot);
+    try { localStorage.setItem(LIBRARY_KEY, JSON.stringify(lib)); } catch {}
+    return;
+  }
+  lib.push({ ...snapshot, id: Date.now() });
   if (lib.length > 60) lib.shift();
   try { localStorage.setItem(LIBRARY_KEY, JSON.stringify(lib)); } catch {}
 }
