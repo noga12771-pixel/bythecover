@@ -2071,15 +2071,15 @@
   <p id="s9-optional">שלב זה הינו אופציונלי</p>
   <div id="s9-arena">
     <div id="s9-adjust-col">
+      <div class="s9-adj-item"><span class="s9-adj-lbl">גודל גופן</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('fontScale', this.value)"></div>
+      <div class="s9-adj-item"><span class="s9-adj-lbl">גובה כותרת</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('titleOffsetY', this.value)"></div>
+      <div class="s9-adj-item"><span class="s9-adj-lbl">ריווח בין אותיות</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('letterSpacing', this.value)"></div>
       <div class="s9-adj-item"><span class="s9-adj-lbl">גובה דימוי ראשי</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('imgOffsetY', this.value)"></div>
       <div class="s9-adj-item"><span class="s9-adj-lbl">אופק דימוי ראשי</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('imgOffsetX', this.value)"></div>
       <div class="s9-adj-item"><span class="s9-adj-lbl">גודל דימוי ראשי</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('imgScale', this.value)"></div>
       <div class="s9-adj-item"><span class="s9-adj-lbl">גובה דימוי משני</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('secOffsetY', this.value)"></div>
       <div class="s9-adj-item"><span class="s9-adj-lbl">אופק דימוי משני</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('secOffsetX', this.value)"></div>
       <div class="s9-adj-item"><span class="s9-adj-lbl">גודל דימוי משני</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('secScale', this.value)"></div>
-      <div class="s9-adj-item"><span class="s9-adj-lbl">גודל גופן</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('fontScale', this.value)"></div>
-      <div class="s9-adj-item"><span class="s9-adj-lbl">גובה כותרת</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('titleOffsetY', this.value)"></div>
-      <div class="s9-adj-item"><span class="s9-adj-lbl">ריווח בין אותיות</span><input type="range" min="-10" max="10" value="0" step="1" oninput="updateAdjust('letterSpacing', this.value)"></div>
     </div>
     <div id="s9-book-wrap" class="book-wrap">
       <div id="s9-big-cover"><div id="cover-preview-5"></div></div>
@@ -2365,6 +2365,8 @@ const state = {
 
 // Default (no-op) adjust values, used whenever a cover doesn't carry its own (e.g. older saved library entries)
 const DEFAULT_ADJUST = { imgOffsetX:0, imgOffsetY:0, secOffsetX:0, secOffsetY:0, imgScale:0, secScale:0, fontScale:0, titleOffsetY:0, letterSpacing:0 };
+// Divisor for screen-9 fine-tune sliders (range -10..10): lower = stronger/more extreme effect
+const ADJ_DIV = 25;
 
 // ═══════════════════════════════════════════════
 // DATA
@@ -3479,17 +3481,18 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   const fg = titleColor || '#111111';
   const c = comp ? comp.key : 'מרכזי עם ריק';
 
-  // Screen-9 fine-tune sliders (each -10..10, meaning percent) — nudge the
-  // generated layout without changing which composition/position was picked.
+  // Screen-9 fine-tune sliders (each -10..10) — nudge the generated layout
+  // without changing which composition/position was picked. ADJ_DIV controls
+  // how extreme the sliders feel (lower = stronger effect).
   const adj = adjust || DEFAULT_ADJUST;
-  const imgOffX = (adj.imgOffsetX || 0) / 100 * W;
-  const imgOffY = (adj.imgOffsetY || 0) / 100 * H;
-  const imgScaleMul = 1 + (adj.imgScale || 0) / 100;
-  const secOffX = (adj.secOffsetX || 0) / 100 * W;
-  const secOffY = (adj.secOffsetY || 0) / 100 * H;
-  const secScaleMul = 1 + (adj.secScale || 0) / 100;
-  const fontScaleMul = 1 + (adj.fontScale || 0) / 100;
-  const titleOffY = (adj.titleOffsetY || 0) / 100 * H;
+  const imgOffX = (adj.imgOffsetX || 0) / ADJ_DIV * W;
+  const imgOffY = (adj.imgOffsetY || 0) / ADJ_DIV * H;
+  const imgScaleMul = 1 + (adj.imgScale || 0) / ADJ_DIV;
+  const secOffX = (adj.secOffsetX || 0) / ADJ_DIV * W;
+  const secOffY = (adj.secOffsetY || 0) / ADJ_DIV * H;
+  const secScaleMul = 1 + (adj.secScale || 0) / ADJ_DIV;
+  const fontScaleMul = 1 + (adj.fontScale || 0) / ADJ_DIV;
+  const titleOffY = (adj.titleOffsetY || 0) / ADJ_DIV * H;
 
   // Text positions — computed first so image can be clamped around them
   const authorName = titleText || '';
@@ -3613,7 +3616,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   }
 
   // Title position based on composition
-  const letterSpacingPx = (adj.letterSpacing || 0) / 10 * bookTitleSize * 0.06;
+  const letterSpacingPx = (adj.letterSpacing || 0) / 10 * bookTitleSize * 0.16;
   const bookTitleEl = `<text
     x="${bookTitleX}" y="${bookTitleY}"
     style="font-family:${fontStr};letter-spacing:${letterSpacingPx.toFixed(2)}px"
@@ -4185,16 +4188,16 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
         oc2.fillRect(0, 0, COV_W, COV_H); oc2.restore();
       }
 
-      // Screen-9 fine-tune sliders (each -10..10, meaning percent) — mirrors buildCoverSVG
+      // Screen-9 fine-tune sliders (each -10..10) — mirrors buildCoverSVG
       const adj = state.adjust || DEFAULT_ADJUST;
-      const imgOffX = (adj.imgOffsetX || 0) / 100 * COV_W;
-      const imgOffY = (adj.imgOffsetY || 0) / 100 * COV_H;
-      const imgScaleMul = 1 + (adj.imgScale || 0) / 100;
-      const secOffX = (adj.secOffsetX || 0) / 100 * COV_W;
-      const secOffY = (adj.secOffsetY || 0) / 100 * COV_H;
-      const secScaleMul = 1 + (adj.secScale || 0) / 100;
-      const fontScaleMul = 1 + (adj.fontScale || 0) / 100;
-      const titleOffY = (adj.titleOffsetY || 0) / 100 * COV_H;
+      const imgOffX = (adj.imgOffsetX || 0) / ADJ_DIV * COV_W;
+      const imgOffY = (adj.imgOffsetY || 0) / ADJ_DIV * COV_H;
+      const imgScaleMul = 1 + (adj.imgScale || 0) / ADJ_DIV;
+      const secOffX = (adj.secOffsetX || 0) / ADJ_DIV * COV_W;
+      const secOffY = (adj.secOffsetY || 0) / ADJ_DIV * COV_H;
+      const secScaleMul = 1 + (adj.secScale || 0) / ADJ_DIV;
+      const fontScaleMul = 1 + (adj.fontScale || 0) / ADJ_DIV;
+      const titleOffY = (adj.titleOffsetY || 0) / ADJ_DIV * COV_H;
 
       // title Y — computed first so image clamp can use it
       const ck2 = comp ? comp.key : '';
@@ -4341,7 +4344,7 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
       const _primaryFont = font ? font.family.split(',')[0].replace(/['"]/g, '').trim() : 'Rapida';
       const as = Math.round(COV_W * 0.065);
       const ts = Math.round(_calcTitleFontSize(COV_W, ck2, title) * fontScaleMul);
-      const letterSpacingPx = (adj.letterSpacing || 0) / 10 * ts * 0.06;
+      const letterSpacingPx = (adj.letterSpacing || 0) / 10 * ts * 0.16;
       const escXml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
       // squish into FRONT slot first (text SVG drawn on top)
@@ -5629,10 +5632,10 @@ function renderLibrary(skipSave) {
     const bookTitleText = entry.bookTitle || '';
 
     const adj = entry.adjust || DEFAULT_ADJUST;
-    const fontScaleMul = 1 + (adj.fontScale || 0) / 100;
-    const titleOffPct = adj.titleOffsetY || 0;
+    const fontScaleMul = 1 + (adj.fontScale || 0) / ADJ_DIV;
+    const titleOffPct = (adj.titleOffsetY || 0) / ADJ_DIV * 100;
     const titleFontSize = Math.round(_calcTitleFontSize(W, comp, bookTitleText) * fontScaleMul);
-    const letterSpacingPx = (adj.letterSpacing || 0) / 10 * titleFontSize * 0.06;
+    const letterSpacingPx = (adj.letterSpacing || 0) / 10 * titleFontSize * 0.16;
 
     const titleOv = document.createElement('div');
     titleOv.className = 'lib-html-title';
@@ -5734,10 +5737,10 @@ function openBookModal(entry) {
   const bookTitleText = entry.bookTitle || '';
 
   const adj = entry.adjust || DEFAULT_ADJUST;
-  const fontScaleMul = 1 + (adj.fontScale || 0) / 100;
-  const titleOffPct = adj.titleOffsetY || 0;
+  const fontScaleMul = 1 + (adj.fontScale || 0) / ADJ_DIV;
+  const titleOffPct = (adj.titleOffsetY || 0) / ADJ_DIV * 100;
   const titleFontSize = Math.round(_calcTitleFontSize(W, comp, bookTitleText) * fontScaleMul);
-  const letterSpacingPx = (adj.letterSpacing || 0) / 10 * titleFontSize * 0.06;
+  const letterSpacingPx = (adj.letterSpacing || 0) / 10 * titleFontSize * 0.16;
 
   let mTitle = face.querySelector('.modal-html-title');
   if (!mTitle) { mTitle = document.createElement('div'); mTitle.className = 'modal-html-title'; face.appendChild(mTitle); }
