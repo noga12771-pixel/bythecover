@@ -1201,7 +1201,6 @@
       gap: 14px;
       z-index: 60;
       background: rgba(17,17,17,.72);
-      border: 1px solid rgba(255,250,241,.15);
       padding: 16px 18px;
       direction: rtl;
     }
@@ -2068,7 +2067,7 @@
      SCREEN 9 — Secondary Element
 ══════════════════════════════════════════════ -->
 <section class="screen" id="s9">
-  <p class="q">רוצה להוסיף עוד משהו?</p>
+  <p class="q">רוצה לשנות או להוסיף משהו?</p>
   <p id="s9-optional">שלב זה הינו אופציונלי</p>
   <div id="s9-arena">
     <div id="s9-adjust-col">
@@ -5629,13 +5628,18 @@ function renderLibrary(skipSave) {
     const comp = entry.composition ? entry.composition.key : '';
     const bookTitleText = entry.bookTitle || '';
 
-    const titleFontSize = Math.round(_calcTitleFontSize(W, comp, bookTitleText));
+    const adj = entry.adjust || DEFAULT_ADJUST;
+    const fontScaleMul = 1 + (adj.fontScale || 0) / 100;
+    const titleOffPct = adj.titleOffsetY || 0;
+    const titleFontSize = Math.round(_calcTitleFontSize(W, comp, bookTitleText) * fontScaleMul);
+    const letterSpacingPx = (adj.letterSpacing || 0) / 10 * titleFontSize * 0.06;
 
     const titleOv = document.createElement('div');
     titleOv.className = 'lib-html-title';
     titleOv.style.fontFamily = fontFamily;
     titleOv.style.color = fg;
     titleOv.style.fontSize = titleFontSize + 'px';
+    titleOv.style.letterSpacing = letterSpacingPx.toFixed(2) + 'px';
     titleOv.style.whiteSpace = 'nowrap';
     titleOv.style.wordBreak = 'normal';
     titleOv.style.overflowWrap = 'normal';
@@ -5644,16 +5648,16 @@ function renderLibrary(skipSave) {
     // Position to match canvas tX/tY percentages exactly
     titleOv.style.left = '0'; titleOv.style.right = '0'; titleOv.style.textAlign = 'center';
     titleOv.style.transform = '';
-    if (comp === 'מכסה הכל')          { titleOv.style.top = '12%'; titleOv.style.bottom = ''; }
-    else if (comp === 'טקסט דומיננטי') { titleOv.style.top = '59%'; titleOv.style.bottom = ''; }
+    if (comp === 'מכסה הכל')          { titleOv.style.top = `calc(12% + ${titleOffPct}%)`; titleOv.style.bottom = ''; }
+    else if (comp === 'טקסט דומיננטי') { titleOv.style.top = `calc(59% + ${titleOffPct}%)`; titleOv.style.bottom = ''; }
     else if (comp === 'חצוי') {
       // canvas: tX = W*0.75, centered → shift center to 75% from left
-      titleOv.style.top = '9%'; titleOv.style.bottom = '';
+      titleOv.style.top = `calc(9% + ${titleOffPct}%)`; titleOv.style.bottom = '';
       titleOv.style.left = '0'; titleOv.style.right = '0';
       titleOv.style.transform = `translateX(${Math.round(W * 0.25)}px)`;
-    } else if (comp === 'אסימטרי') { titleOv.style.top = '12%'; titleOv.style.bottom = ''; }
-    else if (comp === 'קטן וקטן') { titleOv.style.top = 'auto'; titleOv.style.bottom = '35%'; }
-    else { titleOv.style.top = 'auto'; titleOv.style.bottom = '25%'; }
+    } else if (comp === 'אסימטרי') { titleOv.style.top = `calc(12% + ${titleOffPct}%)`; titleOv.style.bottom = ''; }
+    else if (comp === 'קטן וקטן') { titleOv.style.top = 'auto'; titleOv.style.bottom = `calc(35% - ${titleOffPct}%)`; }
+    else { titleOv.style.top = 'auto'; titleOv.style.bottom = `calc(25% - ${titleOffPct}%)`; }
     face.appendChild(titleOv);
 
     const nameOv = document.createElement('div');
@@ -5729,22 +5733,27 @@ function openBookModal(entry) {
   const comp = entry.composition ? entry.composition.key : '';
   const bookTitleText = entry.bookTitle || '';
 
-  const titleFontSize = Math.round(_calcTitleFontSize(W, comp, bookTitleText));
+  const adj = entry.adjust || DEFAULT_ADJUST;
+  const fontScaleMul = 1 + (adj.fontScale || 0) / 100;
+  const titleOffPct = adj.titleOffsetY || 0;
+  const titleFontSize = Math.round(_calcTitleFontSize(W, comp, bookTitleText) * fontScaleMul);
+  const letterSpacingPx = (adj.letterSpacing || 0) / 10 * titleFontSize * 0.06;
 
   let mTitle = face.querySelector('.modal-html-title');
   if (!mTitle) { mTitle = document.createElement('div'); mTitle.className = 'modal-html-title'; face.appendChild(mTitle); }
   mTitle.style.fontFamily = fontFamily;
   mTitle.style.color = fg;
   mTitle.style.fontSize = titleFontSize + 'px';
+  mTitle.style.letterSpacing = letterSpacingPx.toFixed(2) + 'px';
   mTitle.style.whiteSpace = 'nowrap';
   mTitle.textContent = bookTitleText;
   mTitle.style.left = '0'; mTitle.style.right = '0'; mTitle.style.textAlign = 'center'; mTitle.style.transform = '';
-  if      (comp === 'מכסה הכל')        { mTitle.style.top = '12%'; mTitle.style.bottom = ''; }
-  else if (comp === 'טקסט דומיננטי')   { mTitle.style.top = '59%'; mTitle.style.bottom = ''; }
-  else if (comp === 'חצוי')            { mTitle.style.top = '9%';  mTitle.style.bottom = ''; mTitle.style.transform = `translateX(${Math.round(W*0.25)}px)`; }
-  else if (comp === 'אסימטרי')         { mTitle.style.top = '12%'; mTitle.style.bottom = ''; mTitle.style.transform = ''; }
-  else if (comp === 'קטן וקטן')        { mTitle.style.top = 'auto'; mTitle.style.bottom = '35%'; }
-  else                                  { mTitle.style.top = 'auto'; mTitle.style.bottom = '25%'; }
+  if      (comp === 'מכסה הכל')        { mTitle.style.top = `calc(12% + ${titleOffPct}%)`; mTitle.style.bottom = ''; }
+  else if (comp === 'טקסט דומיננטי')   { mTitle.style.top = `calc(59% + ${titleOffPct}%)`; mTitle.style.bottom = ''; }
+  else if (comp === 'חצוי')            { mTitle.style.top = `calc(9% + ${titleOffPct}%)`;  mTitle.style.bottom = ''; mTitle.style.transform = `translateX(${Math.round(W*0.25)}px)`; }
+  else if (comp === 'אסימטרי')         { mTitle.style.top = `calc(12% + ${titleOffPct}%)`; mTitle.style.bottom = ''; mTitle.style.transform = ''; }
+  else if (comp === 'קטן וקטן')        { mTitle.style.top = 'auto'; mTitle.style.bottom = `calc(35% - ${titleOffPct}%)`; }
+  else                                  { mTitle.style.top = 'auto'; mTitle.style.bottom = `calc(25% - ${titleOffPct}%)`; }
 
   let mName = face.querySelector('.modal-html-name');
   if (!mName) { mName = document.createElement('div'); mName.className = 'modal-html-name'; face.appendChild(mName); }
