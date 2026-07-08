@@ -2621,7 +2621,17 @@ function go(n) {
   if (n === 8) buildFonts();
   if (n === 5) populateImageBooks();
   if (n === 7) _s7Animate = true;
-  if (n === 9) { _secItems = []; buildSecondaryScreen(true); }
+  if (n === 9) {
+    // Coming back from the summary screen (10) shouldn't reshuffle the
+    // secondary-image notes — otherwise the previously chosen image can
+    // land outside the new random pool and appear to vanish from the notes.
+    if (prevScreen === 10) {
+      buildSecondaryScreen(false);
+    } else {
+      _secItems = [];
+      buildSecondaryScreen(true);
+    }
+  }
   if (n === 10) {
     if (!state.bookTitle) triggerReveal();
     else {
