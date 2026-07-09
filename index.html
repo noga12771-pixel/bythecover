@@ -5615,7 +5615,7 @@ function saveToLibrary() {
     return;
   }
   lib.push({ ...snapshot, id: Date.now() });
-  if (lib.length > 60) lib.shift();
+  if (lib.length > 200) lib.shift();
   try { localStorage.setItem(LIBRARY_KEY, JSON.stringify(lib)); } catch {}
 }
 
@@ -5626,7 +5626,7 @@ let libRafId = null;
 function renderLibrary(skipSave) {
   if (!skipSave) saveToLibrary();
   const allCovers = JSON.parse(localStorage.getItem(LIBRARY_KEY) || '[]');
-  const covers = allCovers.slice(-30);
+  const covers = allCovers.slice(-200);
   const lib = [DEFAULT_COVER, ...covers];
   const grid = document.getElementById('library-grid');
   if (!grid) return;
