@@ -3482,11 +3482,11 @@ function _calcTitleFontSize(W, compKey, bookTitle) {
   const c = compKey || 'מרכזי עם ריק';
   let sz = W * 0.1;
   if (c === 'טקסט דומיננטי') sz = W * 0.195;
-  else if (c === 'מכסה הכל') sz = W * 0.09 + 2;
+  else if (c === 'מכסה הכל') sz = W * 0.09;
   else if (c === 'קטן וקטן') sz = W * 0.07;
-  const maxW = (c === 'חצוי') ? W * 0.45 : W * 0.82;
+  const maxW = (c === 'חצוי' || c === 'אסימטרי') ? W * 0.45 : W * 0.82;
   const est = (bookTitle || 'כותרת').length * sz;
-  if (est > maxW) sz = Math.max(6, sz * maxW / est);
+  if (est > maxW) sz = Math.max(W * 0.025, sz * maxW / est);
   return sz;
 }
 function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont, titleColor, comp, imgTint, bookTitle, nameColor, secondaryImg, adjust) {
@@ -3517,7 +3517,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   let authorX = W * 0.5;
   if (c === 'מרכזי עם ריק')  { bookTitleY = H * 0.75; }
   if (c === 'טקסט דומיננטי') { bookTitleY = H * 0.62; bookTitleSize = W * 0.195; }
-  if (c === 'מכסה הכל')      { bookTitleY = H * 0.15; bookTitleSize = W * 0.09 + 2; }
+  if (c === 'מכסה הכל')      { bookTitleY = H * 0.15; bookTitleSize = W * 0.09; }
   if (c === 'חצוי')           { bookTitleY = H * 0.12; bookTitleX = W * 0.75; authorX = W * 0.78; }
   if (c === 'אסימטרי')        { bookTitleY = H * 0.18; }
   if (c === 'קטן וקטן')       { bookTitleY = H * 0.15; bookTitleSize = W * 0.07; }
@@ -3528,13 +3528,14 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   // formula whenever the clamp triggers, making the font-size slider a no-op.
   { const maxTitleW = (c === 'חצוי' || c === 'אסימטרי') ? W * 0.45 : W * 0.82;
     const estimatedW = (bookTitle || 'כותרת').length * bookTitleSize;
-    if (estimatedW > maxTitleW) bookTitleSize = Math.max(10, bookTitleSize * maxTitleW / estimatedW); }
+    if (estimatedW > maxTitleW) bookTitleSize = Math.max(W * 0.025, bookTitleSize * maxTitleW / estimatedW); }
   bookTitleSize *= fontScaleMul;
 
-  // Safe image boundaries — keep image clear of text zones
-  const CLEAR = 16;
+  // Safe image boundaries — keep image clear of text zones (proportional to H/W
+  // so preview, print, and thumbnails all clamp the image by the same fraction)
+  const CLEAR = H * 0.037;
   const titleTopY   = bookTitleY - bookTitleSize - CLEAR;
-  const authorTopY  = H - 8 - W * 0.065 - CLEAR;
+  const authorTopY  = H - H * 0.019 - W * 0.065 - CLEAR;
   const imgBottomMax = Math.min(titleTopY, authorTopY); // lowest the image may reach
 
   // Position based on composition
