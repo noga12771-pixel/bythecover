@@ -3511,7 +3511,10 @@ function _calcTitleFontSize(W, compKey, bookTitle) {
   if (c === 'טקסט דומיננטי') sz = W * 0.195;
   else if (c === 'מכסה הכל') sz = W * 0.09;
   else if (c === 'קטן וקטן') sz = W * 0.07;
-  const maxW = (c === 'חצוי' || c === 'אסימטרי') ? W * 0.45 : W * 0.82;
+  // חצוי's title sits in the right-side column (anchored ~75%, image ends ~46%) —
+  // there's real room up to ~58% before overlapping the image, so 45% was overly
+  // conservative and made its title look much smaller than every other layout.
+  const maxW = c === 'חצוי' ? W * 0.56 : c === 'אסימטרי' ? W * 0.45 : W * 0.82;
   const est = (bookTitle || 'כותרת').length * sz;
   if (est > maxW) sz = Math.max(W * 0.025, sz * maxW / est);
   return sz;
@@ -3553,7 +3556,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   // Auto-scale title font to prevent overflow (conservative char-width factor = 1.0)
   // Runs on the BASE size — otherwise fontScaleMul would cancel itself out of this
   // formula whenever the clamp triggers, making the font-size slider a no-op.
-  { const maxTitleW = (c === 'חצוי' || c === 'אסימטרי') ? W * 0.45 : W * 0.82;
+  { const maxTitleW = c === 'חצוי' ? W * 0.56 : c === 'אסימטרי' ? W * 0.45 : W * 0.82;
     const estimatedW = (bookTitle || 'כותרת').length * bookTitleSize;
     if (estimatedW > maxTitleW) bookTitleSize = Math.max(W * 0.025, bookTitleSize * maxTitleW / estimatedW); }
   bookTitleSize *= fontScaleMul;
