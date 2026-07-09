@@ -3544,7 +3544,7 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
     'מכסה הכל':      {x:'50%',y:'60%',w:'95%',h:'72%'},
     'חצוי':          {x:'24%',y:'46%',w:'44%',h:'84%'},
     'אסימטרי':       {x:'28%',y:'64%',w:'50%',h:'48%', rot:'12'},
-    'קטן וקטן':      {x:'50%',y:'55%',w:'18%',h:'18%'},
+    'קטן וקטן':      {x:'50%',y:'52%',w:'34%',h:'34%'},
     '__logo_centered__': {x:'50%',y:'47%',w:'90%',h:'65%'}
   };
   const pos = positions[c] || positions['מרכזי עם ריק'];
@@ -3553,8 +3553,9 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   const ix = parseFloat(pos.x)/100*W - iw/2 + imgOffX;
   let iy = parseFloat(pos.y)/100*H - ih/2 + imgOffY;
 
-  // Clamp image bottom to stay clear of text (skip full-bleed, rotated, and half-split)
-  if (c !== 'מכסה הכל' && c !== 'חצוי' && !pos.rot && iy + ih > imgBottomMax) {
+  // Clamp image bottom to stay clear of text (skip full-bleed, rotated, half-split,
+  // and קטן וקטן — its title sits at the top, not the bottom, so this clamp doesn't apply)
+  if (c !== 'מכסה הכל' && c !== 'חצוי' && c !== 'קטן וקטן' && !pos.rot && iy + ih > imgBottomMax) {
     ih = Math.max(iw * 0.25, imgBottomMax - iy);
   }
 
@@ -4301,13 +4302,13 @@ f 85/6/5 86/1/5 87/4/5 88/7/5`;
             'טקסט דומיננטי':{ cx:.78, cy:.20, pw:.30, ph:.30 },
             'מכסה הכל':     { cx:.50, cy:.60, pw:.95, ph:.72 },
             'חצוי':         { cx:.24, cy:.46, pw:.44, ph:.84 },
-            'קטן וקטן':     { cx:.50, cy:.55, pw:.18, ph:.18 },
+            'קטן וקטן':     { cx:.50, cy:.52, pw:.34, ph:.34 },
           };
           const p = POS[ck] || POS['מרכזי עם ריק'];
           const boxW = p.pw * COV_W * imgScaleMul, boxH = p.ph * COV_H * imgScaleMul;
           const boxX = p.cx * COV_W - boxW / 2 + imgOffX;
           let boxY = p.cy * COV_H - boxH / 2 + imgOffY;
-          if (ck !== 'מכסה הכל' && ck !== 'חצוי') {
+          if (ck !== 'מכסה הכל' && ck !== 'חצוי' && ck !== 'קטן וקטן') {
             const imgBottomMax = tY - COV_H * 0.08;
             if (boxY + boxH > imgBottomMax) boxY = imgBottomMax - boxH;
           }
