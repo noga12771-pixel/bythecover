@@ -1236,16 +1236,20 @@
     #s10-bg-video {
       display: none;
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      top: 50%;
+      left: 50%;
+      width: 46vw;
+      height: 68vh;
+      margin: -34vh 0 0 -23vw;
       object-fit: cover;
-      /* footage is black-on-white; invert so it reads as light-on-dark, matching the screen */
-      filter: invert(1);
+      /* footage is black-on-white; invert so it reads as light-on-dark, matching the screen.
+         Source clips are low-res (~500px) — kept small on screen + a touch of blur so
+         upscaling artifacts don't read as pixelation. */
+      filter: invert(1) blur(1.5px);
       opacity: 0.16;
       pointer-events: none;
       z-index: -1;
-      transform: scale(1.12);
+      transform: scale(1.08);
       will-change: transform;
     }
     #s10-bg-video.show { display: block; }
