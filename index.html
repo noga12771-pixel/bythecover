@@ -3511,10 +3511,19 @@ function _calcTitleFontSize(W, compKey, bookTitle) {
   if (c === 'טקסט דומיננטי') sz = W * 0.195;
   else if (c === 'מכסה הכל') sz = W * 0.09;
   else if (c === 'קטן וקטן') sz = W * 0.07;
+  // אסימטרי's title floats alone near the top with a big empty gap before the
+  // image (which sits from ~40% down) — give it a real size boost since it has
+  // no neighboring text to lean on for visual weight, unlike the other layouts.
+  else if (c === 'אסימטרי') sz = W * 0.14;
   // חצוי's title sits in the right-side column (anchored ~75%, image ends ~46%) —
   // there's real room up to ~58% before overlapping the image, so 45% was overly
   // conservative and made its title look much smaller than every other layout.
-  const maxW = c === 'חצוי' ? W * 0.56 : W * 0.82;
+  // אסימטרי's title never competes with the image at all (different vertical
+  // band), so it can use nearly the full width — this matters because once the
+  // clamp below triggers, the result is just maxW/length regardless of the
+  // base size, so a wider maxW is the only thing that actually grows medium
+  // and long titles (not just short ones the base-size bump above covers).
+  const maxW = c === 'חצוי' ? W * 0.56 : c === 'אסימטרי' ? W * 0.90 : W * 0.82;
   const est = (bookTitle || 'כותרת').length * sz;
   if (est > maxW) sz = Math.max(W * 0.025, sz * maxW / est);
   return sz;
@@ -3549,14 +3558,14 @@ function buildCoverSVG(W, H, bgColor, accentColor, imgSvg, titleText, titleFont,
   if (c === 'טקסט דומיננטי') { bookTitleY = H * 0.62; bookTitleSize = W * 0.195; }
   if (c === 'מכסה הכל')      { bookTitleY = H * 0.15; bookTitleSize = W * 0.09; }
   if (c === 'חצוי')           { bookTitleY = H * 0.12; bookTitleX = W * 0.75; authorX = W * 0.78; }
-  if (c === 'אסימטרי')        { bookTitleY = H * 0.18; }
+  if (c === 'אסימטרי')        { bookTitleY = H * 0.18; bookTitleSize = W * 0.14; }
   if (c === 'קטן וקטן')       { bookTitleY = H * 0.15; bookTitleSize = W * 0.07; }
   bookTitleY += titleOffY;
 
   // Auto-scale title font to prevent overflow (conservative char-width factor = 1.0)
   // Runs on the BASE size — otherwise fontScaleMul would cancel itself out of this
   // formula whenever the clamp triggers, making the font-size slider a no-op.
-  { const maxTitleW = c === 'חצוי' ? W * 0.56 : W * 0.82;
+  { const maxTitleW = c === 'חצוי' ? W * 0.56 : c === 'אסימטרי' ? W * 0.90 : W * 0.82;
     const estimatedW = (bookTitle || 'כותרת').length * bookTitleSize;
     if (estimatedW > maxTitleW) bookTitleSize = Math.max(W * 0.025, bookTitleSize * maxTitleW / estimatedW); }
   bookTitleSize *= fontScaleMul;
