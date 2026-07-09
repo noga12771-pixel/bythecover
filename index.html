@@ -1238,18 +1238,21 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 46vw;
-      height: 68vh;
-      margin: -34vh 0 0 -23vw;
+      /* footage is portrait (~528×752) — match that aspect ratio exactly so
+         object-fit:cover has nothing to crop; sizing off height keeps it
+         consistent across viewport widths. Centering + parallax both live
+         in the transform (set from JS) since this is a fixed-aspect box. */
+      height: 56vh;
+      width: calc(56vh * 528 / 752);
       object-fit: cover;
       /* footage is black-on-white; invert so it reads as light-on-dark, matching the screen.
-         Source clips are low-res (~500px) — kept small on screen + a touch of blur so
+         Source clips are low-res (~500px) — kept small on screen + blur so
          upscaling artifacts don't read as pixelation. */
-      filter: invert(1) blur(1.5px);
-      opacity: 0.16;
+      filter: invert(1) blur(2px);
+      opacity: 0.14;
       pointer-events: none;
       z-index: -1;
-      transform: scale(1.08);
+      transform: translate(-50%, -50%);
       will-change: transform;
     }
     #s10-bg-video.show { display: block; }
@@ -4781,7 +4784,9 @@ function setupS10BgVideo() {
 
 function applyS10BgTransform() {
   const vid = document.getElementById('s10-bg-video');
-  if (vid) vid.style.transform = `scale(1.12) translate(${s10BgTX.toFixed(2)}px,${s10BgTY.toFixed(2)}px)`;
+  // translate(-50%,-50%) keeps it centered on its top:50%/left:50% anchor;
+  // scale(1.06) + the mouse-driven translate ride on top of that.
+  if (vid) vid.style.transform = `translate(-50%, -50%) scale(1.06) translate(${s10BgTX.toFixed(2)}px,${s10BgTY.toFixed(2)}px)`;
 }
 
 function startS10BgParallax() {
