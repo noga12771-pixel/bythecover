@@ -5923,6 +5923,12 @@ selectGender('אחר');
 
 
 (function(){
+  // Prevent orphan words (a single word alone on the last line) in the
+  // intro-screen image tooltips, same rule already applied to the summary text.
+  document.querySelectorAll('[id$="-tooltip"]').forEach(function(el) {
+    el.textContent = preventOrphanWord(el.textContent);
+  });
+
   function makeGroupTip(tipId, triggerClass) {
     var tip = document.getElementById(tipId);
     if (!tip) return null;
