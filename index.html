@@ -1488,19 +1488,18 @@
     }
     #library-viewport {
       position: absolute; inset: 0; overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
+      display: flex; align-items: center; justify-content: flex-start;
       z-index: 1;
     }
     #library-world {
-      transform-origin: center center;
-      padding: 80px 48px 80px;
       will-change: transform;
     }
+    /* horizontal shelf — books flow right-to-left (RTL), scrolling reveals more */
     #library-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 112px);
-      gap: 28px 20px;
-      justify-items: center;
+      display: flex;
+      align-items: flex-end;
+      gap: 28px;
+      padding: 0 max(48px, calc(50vw - 56px)) 0 48px;
     }
     /* HTML overlays for library book covers */
     .lib-html-title {
@@ -2634,7 +2633,7 @@ function go(n) {
   // (huge + inverted) across every later screen. Clear it on every navigation.
   const cur = document.getElementById('custom-cursor');
   if (cur) cur.classList.remove('s7-book-hover', 'clickable');
-  if (state.screen === 11 && n !== 11) stopLibParallax();
+  if (state.screen === 11 && n !== 11) stopLibShelfScroll();
   if (state.screen === 10 && n !== 10) stopS10BgParallax();
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s'+n).classList.add('active');
@@ -2680,7 +2679,6 @@ function go(n) {
     startS10BgParallax();
   }
   if (n === 11) {
-    libZoom = 1; libTX = 0; libTY = 0;
     const fromHome = prevScreen === 1 || prevScreen === null || prevScreen === undefined;
     const prevBtn = document.getElementById('lib-prev-btn');
     if (prevBtn) prevBtn.style.display = fromHome ? 'none' : '';
@@ -5718,8 +5716,10 @@ function saveToLibrary() {
   try { localStorage.setItem(LIBRARY_KEY, JSON.stringify(lib)); } catch {}
 }
 
-let libZoom = 1, libTX = 0, libTY = 0;
-let libTargetX = 0, libTargetY = 0;
+// Horizontal shelf scroll — books flow right-to-left; scrolling (wheel or
+// trackpad) advances a single scroll position, smoothed with a lerp toward
+// a target rather than jumping, so the shelf "slides" as you scroll.
+let libScrollX = 0, libScrollTarget = 0, libMaxScroll = 0;
 let libRafId = null;
 
 function renderLibrary(skipSave) {
@@ -5806,36 +5806,40 @@ function renderLibrary(skipSave) {
     grid.appendChild(div);
   });
 
-  applyLibTransform();
-  startLibParallax();
-}
-
-function applyLibTransform() {
+  // How far the shelf can scroll: full content width minus one viewport's worth.
+  const vp = document.getElementById('library-viewport');
   const world = document.getElementById('library-world');
-  if (world) world.style.transform = `translate(${libTX.toFixed(2)}px,${libTY.toFixed(2)}px) scale(${libZoom.toFixed(4)})`;
+  libMaxScroll = vp && world ? Math.max(0, world.scrollWidth - vp.clientWidth) : 0;
+  // Arriving fresh from home starts at the beginning of the shelf; coming
+  // back after just creating a book jumps straight to it (the newest one).
+  libScrollTarget = skipSave ? 0 : libMaxScroll;
+  libScrollX = libScrollTarget;
+  applyLibShelfTransform();
+  startLibShelfScroll();
 }
 
-function startLibParallax() {
+function applyLibShelfTransform() {
+  const world = document.getElementById('library-world');
+  // #library-grid's flex-start already right-aligns it against the RTL
+  // viewport, so advancing the shelf (revealing further books) needs a
+  // *positive* translateX to bring the overflowing left side into view.
+  if (world) world.style.transform = `translateX(${libScrollX.toFixed(2)}px)`;
+}
+
+function startLibShelfScroll() {
   const vp = document.getElementById('library-viewport');
   if (!vp) return;
 
-  vp.onmousemove = e => {
-    const r = vp.getBoundingClientRect();
-    libTargetX = ((e.clientX - r.left) / r.width  - 0.5) * -32;
-    libTargetY = ((e.clientY - r.top)  / r.height - 0.5) * -20;
-  };
-  vp.onmouseleave = () => { libTargetX = 0; libTargetY = 0; };
   vp.onwheel = e => {
     e.preventDefault();
-    libZoom = Math.max(0.22, Math.min(2.4, libZoom - e.deltaY * 0.0012));
-    applyLibTransform();
+    const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    libScrollTarget = Math.max(0, Math.min(libMaxScroll, libScrollTarget + delta));
   };
 
   if (libRafId) cancelAnimationFrame(libRafId);
   (function tick() {
-    libTX += (libTargetX - libTX) * 0.07;
-    libTY += (libTargetY - libTY) * 0.07;
-    applyLibTransform();
+    libScrollX += (libScrollTarget - libScrollX) * 0.12;
+    applyLibShelfTransform();
     libRafId = requestAnimationFrame(tick);
   })();
 }
@@ -5914,9 +5918,9 @@ function closeBookModal() {
 
 function _modalEsc(e) { if (e.key === 'Escape') closeBookModal(); }
 
-function stopLibParallax() {
+function stopLibShelfScroll() {
   const vp = document.getElementById('library-viewport');
-  if (vp) { vp.onmousemove = null; vp.onmouseleave = null; vp.onwheel = null; }
+  if (vp) { vp.onwheel = null; }
   if (libRafId) { cancelAnimationFrame(libRafId); libRafId = null; }
 }
 
