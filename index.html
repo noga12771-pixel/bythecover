@@ -1491,6 +1491,17 @@
       display: flex; align-items: center; justify-content: flex-start;
       z-index: 1;
     }
+    /* shelf surface the books "rest" on — fixed under the row, doesn't scroll with it */
+    #library-shelf-line {
+      position: absolute;
+      left: 0; right: 0;
+      top: calc(50% + 94px);
+      height: 1px;
+      background: #d1d3d4;
+      opacity: 0.3;
+      z-index: 0;
+      pointer-events: none;
+    }
     #library-world {
       will-change: transform;
     }
@@ -1499,7 +1510,9 @@
       display: flex;
       align-items: flex-end;
       gap: 28px;
-      padding: 0 max(48px, calc(50vw - 56px)) 0 48px;
+      /* RTL: books start flush near the right edge (small padding-right),
+         with a big padding-left as scroll runway past the last book. */
+      padding: 0 48px 0 max(48px, calc(50vw - 56px));
     }
     /* HTML overlays for library book covers */
     .lib-html-title {
@@ -2151,6 +2164,7 @@
     <img src="%D7%9C%D7%A4%D7%99%20%D7%94%D7%9B%D7%A8%D7%99%D7%9B%D7%94%20%D7%9C%D7%95%D7%92%D7%95%20%D7%97%D7%93%D7%A9%202%20%D7%91%D7%A6%D7%94%D7%95%D7%91.svg" alt="">
   </div>
   <div id="library-viewport">
+    <div id="library-shelf-line"></div>
     <div id="library-world">
       <div id="library-grid"></div>
     </div>
@@ -5832,8 +5846,12 @@ function startLibShelfScroll() {
 
   vp.onwheel = e => {
     e.preventDefault();
-    const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-    libScrollTarget = Math.max(0, Math.min(libMaxScroll, libScrollTarget + delta));
+    let delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    // deltaMode 1 = "line" units (typically mouse wheels) — normalize to
+    // roughly pixel scale so a single notch moves a noticeable amount.
+    if (e.deltaMode === 1) delta *= 18;
+    else if (e.deltaMode === 2) delta *= window.innerHeight;
+    libScrollTarget = Math.max(0, Math.min(libMaxScroll, libScrollTarget + delta * 1.6));
   };
 
   if (libRafId) cancelAnimationFrame(libRafId);
